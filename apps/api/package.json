@@ -94,6 +94,8 @@
     "@nestjs/swagger": "^11.0.0",
     "@kdp/contracts": "*",
     "@kdp/projects": "*",
+    "@kdp/projects-prisma": "*",
+    "@prisma/client": "^6.19.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"

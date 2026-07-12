@@ -23,6 +23,9 @@
   ],
   "references": [
     {
+      "path": "../../libs/projects-prisma/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/projects/tsconfig.lib.json"
     },
     {
