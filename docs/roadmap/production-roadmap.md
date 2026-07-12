@@ -10,9 +10,9 @@ Jedes Arbeitspaket (WP) endet mit Pflichtchecks, Commit, Push und Berichtseintra
 
 | Phase | Inhalt | Status | Rolle |
 |---|---|---|---|
-| A | Audit & Sicherung | **abgeschlossen** (dieser Durchlauf; Golden-Master-Fixture als WP-B0 offen) | 1 |
-| B | Workspace & Architektur-Foundation | offen | 1→2 |
-| C | Demo-Vertical-Slice | offen | 2 |
+| A | Audit & Sicherung | **abgeschlossen** | 1 |
+| B | Workspace & Architektur-Foundation | **abgeschlossen** (2026-07-12; Gate G1 erfüllt; DB-Integrationstest als WP-B5-Follow-up offen, DEV-007) | 1→2 |
+| C | Demo-Vertical-Slice | offen (nächste Phase) | 2 |
 | D | KI-Provider-Foundation | offen | 2→3 |
 | E | Öffentliche Produkt-Shell | offen | 2 |
 | F+ | Reale Provider, Publishing-Tiefe, QA/Security, Billing/Launch | offen | 3–6 |
@@ -85,7 +85,7 @@ WP-E1 Landingpage/Feature/How-it-works/Format-Übersicht (SSG, DE/EN/ES) · WP-E
 Research-Backlog-Struktur statt erfundener „Top 10": Datenquelle, Markt, Erhebungsdatum, Nische, Nachfrage-/Wettbewerbsindikatoren, Format-Eignung, Risiko, Skill-Vorschlag, Priorität. Die eigentliche Recherche ist eine separate, datierte Aufgabe (Rolle 6/Research).
 
 ## Meilenstein-Gates
-- **G1 (nach B):** CI mit allen Pflichtchecks blockierend; Architektur-Boundaries erzwungen.
+- **G1 (nach B): ERFÜLLT (2026-07-12).** CI mit allen Pflichtchecks blockierend; Architektur-Boundaries per `enforce-module-boundaries` erzwungen (Verstoß-Probe verifiziert). Beleg: `docs/reviews/phase-b-implementation-report.md`.
 - **G2 (nach C):** kompletter Demo-E2E (Masterprompt §16, 12 Schritte) grün; drei valide Exportartefakte.
 - **G3 (nach D):** realer Providerlauf mit Ledger + Preflight, Security-Review der Credential-Grenze.
 - **G4 (nach E):** Production-Build aller Apps, §18-Liste vollständig, Übergabe an Rolle 3/4.
