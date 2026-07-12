@@ -119,6 +119,7 @@ Kein `console.*` in Anwendungscode (`check:console` Exit 0). Technische Logs lau
 | DEV-005 | `NX_IGNORE_UNSUPPORTED_TS_SETUP=true` für Angular. | Angular unterstützt das TS-Solution-/Project-References-Setup des `ts`-Presets nicht; Web-Apps bauen über den Angular-Builder, konsumieren Libs als gebaute Workspace-Pakete. | Beibehalten; bei Angular-Update auf Nativ-Support prüfen. |
 | DEV-006 | Angular-`typecheck` via `tsc --noEmit` statt `tsc -b`. | Node-Lib-Basis-tsconfig (composite/emitDeclarationOnly) ist mit dem Angular-Build-Modus unvereinbar. Volle Template-Prüfung erfolgt im Angular-Build (auch in CI). | Beibehalten. |
 | DEV-007 | ~~`test:integration` läuft nur gegen In-Memory-Adapter.~~ **GESCHLOSSEN 2026-07-12** (Follow-up-Durchlauf). | Prisma-Adapter (`libs/projects-prisma`), reproduzierbare Migration (`0001_init`), DE/EN/ES-Seeds und ein echter PostgreSQL-Integrationstest (8 Zusicherungen) laufen grün gegen echtes PostgreSQL 18.4. Details: `wp-b5-followup-report.md`. | — |
+| DEV-008 | Gelegentliche `MaxListenersExceededWarning` im CI-Testlauf. | Nicht-fataler Node-EventEmitter-Hinweis aus der Test-Toolchain (Nx 23 `run-many` + Vitest 4 Prozess-/Signal-Listener; im DB-Test zusätzlich `embedded-postgres`-Cleanup-Listener). Lokal nicht reproduzierbar (0 Vorkommen). **Kein** `setMaxListeners(0)`. | Folgeaufgabe: falls in CI erneut, `nx run-many --parallel` moderat begrenzen bzw. Listener der Test-Harness scopen; Versionen: nx 23.0.1, vitest ~4.1, embedded-postgres 18.4.0-beta. |
 
 ## 15. Bestätigung: `main` wurde nicht verändert
 
