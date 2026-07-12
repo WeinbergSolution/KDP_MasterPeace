@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
-@Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
-})
+/**
+ * Root worker module. BullMQ consumers (generation, export, validation) are
+ * registered here as their processors land in later work packages.
+ */
+@Module({})
 export class AppModule {}

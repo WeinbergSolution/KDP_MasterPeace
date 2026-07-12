@@ -1,20 +1,16 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { parseEnv } from '@kdp/contracts';
 import { AppModule } from './app/app.module';
+import { buildRedisConnection } from './app/queues/redis-connection';
+import { QUEUE_NAMES } from './app/queues/queue-names';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
+  const env = parseEnv(process.env);
+  const redis = buildRedisConnection(env.REDIS_URL);
+  await NestFactory.createApplicationContext(AppModule);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+    `Worker ready — Redis ${redis.host}:${redis.port}; queues: ${QUEUE_NAMES.join(', ')}`,
   );
 }
 

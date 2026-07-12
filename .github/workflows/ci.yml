@@ -57,6 +57,9 @@ jobs:
         env:
           NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
 
+      # No provider secret may ship in a frontend bundle (scans built output).
+      - run: npm run check:frontend-secrets
+
   integration:
     needs: guard-main
     runs-on: ubuntu-latest
