@@ -114,11 +114,11 @@ Kein `console.*` in Anwendungscode (`check:console` Exit 0). Technische Logs lau
 
 | ID | Abweichung | Begründung | Folgeaufgabe |
 |---|---|---|---|
-| DEV-002 | Kein Push. | Kein Remote/Credentials in der Umgebung. | Pascal stellt Remote/Token bereit. |
+| DEV-002 | ~~Kein Push.~~ **ERLEDIGT 2026-07-12:** `feature/angular-production-foundation` nach `origin` gepusht (neuer Remote-Branch, kein Force). | Push-Credentials waren beim Follow-up-Durchlauf verfügbar. | — |
 | DEV-004 | npm statt pnpm (ADR-0001). | corepack-pnpm-Shim im Sandbox nicht installierbar (EPERM auf `Program Files/nodejs`). Nx unterstützt PM-Wechsel. | Migration auf pnpm, sobald Shim verfügbar; ADR-0001 aktualisieren oder Ausnahme dokumentieren. |
 | DEV-005 | `NX_IGNORE_UNSUPPORTED_TS_SETUP=true` für Angular. | Angular unterstützt das TS-Solution-/Project-References-Setup des `ts`-Presets nicht; Web-Apps bauen über den Angular-Builder, konsumieren Libs als gebaute Workspace-Pakete. | Beibehalten; bei Angular-Update auf Nativ-Support prüfen. |
 | DEV-006 | Angular-`typecheck` via `tsc --noEmit` statt `tsc -b`. | Node-Lib-Basis-tsconfig (composite/emitDeclarationOnly) ist mit dem Angular-Build-Modus unvereinbar. Volle Template-Prüfung erfolgt im Angular-Build (auch in CI). | Beibehalten. |
-| DEV-007 | `test:integration` läuft gegen In-Memory-Adapter, nicht Postgres. | Die Versionskonflikt-Logik ist adapterunabhängig und so ohne Live-DB deterministisch testbar. Prisma-Schema v1 ist `prisma validate`-geprüft; DB-gestützte Tests + Migrationen folgen mit dem Prisma-Adapter. | WP-B5-Follow-up: Prisma-Adapter + DB-Integrationstest (CI-Service Postgres steht bereit). |
+| DEV-007 | ~~`test:integration` läuft nur gegen In-Memory-Adapter.~~ **GESCHLOSSEN 2026-07-12** (Follow-up-Durchlauf). | Prisma-Adapter (`libs/projects-prisma`), reproduzierbare Migration (`0001_init`), DE/EN/ES-Seeds und ein echter PostgreSQL-Integrationstest (8 Zusicherungen) laufen grün gegen echtes PostgreSQL 18.4. Details: `wp-b5-followup-report.md`. | — |
 
 ## 15. Bestätigung: `main` wurde nicht verändert
 

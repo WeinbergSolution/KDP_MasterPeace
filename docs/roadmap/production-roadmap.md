@@ -11,7 +11,7 @@ Jedes Arbeitspaket (WP) endet mit Pflichtchecks, Commit, Push und Berichtseintra
 | Phase | Inhalt | Status | Rolle |
 |---|---|---|---|
 | A | Audit & Sicherung | **abgeschlossen** | 1 |
-| B | Workspace & Architektur-Foundation | **abgeschlossen** (2026-07-12; Gate G1 erfüllt; DB-Integrationstest als WP-B5-Follow-up offen, DEV-007) | 1→2 |
+| B | Workspace & Architektur-Foundation | **abgeschlossen** (2026-07-12; Gate G1 erfüllt; WP-B5-Follow-up DEV-007 geschlossen: Prisma-Adapter + echter PostgreSQL-Integrationstest grün) | 1→2 |
 | C | Demo-Vertical-Slice | offen (nächste Phase) | 2 |
 | D | KI-Provider-Foundation | offen | 2→3 |
 | E | Öffentliche Produkt-Shell | offen | 2 |

@@ -27,10 +27,11 @@ Voraussetzung erfüllt: **Gate G1 vollständig** (siehe `phase-b-implementation-
 
 ## 2. Direkt nächste Arbeitspakete (Reihenfolge, aus production-roadmap.md)
 
-1. **WP-B5-Follow-up (Schuld aus Phase B):** Prisma-Adapter für
-   `ProjectVersionRepository` + DB-Integrationstest gegen Postgres (CI-Service steht),
-   Migrationen + Seeds (Demo-Fixtures DE/EN/ES). (DEV-007)
-2. **WP-C1:** `libs/document-model` – Book AST + **Legacy Parser** (Grammatik aus
+0. **WP-B5-Follow-up (DEV-007): ERLEDIGT 2026-07-12.** Prisma-Adapter
+   (`libs/projects-prisma`), reproduzierbare Migration, DE/EN/ES-Seeds und echter
+   PostgreSQL-Integrationstest (8 Zusicherungen) grün. Beleg: `wp-b5-followup-report.md`.
+   API wählt Adapter per `PersistenceModule.forRoot()` (In-Memory ↔ Prisma via `DATABASE_URL`).
+1. **WP-C1:** `libs/document-model` – Book AST + **Legacy Parser** (Grammatik aus
    `legacy-backup-schema.md §4`), Golden-Master-Test gegen die B0-Fixtures
    (`@kdp/testing`), Migrationswarnungen MW-* (`legacy-react-to-angular.md §3`);
    `libs/preview` (AST→Angular); Markup-Editor mit Live-AST-Sync.
@@ -47,13 +48,15 @@ Voraussetzung erfüllt: **Gate G1 vollständig** (siehe `phase-b-implementation-
 - **Neue Lib:** `nx g @nx/js:library libs/<name> --bundler=tsc --unitTestRunner=vitest
   --tags="platform:…,type:…"`; danach Stub durch dokumentierten Code ersetzen.
 - **Angular-Befehle** mit `NX_IGNORE_UNSUPPORTED_TS_SETUP=true` (DEV-005).
+- **DB-Tests:** lokal via `embedded-postgres` (echtes Binary), in CI via Postgres-Service;
+  `npm run test:integration:postgres`. `postinstall` erzeugt den Prisma-Client.
 - **Jede Funktion** ≤ 14 ausführbare Zeilen, JSDoc, kein `console.*`, kein statisches
   HTML in TS – die Checks blockieren sonst.
 
 ## 4. Offene Abweichungen (aus §14 des Berichts)
 
-DEV-002 (Push), DEV-004 (npm statt pnpm), DEV-005 (Angular-TS-Setup),
-DEV-006 (Angular-typecheck), DEV-007 (Prisma-Integrationstest ausstehend).
+DEV-004 (npm statt pnpm), DEV-005 (Angular-TS-Setup), DEV-006 (Angular-typecheck).
+**Geschlossen:** DEV-002 (Push erfolgt), DEV-007 (Prisma-Integrationstest grün).
 
 ## 5. Non-Goals (unverändert)
 
