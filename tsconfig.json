@@ -86,6 +86,9 @@
     },
     {
       "path": "./apps/worker"
+    },
+    {
+      "path": "./libs/projects-prisma"
     }
   ]
 }
