@@ -76,6 +76,13 @@
         "staticFilePath": "dist/apps/studio-web/browser",
         "spa": true
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p tsconfig.app.json --noEmit",
+        "cwd": "apps/studio-web"
+      }
     }
   }
 }
