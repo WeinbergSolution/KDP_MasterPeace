@@ -1,0 +1,81 @@
+// Component-local styles for the design-system demo (feature styling stays out
+// of the global sheet). Uses design tokens only — no magic numbers.
+
+.demo__header {
+  margin-bottom: var(--space-6);
+}
+
+.demo__lead {
+  color: var(--color-text-muted);
+  max-width: 60ch;
+  margin-top: var(--space-2);
+}
+
+.demo__section {
+  margin-bottom: var(--space-6);
+}
+
+.demo__section h2 {
+  margin-bottom: var(--space-3);
+}
+
+.demo__type-sample {
+  margin-bottom: var(--space-2);
+}
+
+.demo__quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  border-left: 3px solid var(--color-primary);
+  padding-left: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.demo__swatches {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: var(--space-3);
+}
+
+.demo__swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.demo__swatch-chip {
+  height: 3rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.demo__swatch-label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.demo__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.demo__btn {
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5);
+  font-weight: 600;
+}
+
+.demo__btn--primary {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+
+.demo__btn--ghost {
+  background: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}

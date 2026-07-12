@@ -1,0 +1,4 @@
+// Global styles for studio-web: the shared design system (tokens, reset,
+// app-shell) from libs/ui. Only reset/tokens/shell live globally (AGENTS.md
+// §12); feature styles stay component-local.
+@use '../../../libs/ui/src/styles/index' as *;

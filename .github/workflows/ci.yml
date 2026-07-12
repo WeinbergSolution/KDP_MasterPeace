@@ -1,0 +1,119 @@
+name: CI
+
+# Mandatory quality gate (AGENTS.md §13). Never runs privileged actions and
+# never targets `main`; branch protection for main/staging is configured by
+# the repository owner (foundation report DEV-001).
+on:
+  push:
+    branches:
+      - staging
+      - 'feature/**'
+      - 'fix/**'
+      - 'chore/**'
+  pull_request:
+    branches:
+      - staging
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guard-main:
+    # Fail fast if this workflow is ever run against main (AGENTS.md §3.2/§13.1).
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "CI must not run on main. main is protected (AGENTS.md §3.2)."
+          exit 1
+
+  quality:
+    needs: guard-main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      # Coding-rule gates (AGENTS.md §5, §7, §9, §13.1) — each blocks on violation.
+      - run: npm run format:check
+      - run: npm run check:file-size
+      - run: npm run check:function-size
+      - run: npm run check:jsdoc
+      - run: npm run check:console
+
+      # Architecture boundaries + type safety + tests + build (blocking).
+      - run: npx nx run-many -t lint
+      - run: npx nx run-many -t typecheck
+      - run: npx nx run-many -t test
+      - run: npx nx run-many -t build
+        env:
+          NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
+
+      # No provider secret may ship in a frontend bundle (scans built output).
+      - run: npm run check:frontend-secrets
+
+  integration:
+    needs: guard-main
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: kdp
+          POSTGRES_PASSWORD: kdp
+          POSTGRES_DB: kdp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kdp"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://kdp:kdp@localhost:5432/kdp_test
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run test:integration
+
+  responsive:
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Build and serve public-web
+        run: |
+          NX_IGNORE_UNSUPPORTED_TS_SETUP=true npx nx build public-web
+          npx --yes http-server dist/apps/public-web/browser -p 4200 &
+          npx --yes wait-on http://localhost:4200
+      - run: npm run check:responsive
+        env:
+          RESPONSIVE_URL: http://localhost:4200

@@ -1,0 +1,39 @@
+{
+  "name": "@kdp/projects-prisma",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "name": "projects-prisma",
+    "tags": [
+      "platform:server",
+      "type:data-access"
+    ],
+    "targets": {
+      "test-integration": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "vitest run --config vitest.integration.config.mts",
+          "cwd": "libs/projects-prisma"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@kdp/contracts": "*",
+    "@kdp/projects": "*",
+    "@prisma/client": "^6.19.3"
+  }
+}

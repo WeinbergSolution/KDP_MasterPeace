@@ -1,0 +1,25 @@
+# Add files here to ignore them from prettier formatting
+/dist
+/coverage
+/.nx/cache
+/.nx/workspace-data
+.nx/self-healing
+.angular
+
+# Legacy prototype is read-only (AGENTS.md §6) — never reformat.
+/legacy
+
+# Foundation-phase docs are authored markdown; not prettier-managed.
+/docs
+
+# Deterministic golden-master fixtures + generator must stay byte-stable.
+/libs/testing/fixtures
+
+# Reference inputs (not part of the codebase).
+/Code.html
+/KDP-Studio_Masterprompt_Architektur-und-Foundation-v2.md
+/files
+/files.zip
+
+# Project constitution — only Pascal may change it (AGENTS.md §1).
+/AGENTS.md

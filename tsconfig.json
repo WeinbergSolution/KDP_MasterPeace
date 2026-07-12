@@ -1,0 +1,94 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./libs/domain"
+    },
+    {
+      "path": "./libs/contracts"
+    },
+    {
+      "path": "./libs/document-model"
+    },
+    {
+      "path": "./libs/quality"
+    },
+    {
+      "path": "./libs/observability"
+    },
+    {
+      "path": "./libs/testing"
+    },
+    {
+      "path": "./libs/skills"
+    },
+    {
+      "path": "./libs/ui"
+    },
+    {
+      "path": "./libs/preview"
+    },
+    {
+      "path": "./libs/document-editor"
+    },
+    {
+      "path": "./libs/auth"
+    },
+    {
+      "path": "./libs/projects"
+    },
+    {
+      "path": "./libs/billing"
+    },
+    {
+      "path": "./libs/admin"
+    },
+    {
+      "path": "./libs/ai-core"
+    },
+    {
+      "path": "./libs/generation"
+    },
+    {
+      "path": "./libs/export-core"
+    },
+    {
+      "path": "./libs/export-docx"
+    },
+    {
+      "path": "./libs/export-epub"
+    },
+    {
+      "path": "./libs/export-pdf"
+    },
+    {
+      "path": "./libs/ai-providers/mock"
+    },
+    {
+      "path": "./libs/ai-providers/anthropic"
+    },
+    {
+      "path": "./libs/ai-providers/openai"
+    },
+    {
+      "path": "./libs/ai-providers/gemini"
+    },
+    {
+      "path": "./apps/api-e2e"
+    },
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./apps/worker-e2e"
+    },
+    {
+      "path": "./apps/worker"
+    },
+    {
+      "path": "./libs/projects-prisma"
+    }
+  ]
+}

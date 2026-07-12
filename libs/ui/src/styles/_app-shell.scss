@@ -1,0 +1,78 @@
+// Responsive app-shell layout (WP-B3): rail + main. Portrait-first, works from
+// 320px, content capped at 1440px and left-aligned, no horizontal page overflow
+// (AGENTS.md §11). The rail becomes a top bar on narrow viewports.
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-rail {
+  flex: 0 0 var(--rail-width);
+  width: var(--rail-width);
+  background: var(--color-rail-bg);
+  color: var(--color-on-rail);
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.app-rail__brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #fff;
+  padding-inline: var(--space-2);
+}
+
+.app-rail__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.app-rail__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--color-on-rail);
+  border-radius: var(--radius-md);
+  text-align: left;
+  text-decoration: none;
+}
+
+.app-rail__link:hover,
+.app-rail__link--active {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+
+.app-main {
+  flex: 1 1 auto;
+  min-width: 0; // allow the flex child to shrink below content width (no overflow)
+  padding: var(--space-5) var(--space-4) var(--space-6);
+}
+
+.app-main__content {
+  max-width: var(--content-max-width);
+}
+
+// Portrait-first: stack the rail above the main content on narrow screens.
+@media (max-width: 640px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .app-rail {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .app-rail__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
