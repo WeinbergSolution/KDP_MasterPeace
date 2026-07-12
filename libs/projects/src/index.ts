@@ -9,3 +9,12 @@ export {
   computeAstHash,
   etagForVersion,
 } from './lib/project-version.js';
+export {
+  type NewProject,
+  type StoredProject,
+  type ProjectStore,
+} from './lib/project-store.js';
+export {
+  PersistenceError,
+  TenantIsolationError,
+} from './lib/persistence-error.js';
