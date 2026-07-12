@@ -60,6 +60,7 @@
     "jsdom": "^27.1.0",
     "jsonc-eslint-parser": "^2.1.0",
     "nx": "23.0.1",
+    "playwright": "^1.61.1",
     "prettier": "^3.8.1",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
