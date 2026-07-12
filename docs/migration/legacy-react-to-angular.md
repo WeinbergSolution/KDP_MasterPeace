@@ -51,7 +51,11 @@ Ergänzend: `docs/architecture/as-is-audit.md` (Befunde), `docs/migration/legacy
 
 ## 4. Golden-Master-Test (Definition)
 
-- Input: `fixtures/legacy-golden-master.json` (Alt-Schema v2) und `fixtures/legacy-golden-master-v1.json` (Alt-Schema v1).
+- Input: `libs/testing/fixtures/legacy-golden-master.json` (Alt-Schema v2) und
+  `libs/testing/fixtures/legacy-golden-master-v1.json` (Alt-Schema v1). Deterministisch
+  erzeugt via `libs/testing/fixtures/generate-fixtures.mjs`; geladen über
+  `@kdp/testing` (`loadGoldenMaster('v1'|'v2')`). Struktur-/Determinismus-Test:
+  `libs/testing/src/lib/legacy-fixtures.spec.ts` (WP-B0).
 - Erwartung: deterministischer AST-Snapshot, vollständige Migrationswarnungsliste, Roundtrip AST → Preview-HTML strukturell äquivalent zur Legacy-Preview (blockweise verglichen).
 - Der Test ist Teil von `npm run test:integration` und blockiert bei jeder ungewollten Parser-Änderung.
 

@@ -1,1 +1,5 @@
-export * from './lib/testing.js';
+export {
+  goldenMasterPath,
+  loadGoldenMaster,
+  type LegacyFixtureSchema,
+} from './lib/legacy-fixtures.js';

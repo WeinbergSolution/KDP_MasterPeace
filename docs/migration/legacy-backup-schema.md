@@ -2,6 +2,10 @@
 
 Grundlage für den `LegacyBackupImporter`. Quelle: `legacy/react-cloud/kdp-workbook-studio.legacy.jsx` (L58–68 `emptyProject`, L828–844 Export/Import, L560–584 Speicherschemata).
 
+Golden-Master-Fixtures dieses Schemas (WP-B0): `libs/testing/fixtures/legacy-golden-master.json`
+(v2, `{ project, step }`) und `libs/testing/fixtures/legacy-golden-master-v1.json` (v1, blankes
+Projekt); Zugriff über `@kdp/testing` (`loadGoldenMaster`).
+
 ## 1. Dateiformat des Backups
 
 ```json
