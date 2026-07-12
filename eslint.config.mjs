@@ -20,7 +20,13 @@ export default [
             // and apps never depend on other apps (target-architecture.md §2).
             {
               sourceTag: 'type:app',
-              onlyDependOnLibsWithTags: ['type:app', 'platform:agnostic', 'platform:browser', 'platform:server', 'platform:any'],
+              onlyDependOnLibsWithTags: [
+                'type:app',
+                'platform:agnostic',
+                'platform:browser',
+                'platform:server',
+                'platform:any',
+              ],
               notDependOnLibsWithTags: ['type:app'],
             },
             // Fundamental libs (domain, contracts, document-model, quality)
@@ -33,12 +39,20 @@ export default [
             // (provider SDKs, export renderers, server auth internals).
             {
               sourceTag: 'platform:browser',
-              onlyDependOnLibsWithTags: ['platform:browser', 'platform:any', 'platform:agnostic'],
+              onlyDependOnLibsWithTags: [
+                'platform:browser',
+                'platform:any',
+                'platform:agnostic',
+              ],
             },
             // Server libs stay off the browser platform.
             {
               sourceTag: 'platform:server',
-              onlyDependOnLibsWithTags: ['platform:server', 'platform:any', 'platform:agnostic'],
+              onlyDependOnLibsWithTags: [
+                'platform:server',
+                'platform:any',
+                'platform:agnostic',
+              ],
             },
             // Platform-neutral feature libs avoid both browser- and server-only libs.
             {

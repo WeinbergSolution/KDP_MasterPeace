@@ -10,7 +10,6 @@ const fixtureFileNames: Record<LegacyFixtureSchema, string> = {
   v2: 'legacy-golden-master.json',
 };
 
-
 /**
  * Resolves the fixtures directory relative to this module, working from both
  * the compiled `dist/lib` output and the `src/lib` sources (both go two levels
@@ -23,7 +22,6 @@ function fixturesDir(): string {
   return join(here, '..', '..', 'fixtures');
 }
 
-
 /**
  * Returns the absolute path of a golden-master legacy backup fixture.
  *
@@ -33,7 +31,6 @@ function fixturesDir(): string {
 export function goldenMasterPath(schema: LegacyFixtureSchema): string {
   return join(fixturesDir(), fixtureFileNames[schema]);
 }
-
 
 /**
  * Loads and parses a golden-master legacy backup fixture as raw JSON.

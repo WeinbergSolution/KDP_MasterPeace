@@ -13,7 +13,6 @@ function projectOf(fixture: unknown): Record<string, unknown> {
   return (wrapper.project ?? fixture) as Record<string, unknown>;
 }
 
-
 /**
  * Concatenates all chapter markup strings of a legacy project fixture.
  *
@@ -25,13 +24,11 @@ function chapterMarkup(project: Record<string, unknown>): string {
   return outline.map((chapter) => chapter.content ?? '').join('\n');
 }
 
-
 describe('legacy golden-master fixtures', () => {
   it('exposes both schema variants at stable paths', () => {
     expect(goldenMasterPath('v2')).toMatch(/legacy-golden-master\.json$/);
     expect(goldenMasterPath('v1')).toMatch(/legacy-golden-master-v1\.json$/);
   });
-
 
   it('wraps v2 as { project, step } and keeps v1 as the bare project', () => {
     const v2 = loadGoldenMaster('v2') as { project: unknown; step: number };
@@ -41,21 +38,33 @@ describe('legacy golden-master fixtures', () => {
     expect(v1['outline']).toBeTypeOf('object');
   });
 
-
   it('carries identical project data across both schema variants (determinism)', () => {
     const fromV2 = JSON.stringify(projectOf(loadGoldenMaster('v2')));
     const fromV1 = JSON.stringify(projectOf(loadGoldenMaster('v1')));
     expect(fromV1).toEqual(fromV2);
   });
 
-
   it('exercises every markup construct required by the parser spec', () => {
     const markup = chapterMarkup(projectOf(loadGoldenMaster('v2')));
-    for (const token of ['## ', '### ', '**', '> ', '- ', '* ', '1. ', '[skala]', '[linien:', '- [ ]', '- [x]', ':::uebung', ':::tipp', ':::beispiel']) {
+    for (const token of [
+      '## ',
+      '### ',
+      '**',
+      '> ',
+      '- ',
+      '* ',
+      '1. ',
+      '[skala]',
+      '[linien:',
+      '- [ ]',
+      '- [x]',
+      ':::uebung',
+      ':::tipp',
+      ':::beispiel',
+    ]) {
       expect(markup, `missing construct: ${token}`).toContain(token);
     }
   });
-
 
   it('includes the documented parser edge cases (MW-* warnings)', () => {
     const markup = chapterMarkup(projectOf(loadGoldenMaster('v2')));
