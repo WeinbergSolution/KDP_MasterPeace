@@ -78,4 +78,12 @@ export default [
     // Override or add rules here
     rules: {},
   },
+  {
+    // Tests assert a value is present and then use it; non-null assertions are
+    // idiomatic and readable in specs.
+    files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],
+    rules: {
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
 ];

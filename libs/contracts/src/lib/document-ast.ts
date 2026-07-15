@@ -14,6 +14,10 @@ export const NodeTypeSchema = z.enum([
   'heading',
   'paragraph',
   'quote',
+  // Inline text run carrying optional marks (strong/emphasis). Required to
+  // represent partial `**bold**` spans inside a block (WP-C1, controlled
+  // extension per legacy markup grammar).
+  'text',
   'unorderedList',
   'orderedList',
   'listItem',
