@@ -1,26 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { App } from './app';
 
 describe('App', () => {
-  beforeEach(async () => {
+  it('bootstraps the root component with a router outlet', async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  it('renders the WP-C1 workspace heading', async () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Live-Preview');
-  });
-
-  it('renders the rail navigation', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelectorAll('.app-rail__link').length).toBeGreaterThan(
-      0,
-    );
+    expect(compiled.querySelector('router-outlet')).not.toBeNull();
   });
 });

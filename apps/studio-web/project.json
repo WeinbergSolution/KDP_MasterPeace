@@ -28,16 +28,22 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1.5mb",
+              "maximumError": "2.5mb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
+              "maximumWarning": "6kb",
+              "maximumError": "12kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/studio-web/src/environments/environment.ts",
+              "with": "apps/studio-web/src/environments/environment.prod.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,

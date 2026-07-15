@@ -1,0 +1,332 @@
+// KDP MasterPeace landing — warm cream/gold brand, scoped to this component.
+// Reuses global spacing/radius tokens; brand colours are local custom properties.
+:host {
+  --brand-cream: #fbf7ee;
+  --brand-cream-2: #f4ecd8;
+  --brand-ink: #2b2418;
+  --brand-gold: #c98a2b;
+  --brand-gold-deep: #a86f1e;
+  --brand-muted: #6f6552;
+  display: block;
+  background: var(--brand-cream);
+  color: var(--brand-ink);
+  font-family: var(--font-sans);
+}
+
+.lp {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.lp-header,
+.lp-hero,
+.lp-section,
+.lp-cta,
+.lp-footer {
+  padding-inline: var(--space-5);
+}
+
+.lp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding-block: var(--space-4);
+}
+
+.lp-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--brand-ink);
+  text-decoration: none;
+}
+
+.lp-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lp-nav__link {
+  color: var(--brand-ink);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.lp-btn {
+  display: inline-block;
+  border-radius: 999px;
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.lp-btn--solid {
+  background: var(--brand-gold);
+  color: #fff;
+}
+
+.lp-btn--solid:hover {
+  background: var(--brand-gold-deep);
+}
+
+.lp-btn--ghost {
+  background: transparent;
+  border-color: var(--brand-gold);
+  color: var(--brand-gold-deep);
+}
+
+.lp-btn--lg {
+  padding: var(--space-3) var(--space-6);
+  font-size: 1.05rem;
+}
+
+.lp-hero {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding-block: var(--space-7) var(--space-6);
+  text-align: center;
+}
+
+.lp-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: var(--brand-gold-deep);
+  font-weight: 600;
+}
+
+.lp-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: var(--line-height-tight);
+  margin: var(--space-3) auto var(--space-4);
+  max-width: 18ch;
+}
+
+.lp-hero__lead {
+  color: var(--brand-muted);
+  font-size: 1.1rem;
+  max-width: 60ch;
+  margin: 0 auto var(--space-5);
+}
+
+.lp-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.lp-hero__book {
+  margin-top: var(--space-7);
+  display: flex;
+  justify-content: center;
+}
+
+.lp-book {
+  width: min(320px, 80vw);
+  aspect-ratio: 5 / 7;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, #fff, var(--brand-cream-2));
+  border: 1px solid var(--brand-cream-2);
+  box-shadow: 0 24px 60px -28px rgb(43 36 24 / 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.lp-book__title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.lp-book__sub {
+  color: var(--brand-muted);
+  font-size: 0.95rem;
+}
+
+.lp-section {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding-block: var(--space-7);
+}
+
+.lp-section--muted {
+  background: var(--brand-cream-2);
+  max-width: 100%;
+}
+
+.lp-section--muted > * {
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+}
+
+.lp-section__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  margin-bottom: var(--space-5);
+  text-align: center;
+}
+
+.lp-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.lp-grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+.lp-card {
+  background: #fff;
+  border: 1px solid var(--brand-cream-2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.lp-card__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin-bottom: var(--space-2);
+}
+
+.lp-card__text {
+  color: var(--brand-muted);
+}
+
+.lp-steps {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.lp-step {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  border: 1px solid var(--brand-cream-2);
+}
+
+.lp-step__num {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.lp-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.lp-step__title {
+  font-weight: 700;
+}
+
+.lp-step__text {
+  color: var(--brand-muted);
+  font-size: 0.95rem;
+}
+
+.lp-tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+.lp-tag {
+  background: #fff;
+  border: 1px solid var(--brand-gold);
+  color: var(--brand-gold-deep);
+  border-radius: 999px;
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+}
+
+.lp-cta {
+  text-align: center;
+  padding-block: var(--space-7);
+  background: var(--brand-ink);
+  color: var(--brand-cream);
+  max-width: 100%;
+}
+
+.lp-cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  margin-bottom: var(--space-3);
+}
+
+.lp-cta__text {
+  margin-bottom: var(--space-5);
+  color: var(--brand-cream-2);
+}
+
+.lp-footer {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding-block: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  justify-content: space-between;
+}
+
+.lp-footer__brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.lp-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+
+.lp-footer__nav a {
+  color: var(--brand-muted);
+  text-decoration: none;
+}
+
+.lp-footer__copy {
+  color: var(--brand-muted);
+  font-size: 0.9rem;
+}
+
+:where(a, .lp-btn):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}

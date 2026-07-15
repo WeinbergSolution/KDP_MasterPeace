@@ -1,0 +1,88 @@
+<div class="app-shell">
+  <aside class="app-rail">
+    <div class="app-rail__brand">KDP MasterPeace</div>
+
+    <div class="switcher">
+      <label class="switcher__label" for="project-select">Buchprojekt</label>
+      <select
+        id="project-select"
+        class="switcher__select"
+        [value]="project()?.id ?? ''"
+        (change)="onSwitch($event)"
+      >
+        @for (p of projects(); track p.id) {
+        <option [value]="p.id">{{ p.title || 'Ohne Titel' }}</option>
+        }
+      </select>
+      <div class="switcher__actions">
+        <button type="button" class="switcher__btn" (click)="createProject()">
+          Neu
+        </button>
+        <button
+          type="button"
+          class="switcher__btn"
+          (click)="duplicateProject()"
+        >
+          Kopie
+        </button>
+        <button
+          type="button"
+          class="switcher__btn switcher__btn--danger"
+          (click)="requestDelete()"
+        >
+          {{ confirmDelete() ? 'Sicher?' : 'Löschen' }}
+        </button>
+      </div>
+    </div>
+
+    <nav class="app-rail__nav" aria-label="Workflow-Schritte">
+      @for (label of steps; track label; let i = $index) {
+      <button
+        type="button"
+        class="app-rail__link step-link"
+        [class.app-rail__link--active]="(project()?.currentStep ?? 0) === i"
+        [attr.aria-current]="(project()?.currentStep ?? 0) === i ? 'step' : null"
+        [disabled]="!project()"
+        (click)="setStep(i)"
+      >
+        <span class="step-link__num">{{ i + 1 }}</span>
+        <span>{{ label }}</span>
+      </button>
+      }
+    </nav>
+
+    <div class="rail-foot">
+      <div class="rail-stats">
+        <div><b>{{ stats().words }}</b> Wörter</div>
+        <div><b>{{ project()?.chapterCount ?? '—' }}</b> Kapitel (Ziel)</div>
+        <div><b>≈ {{ stats().pages }}</b> Seiten</div>
+      </div>
+      <div class="rail-save">
+        {{ saving() ? 'Speichert …' : 'Gespeichert' }}
+      </div>
+      <a class="rail-account" routerLink="/account">Konto & Abmelden</a>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <div class="app-main__content">
+      @if (project(); as p) { @switch (p.currentStep) { @case (0) {
+      <app-idea-step />
+      } @case (2) {
+      <app-writing-step />
+      } @default {
+      <app-placeholder-step [label]="steps[p.currentStep]" />
+      } } } @else {
+      <div class="empty">
+        <h1 class="empty__title">Willkommen im Studio</h1>
+        <p class="empty__text">
+          Lege dein erstes Buchprojekt an, um zu starten.
+        </p>
+        <button type="button" class="empty__btn" (click)="createProject()">
+          Neues Buchprojekt
+        </button>
+      </div>
+      }
+    </div>
+  </main>
+</div>

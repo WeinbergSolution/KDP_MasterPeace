@@ -1,0 +1,18 @@
+@use 'step' as *;
+
+.ph {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.ph__text {
+  color: var(--color-text-muted);
+  max-width: 62ch;
+  line-height: var(--line-height-base);
+}
+
+.ph__text code {
+  color: var(--color-primary);
+}

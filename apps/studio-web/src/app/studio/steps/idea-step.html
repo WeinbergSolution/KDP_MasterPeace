@@ -1,0 +1,105 @@
+<div class="step">
+  <h1 class="step__title">Deine Buchidee</h1>
+  <p class="step__lead">
+    Buchtyp, Sprache und Nische bestimmen die Regeln, Prompts und den Export.
+    Alle Angaben werden automatisch gespeichert.
+  </p>
+
+  <div class="card">
+    <div class="grid2">
+      <div class="field">
+        <label class="label" for="idea-type">Buchtyp</label>
+        <select
+          id="idea-type"
+          class="input"
+          [(ngModel)]="bookType"
+          (ngModelChange)="save({ bookType: $any($event) })"
+        >
+          @for (t of bookTypes; track t) {
+          <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="idea-lang">Buchsprache</label>
+        <select
+          id="idea-lang"
+          class="input"
+          [(ngModel)]="language"
+          (ngModelChange)="save({ language: $any($event) })"
+        >
+          @for (l of languages; track l) {
+          <option [value]="l">{{ l }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <label class="label" for="idea-niche">Nische</label>
+    <select
+      id="idea-niche"
+      class="input"
+      [(ngModel)]="niche"
+      (ngModelChange)="save({ niche: $event })"
+    >
+      <option value="">Eigene Nische …</option>
+      @for (n of niches; track n) {
+      <option [value]="n">{{ n }}</option>
+      }
+    </select>
+
+    <label class="label" for="idea-niche-free">… oder frei beschreiben</label>
+    <input
+      id="idea-niche-free"
+      class="input"
+      type="text"
+      [(ngModel)]="niche"
+      (ngModelChange)="save({ niche: $event })"
+      placeholder="z. B. Selbstwert nach Trennung"
+    />
+  </div>
+
+  <div class="card">
+    <div class="card__head">Buchdaten</div>
+    <label class="label" for="idea-title">Titel</label>
+    <input
+      id="idea-title"
+      class="input"
+      type="text"
+      [(ngModel)]="title"
+      (ngModelChange)="save({ title: $event })"
+    />
+    <label class="label" for="idea-subtitle">Untertitel</label>
+    <input
+      id="idea-subtitle"
+      class="input"
+      type="text"
+      [(ngModel)]="subtitle"
+      (ngModelChange)="save({ subtitle: $event })"
+    />
+    <div class="grid2">
+      <div class="field">
+        <label class="label" for="idea-author">Autor:in</label>
+        <input
+          id="idea-author"
+          class="input"
+          type="text"
+          [(ngModel)]="author"
+          (ngModelChange)="save({ author: $event })"
+        />
+      </div>
+      <div class="field">
+        <label class="label" for="idea-chapters">Kapitelanzahl</label>
+        <input
+          id="idea-chapters"
+          class="input"
+          type="number"
+          min="1"
+          max="15"
+          [(ngModel)]="chapterCount"
+          (ngModelChange)="save({ chapterCount: +$event })"
+        />
+      </div>
+    </div>
+  </div>
+</div>

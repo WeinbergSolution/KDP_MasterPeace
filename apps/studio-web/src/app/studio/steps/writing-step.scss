@@ -1,0 +1,68 @@
+@use 'step' as *;
+
+.writing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.writing__editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.writing__textarea {
+  width: 100%;
+  min-height: 22rem;
+  resize: vertical;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.writing__diag {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.writing__diag-title {
+  font-size: 0.95rem;
+  margin-bottom: var(--space-2);
+}
+
+.writing__diag-list {
+  margin: 0;
+  padding-left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: 0.9rem;
+}
+
+.writing__diag-list code {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.writing__line {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.writing__preview {
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .writing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

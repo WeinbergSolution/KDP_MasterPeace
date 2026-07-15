@@ -1,0 +1,41 @@
+<div class="step">
+  <h1 class="step__title">Kapitel schreiben</h1>
+  <p class="step__lead">
+    Schreibe im Workbook-Markup — die Vorschau rechts rendert dein Buch live aus
+    dem Book AST. Änderungen werden automatisch gespeichert.
+  </p>
+
+  <div class="writing">
+    <section class="writing__editor" aria-label="Markup-Editor">
+      <label class="label" for="writing-input">Workbook-Markup</label>
+      <textarea
+        #editor
+        id="writing-input"
+        class="writing__textarea"
+        spellcheck="false"
+        autocomplete="off"
+        (input)="onInput($event)"
+      ></textarea>
+
+      @if (warnings().length > 0) {
+      <div class="writing__diag">
+        <h2 class="writing__diag-title">Migrationswarnungen</h2>
+        <ul class="writing__diag-list">
+          @for (warn of warnings(); track $index) {
+          <li>
+            <code>{{ warn.code }}</code> {{ warn.message }}
+            <span class="writing__line">Zeile {{ warn.position.line }}</span>
+          </li>
+          }
+        </ul>
+      </div>
+      }
+    </section>
+
+    <section class="writing__preview" aria-label="Buchvorschau">
+      @if (document(); as doc) {
+      <kdp-book-preview [document]="doc" />
+      }
+    </section>
+  </div>
+</div>
