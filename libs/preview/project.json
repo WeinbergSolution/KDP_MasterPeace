@@ -25,7 +25,8 @@
       "executor": "@nx/angular:unit-test",
       "options": {
         "watch": false
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "typecheck": {
       "executor": "nx:run-commands",
