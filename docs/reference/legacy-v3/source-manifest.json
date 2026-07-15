@@ -1,0 +1,44 @@
+{
+  "fileName": "kdp-workbook-studio.tsx",
+  "status": "Product Behavior Reference",
+  "rawFilePresentInRepo": false,
+  "sha256": {
+    "claimedByBrief": "f8bc9fe43427a95c957522710cdaa4d7ddb664fcc4ac7f5c5f1c6bc5b5a72324",
+    "verified": false,
+    "verificationNote": "Reference was delivered as inline message content with UTF-8->Latin-1 mojibake (e.g. 'Ã¼', 'Ã©', 'â'), not as a byte-exact file. A byte-exact SHA-256 match cannot be confirmed from the corrupted inline copy. The readable content is sufficient for behavioral inventory (Package 1). Hash verification MUST be repeated once the raw file is committed to docs/reference/legacy-v3/kdp-workbook-studio.tsx."
+  },
+  "byteSize": { "claimedByBrief": 239911, "verified": false },
+  "lineCount": { "claimedByBrief": 3823, "verified": false },
+  "importDate": "2026-07-15",
+  "origin": "Working React/TSX single-file app 'KdpWorkbookStudio' (v2 UI label), provided by product owner as the authoritative product-behavior reference for the Legacy V3 integration.",
+  "usageConstraints": [
+    "Not imported by Angular",
+    "Not compiled",
+    "Not executed",
+    "Not auto-formatted (listed in .prettierignore before commit)",
+    "Never bundled into any production artifact"
+  ],
+  "detectedSecurityRisks": [
+    "Direct browser fetch to https://api.anthropic.com/v1/messages (callModel, askClaudeWithSearch, askHiggsfieldImage) with no server proxy",
+    "Provider API access from the client; no server-side key custody",
+    "window.claude / window.storage host globals used for AI + persistence",
+    "Dynamic CDN <script> injection for pdf.js (loadScriptTag to cdnjs) at runtime",
+    "Custom hand-rolled ZIP/EPUB writer with Math.random()-based UUID (buildZip, buildEpub)",
+    "Browser print (window.print) presented as PDF production for print interior, cover and digital product",
+    "HTML content served with .doc extension as a purported Word export",
+    "Date.now()/Math.random() used as domain entity ids (project ids, chapter ids)",
+    "tryParseJson aggressively truncates/repairs malformed model JSON",
+    "Silently swallowed errors in multiple catch blocks (empty catch / comment-only)",
+    "No SSRF protection for research/image URLs; remote image URL used directly as the only asset reference (can expire)"
+  ],
+  "detectedExternalIntegrations": [
+    { "name": "Anthropic Messages API", "model": "claude-sonnet-4-6", "usage": "text generation" },
+    { "name": "Anthropic web_search tool", "tool": "web_search_20250305", "usage": "trend/digital/review-gap/KDP research" },
+    { "name": "Higgsfield", "transport": "MCP url https://mcp.higgsfield.ai/mcp", "usage": "cover image generation" },
+    { "name": "Google Fonts", "usage": "@import font CSS (EB Garamond, Lora, Crimson Pro, Source Serif, Fraunces, Inter)" },
+    { "name": "cdnjs pdf.js 2.6.347", "usage": "client-side PDF text extraction for manuscript import" }
+  ],
+  "detectedBookTypes": ["workbook", "ratgeber", "roman"],
+  "detectedLanguages": ["de", "en", "es", "fr", "it"],
+  "notes": "See README.md in this folder for provenance and the pending raw-file action. Behavioral inventory of this file is captured in docs/migration/legacy-v3-*.md."
+}
