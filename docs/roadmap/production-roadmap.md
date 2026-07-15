@@ -47,9 +47,9 @@ NestJS api (Health, OpenAPI, Auth-Skeleton, Projects-CRUD), worker (BullMQ-Anbin
 
 ## Phase C – Demo-Vertical-Slice (Rolle 2)
 
-### WP-C1: Book AST + Legacy Parser + Preview
-`libs/document-model` (AST, Zod, Migrationen), Legacy Parser mit Golden-Master-Test, `libs/preview` (AST→Angular), Markup-Editor mit Live-AST-Sync und Undo.
-**Akzeptanz:** Golden-Master-Snapshot grün; Preview rendert alle Knotentypen; 320-px-Check grün.
+### WP-C1: Book AST + Legacy Parser + Preview — **ABGESCHLOSSEN (2026-07-15)**
+`libs/document-model` (AST, Zod-Validierung, deterministische IDs, Source Map, Legacy Parser + Backup-Importer, MW-/PE-Codes), `libs/preview` (AST→Angular, alle Knotentypen, sicher), `apps/studio-web` Live-Markup-Workspace (Debounce-Parse, Warnungen/Fehler, DE/EN/ES-Demos). Beleg: `docs/reviews/wp-c1-implementation-report.md`; Doku: `docs/architecture/book-ast.md`, `docs/migration/legacy-parser.md`.
+**Akzeptanz erfüllt:** Golden-Master (v1/v2, alle Konstrukte + MW-Warnungen, Determinismus, kein Inhaltsverlust) grün; Preview rendert alle Knotentypen; `check:responsive` grün auf allen 7 Viewports; e2e-Smoke ohne Konsolenfehler. (Editor-Undo ist Non-Goal von WP-C1; folgt mit WP-C4 Autosave/Versionen.)
 
 ### WP-C2: MockProvider + Generation-Runs + SSE
 `MockLlmProviderAdapter` (deterministisch per Seed, simulierte Latenz/Fehler/Ratelimits/Token), GenerationRun/Step-Domain, Worker-Jobs, SSE-Strom, Preflight-Confirmation-UI mit simulierten Kosten, Demo-Banner.
