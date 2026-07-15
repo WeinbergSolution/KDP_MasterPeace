@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true,
+    "disableReferencedProjectLoad": true,
     "types": []
   },
   "include": ["src/**/*.ts"],

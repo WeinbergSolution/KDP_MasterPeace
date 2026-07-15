@@ -79,8 +79,9 @@
     },
     "typecheck": {
       "executor": "nx:run-commands",
+      "dependsOn": ["^build"],
       "options": {
-        "command": "tsc -p tsconfig.app.json --noEmit",
+        "command": "tsc -p tsconfig.typecheck.json --noEmit",
         "cwd": "apps/studio-web"
       }
     }
