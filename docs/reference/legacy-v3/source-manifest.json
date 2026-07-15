@@ -9,6 +9,13 @@
   },
   "byteSize": { "claimedByBrief": 239911, "verified": false },
   "lineCount": { "claimedByBrief": 3823, "verified": false },
+  "contentReAudit": {
+    "date": "2026-07-15",
+    "basis": "full readable inline reference content (complete component through trailing CSS/SAMPLE; mojibake only in German in-book strings, not in logic or feature set)",
+    "result": "content-complete: no additional user-facing features found beyond LV3-001..108; cross-cutting states consolidated in behavior-spec §17",
+    "byteHashVerified": false,
+    "requiredOwnerAction": "commit the raw kdp-workbook-studio.tsx to docs/reference/legacy-v3/, then confirm SHA-256 and flip sha256.verified + byteSize.verified + lineCount.verified to true"
+  },
   "importDate": "2026-07-15",
   "origin": "Working React/TSX single-file app 'KdpWorkbookStudio' (v2 UI label), provided by product owner as the authoritative product-behavior reference for the Legacy V3 integration.",
   "usageConstraints": [

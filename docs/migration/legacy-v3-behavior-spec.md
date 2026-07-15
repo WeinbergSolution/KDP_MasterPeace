@@ -252,3 +252,40 @@ partial-progress-kept messages on interruption, popup-blocked → download fallb
 All of these are good product behavior and are kept; only their unsafe mechanics
 (silent catches, host globals) are replaced with typed error handling and the
 observability logger (no `console.*`).
+
+## 17. Re-audit addendum (against the full readable reference)
+
+Re-checked 2026-07-15 against the complete readable reference content (the whole
+component through the trailing `CSS`/`SAMPLE`; only in-book German display strings
+were mojibake, never the logic or feature set). **Result: no additional
+user-facing product features were found** beyond `LV3-001 … LV3-108` in the parity
+matrix. The re-audit did surface cross-cutting *states/mechanics* that are now made
+explicit here so nothing is dropped in the rebuild:
+
+- **Cooperative cancellation (`stopRef`)** shared by every long run (autopilot,
+  proofread, humanize, dash-fix, translate, social plan, email sequence): stop only
+  after a safe step; resume skips already-finished work; snapshots after each unit.
+  → maps to GenerationRun cancellation + checkpoints (LV3-103).
+- **Two secondary LLM channels in `callModel`:** primary `fetch(api.anthropic.com)`
+  **and** `window.claude.complete` host bridge fallback. Both are browser-side and
+  **rejected**; replaced by the single server `LlmProviderAdapter` (LV3-100).
+- **Three-tier clipboard copy** (`copy`): `navigator.clipboard` → `execCommand`
+  → manual-copy textarea (`manualCopy`). Keep the graceful fallback UX.
+- **V1→index storage migration** on first load (`kdp-workbook-studio` →
+  `kdp-index` + `kdp-proj-<id>`). → covered by the versioned backup import
+  (LV3-014, data-map §4); source is `window.storage`, **rejected**.
+- **Autosave index-title sync:** the project-list title follows the book title on
+  save (part of LV3-013).
+- **Two disclaimers** selected by book type (self-help vs fiction) in preview and
+  every export path (`buildBookBody`, `epubDocs`) — tie to `Project.disclosure*`.
+- **Binding economics & bounds:** hardcover vs paperback change print-cost formula
+  (`estimatePrintCost`), page min/max (75/550 vs 24/828) and the cover template
+  note; ebook royalty tiers 70% (2.99–9.99) else 35% (LV3-093/094).
+- **`openHtml` popup-blocked → download fallback**, and **import replace is armed**
+  (two-tap) while **append is immediate** (LV3-032).
+
+**SHA-256 status unchanged: UNVERIFIED.** This re-audit is a *content-completeness*
+check against the readable copy; it is **not** a byte verification. The claimed
+hash `f8bc9fe4…72324` can only be confirmed once the raw `kdp-workbook-studio.tsx`
+is committed to `docs/reference/legacy-v3/` (see that folder's README). No feature
+inventory claim depends on the bytes; only the archival/hash checkpoint does.
