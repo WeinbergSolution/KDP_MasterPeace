@@ -1,1 +1,2 @@
-export * from './lib/preview.js';
+export { BookPreviewComponent } from './lib/book-preview/book-preview';
+export { AstNodeComponent } from './lib/ast-node/ast-node';

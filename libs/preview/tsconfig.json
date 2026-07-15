@@ -1,5 +1,25 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "noPropertyAccessFromIndexSignature": true,
+    "module": "preserve",
+    "emitDeclarationOnly": false,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "lib": [
+      "es2022",
+      "dom"
+    ]
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
   "files": [],
   "include": [],
   "references": [
