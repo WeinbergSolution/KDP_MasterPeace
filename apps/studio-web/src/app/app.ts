@@ -1,29 +1,21 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { MarkupWorkspaceComponent } from './markup-workspace/markup-workspace';
 
 /**
- * Root shell of the Studio app: a responsive rail + main layout that renders the
- * design-system demo route. Feature routing plugs into the router-outlet.
+ * Root shell of the Studio app: a responsive rail + main layout hosting the
+ * WP-C1 markup workspace (editor, diagnostics and live book preview).
  */
 @Component({
-  imports: [RouterModule],
+  imports: [MarkupWorkspaceComponent],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   protected readonly navItems = [
-    { label: 'Design System', active: true },
+    { label: 'Editor & Preview', active: true },
     { label: 'Intake', active: false },
-    { label: 'Editor', active: false },
-    { label: 'Preview', active: false },
-  ];
-
-  protected readonly swatches = [
-    { name: 'Primary', token: '--color-primary' },
-    { name: 'Rail', token: '--color-rail-bg' },
-    { name: 'Success', token: '--color-success' },
-    { name: 'Danger', token: '--color-danger' },
-    { name: 'Surface', token: '--color-surface' },
+    { label: 'Qualität', active: false },
+    { label: 'Export', active: false },
   ];
 }

@@ -27,6 +27,7 @@
     "check:architecture": "nx run-many -t lint --parallel=1",
     "check:responsive": "node tools/checks/check-responsive.mjs",
     "check:frontend-secrets": "node tools/checks/check-frontend-secrets.mjs",
+    "test:wp-c1": "node tools/e2e/wp-c1-smoke.mjs",
     "checks": "npm run check:file-size && npm run check:function-size && npm run check:jsdoc && npm run check:console"
   },
   "devDependencies": {

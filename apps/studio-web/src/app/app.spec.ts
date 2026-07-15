@@ -8,13 +8,11 @@ describe('App', () => {
     }).compileComponents();
   });
 
-  it('renders the design-system shell heading', async () => {
+  it('renders the WP-C1 workspace heading', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Design System',
-    );
+    expect(compiled.querySelector('h1')?.textContent).toContain('Live-Preview');
   });
 
   it('renders the rail navigation', async () => {

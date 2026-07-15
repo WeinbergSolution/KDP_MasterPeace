@@ -16,56 +16,8 @@
   </aside>
 
   <main class="app-main">
-    <div class="app-main__content demo">
-      <header class="demo__header">
-        <h1>Design System</h1>
-        <p class="demo__lead">
-          Responsive App-Shell und Design-Tokens der KDP-MasterPeace-Plattform.
-          Funktioniert ab 320&nbsp;Pixeln, ohne horizontalen
-          Seiten-Scrollbalken.
-        </p>
-      </header>
-
-      <section class="demo__section" aria-labelledby="type-heading">
-        <h2 id="type-heading">Typografie</h2>
-        <h3 class="demo__type-sample">Überschrift in Fraunces</h3>
-        <p class="demo__type-sample">
-          Fließtext in Inter. <strong>Fett</strong> hebt zentrale Aussagen
-          hervor, ohne die ruhige, würdevolle Anmutung zu stören.
-        </p>
-        <blockquote class="demo__quote">
-          Du musst dich nicht beweisen, um wertvoll zu sein.
-        </blockquote>
-      </section>
-
-      <section class="demo__section" aria-labelledby="color-heading">
-        <h2 id="color-heading">Farben</h2>
-        <ul class="demo__swatches">
-          @for (swatch of swatches; track swatch.token) {
-          <li class="demo__swatch">
-            <span
-              class="demo__swatch-chip"
-              [style.background]="'var(' + swatch.token + ')'"
-            ></span>
-            <span class="demo__swatch-label">{{ swatch.name }}</span>
-          </li>
-          }
-        </ul>
-      </section>
-
-      <section class="demo__section" aria-labelledby="action-heading">
-        <h2 id="action-heading">Aktionen</h2>
-        <div class="demo__actions">
-          <button type="button" class="demo__btn demo__btn--primary">
-            Projekt speichern
-          </button>
-          <button type="button" class="demo__btn demo__btn--ghost">
-            Export öffnen
-          </button>
-        </div>
-      </section>
+    <div class="app-main__content">
+      <app-markup-workspace />
     </div>
-
-    <router-outlet></router-outlet>
   </main>
 </div>
