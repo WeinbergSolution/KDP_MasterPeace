@@ -4,7 +4,12 @@
     <h1 class="auth__title">Anmelden</h1>
     <p class="auth__lead">Melde dich an und arbeite direkt im Studio weiter.</p>
 
-    @if (error()) {
+    @if (!configured) {
+    <p class="auth__error" role="alert">
+      Integration nicht konfiguriert: Die Firebase-Umgebungsvariablen fehlen.
+      Anmeldung ist derzeit nicht möglich.
+    </p>
+    } @if (error()) {
     <p class="auth__error" role="alert">{{ error() }}</p>
     }
 

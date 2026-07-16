@@ -7,6 +7,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/firebase/auth.service';
+import { isFirebaseConfigured } from '../../core/firebase/firebase-app';
 import { toAuthMessage } from '../auth-error';
 
 /** Email/password sign-in form; on success routes to the studio. */
@@ -22,6 +23,7 @@ export class LoginComponent {
   private readonly router = inject(Router);
   protected email = '';
   protected password = '';
+  protected readonly configured = isFirebaseConfigured();
   protected readonly error = signal('');
   protected readonly busy = signal(false);
 

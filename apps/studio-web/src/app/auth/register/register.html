@@ -4,7 +4,12 @@
     <h1 class="auth__title">Konto erstellen</h1>
     <p class="auth__lead">Kostenlos starten und direkt im Studio loslegen.</p>
 
-    @if (error()) {
+    @if (!configured) {
+    <p class="auth__error" role="alert">
+      Integration nicht konfiguriert: Die Firebase-Umgebungsvariablen fehlen.
+      Registrierung ist derzeit nicht möglich.
+    </p>
+    } @if (error()) {
     <p class="auth__error" role="alert">{{ error() }}</p>
     }
 
