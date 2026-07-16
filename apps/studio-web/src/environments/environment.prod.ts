@@ -20,15 +20,23 @@ function readEnv(key: string): string {
   return bag[key] ?? '';
 }
 
+const projectId = readEnv('FIREBASE_PROJECT_ID');
+
+// Fallbacks keep Firebase init from throwing when unconfigured; `configured`
+// reflects whether real values were injected. When false, the UI shows
+// "Integration nicht konfiguriert" instead of faking a session.
 const firebase: FirebaseEnvironment = {
   config: {
-    apiKey: readEnv('FIREBASE_API_KEY'),
-    authDomain: readEnv('FIREBASE_AUTH_DOMAIN'),
-    projectId: readEnv('FIREBASE_PROJECT_ID'),
-    storageBucket: readEnv('FIREBASE_STORAGE_BUCKET'),
-    messagingSenderId: readEnv('FIREBASE_MESSAGING_SENDER_ID'),
-    appId: readEnv('FIREBASE_APP_ID'),
+    apiKey: readEnv('FIREBASE_API_KEY') || 'unconfigured',
+    authDomain: readEnv('FIREBASE_AUTH_DOMAIN') || 'localhost',
+    projectId: projectId || 'unconfigured',
+    storageBucket:
+      readEnv('FIREBASE_STORAGE_BUCKET') || 'unconfigured.appspot.com',
+    messagingSenderId:
+      readEnv('FIREBASE_MESSAGING_SENDER_ID') || '000000000000',
+    appId: readEnv('FIREBASE_APP_ID') || '1:000000000000:web:unconfigured',
   },
+  configured: projectId !== '',
   useEmulators: false,
   authEmulatorUrl: '',
   firestoreEmulator: { host: '', port: 0 },

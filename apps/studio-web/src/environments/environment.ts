@@ -16,6 +16,7 @@ export const environment: AppEnvironment = {
       messagingSenderId: '000000000000',
       appId: '1:000000000000:web:demo',
     },
+    configured: true,
     useEmulators: true,
     authEmulatorUrl: 'http://127.0.0.1:9099',
     firestoreEmulator: { host: '127.0.0.1', port: 8080 },

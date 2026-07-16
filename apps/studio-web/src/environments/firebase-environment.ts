@@ -12,6 +12,7 @@ export interface FirebaseEnvironment {
     readonly messagingSenderId: string;
     readonly appId: string;
   };
+  readonly configured: boolean;
   readonly useEmulators: boolean;
   readonly authEmulatorUrl: string;
   readonly firestoreEmulator: { readonly host: string; readonly port: number };

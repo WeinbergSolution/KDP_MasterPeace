@@ -23,7 +23,7 @@ let cachedApp: FirebaseApp | null = null;
  * @returns True when a non-empty project id is configured.
  */
 export function isFirebaseConfigured(): boolean {
-  return environment.firebase.config.projectId.trim() !== '';
+  return environment.firebase.configured;
 }
 
 /**

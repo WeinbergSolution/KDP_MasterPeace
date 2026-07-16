@@ -8,10 +8,14 @@ import {
   updateProfile,
   type User,
 } from 'firebase/auth';
-import { FIREBASE_AUTH } from './firebase-app';
+import { FIREBASE_AUTH, isFirebaseConfigured } from './firebase-app';
 
 // Thin, framework-idiomatic wrapper over Firebase email/password auth exposing
 // signals. It never stores secrets and never talks to AI/providers.
+
+// If no auth state arrives in this window (backend/emulator unreachable) the app
+// resolves as "signed out" so guarded routes render instead of hanging blank.
+const READY_TIMEOUT_MS = 1500;
 
 /** Reactive Firebase email/password authentication state and actions. */
 @Injectable({ providedIn: 'root' })
@@ -29,20 +33,33 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this.userSignal() !== null);
 
   constructor() {
-    onAuthStateChanged(this.auth, (user) => this.applyUser(user));
+    setTimeout(() => this.markReady(), READY_TIMEOUT_MS);
+    if (!isFirebaseConfigured()) {
+      this.applyUser(null);
+      return;
+    }
+    onAuthStateChanged(
+      this.auth,
+      (user) => this.applyUser(user),
+      () => this.applyUser(null),
+    );
   }
 
   /**
-   * Applies a new auth state and resolves the readiness gate once.
+   * Applies a new auth state and opens the readiness gate.
    *
    * @param user The current Firebase user, or null when signed out.
    */
   private applyUser(user: User | null): void {
     this.userSignal.set(user);
-    if (!this.readySignal()) {
-      this.readySignal.set(true);
-      this.resolveReady();
-    }
+    this.markReady();
+  }
+
+  /** Opens the readiness gate exactly once. */
+  private markReady(): void {
+    if (this.readySignal()) return;
+    this.readySignal.set(true);
+    this.resolveReady();
   }
 
   /**
