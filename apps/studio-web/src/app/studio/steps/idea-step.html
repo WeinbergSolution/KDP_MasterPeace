@@ -1,105 +1,247 @@
-<div class="step">
-  <h1 class="step__title">Deine Buchidee</h1>
-  <p class="step__lead">
-    Buchtyp, Sprache und Nische bestimmen die Regeln, Prompts und den Export.
-    Alle Angaben werden automatisch gespeichert.
+<div class="panel">
+  <h1 class="pt">Deine Buchidee</h1>
+  <p class="ps">
+    Beschreibe deine Nische — daraus entstehen verkaufsstarke Konzepte für den
+    KDP-Markt. Buchtyp und Sprache steuern Regeln, Prompts und Export.
   </p>
 
   <div class="card">
-    <div class="grid2">
-      <div class="field">
-        <label class="label" for="idea-type">Buchtyp</label>
+    <div class="row">
+      <div class="grow">
+        <label class="lbl" for="idea-type">Buchtyp</label>
         <select
           id="idea-type"
-          class="input"
+          class="inp"
           [(ngModel)]="bookType"
           (ngModelChange)="save({ bookType: $any($event) })"
         >
-          @for (t of bookTypes; track t) {
-          <option [value]="t">{{ t }}</option>
+          @for (t of bookTypeEntries; track t[0]) {
+          <option [value]="t[0]">{{ t[1] }}</option>
           }
         </select>
       </div>
-      <div class="field">
-        <label class="label" for="idea-lang">Buchsprache</label>
+      <div>
+        <label class="lbl" for="idea-lang">Buchsprache</label>
         <select
           id="idea-lang"
-          class="input"
+          class="inp"
+          style="width: 150px"
           [(ngModel)]="language"
           (ngModelChange)="save({ language: $any($event) })"
         >
-          @for (l of languages; track l) {
-          <option [value]="l">{{ l }}</option>
+          @for (l of langEntries; track l[0]) {
+          <option [value]="l[0]">{{ l[1] }}</option>
           }
         </select>
       </div>
     </div>
-
-    <label class="label" for="idea-niche">Nische</label>
+    <label class="lbl" for="idea-niche">Nische wählen …</label>
     <select
       id="idea-niche"
-      class="input"
+      class="inp"
       [(ngModel)]="niche"
       (ngModelChange)="save({ niche: $event })"
     >
-      <option value="">Eigene Nische …</option>
+      <option value="">Eigene Nische (unten eintragen)</option>
       @for (n of niches; track n) {
       <option [value]="n">{{ n }}</option>
       }
     </select>
+    <label class="lbl" for="idea-niche-free">… oder frei beschreiben</label>
+    <div class="row">
+      <input
+        id="idea-niche-free"
+        class="inp grow"
+        type="text"
+        [(ngModel)]="niche"
+        (ngModelChange)="save({ niche: $event })"
+        placeholder="z. B. Selbstwert nach Trennung, Bindungsangst überwinden …"
+      />
+      <button class="btn primary" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparkles" [size]="15" /> Konzepte entwickeln
+      </button>
+    </div>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    }
+  </div>
 
-    <label class="label" for="idea-niche-free">… oder frei beschreiben</label>
-    <input
-      id="idea-niche-free"
-      class="input"
-      type="text"
-      [(ngModel)]="niche"
-      (ngModelChange)="save({ niche: $event })"
-      placeholder="z. B. Selbstwert nach Trennung"
-    />
+  <div class="card trendcard">
+    <div class="card-h row-sb">
+      <span
+        ><lucide-icon [img]="trending" [size]="15" /> Trend-Radar: Was verkauft
+        sich gerade?</span
+      >
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="trending" [size]="13" /> Trends recherchieren
+      </button>
+    </div>
+    <p class="muted">
+      Recherchiert per Live-Websuche aktuelle Bestseller-Themen und
+      Nachfrage-Trends in deiner Nische und leitet daraus übernehmbare
+      Buchchancen ab. Web-Recherche als Orientierung, kein Zugriff auf Amazons
+      interne Verkaufszahlen.
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (Such-Provider fehlt).</p>
+    }
+  </div>
+
+  <div class="card trendcard">
+    <div class="card-h row-sb">
+      <span
+        ><lucide-icon [img]="smartphone" [size]="15" /> Digital-Produkt-Ideen:
+        Was verkauft sich als Download?</span
+      >
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparkles" [size]="13" /> Ideen recherchieren
+      </button>
+    </div>
+    <p class="muted">
+      Recherchiert per Live-Websuche, welche PDF-Downloads (Mini-Workbooks,
+      Journals, Checklisten-Bundles, Planer …) sich in deiner Nische gerade gut
+      verkaufen — mit Preis-Orientierung. Ein Klick richtet das Produkt als
+      kompaktes Projekt ein.
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (Such-Provider fehlt).</p>
+    }
+  </div>
+
+  <div class="card trendcard">
+    <div class="card-h row-sb">
+      <span
+        ><lucide-icon [img]="shield" [size]="15" /> Rezensions-Lücken-Finder:
+        Was fehlt der Konkurrenz?</span
+      >
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparkles" [size]="13" /> Lücken recherchieren
+      </button>
+    </div>
+    <p class="muted">
+      Recherchiert per Websuche, was Leser:innen an den Top-Büchern deiner
+      Nische
+      <b>kritisieren</b> — jede häufige Beschwerde ist eine konkrete Chance, es
+      in deinem Buch besser zu machen.
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (Such-Provider fehlt).</p>
+    }
   </div>
 
   <div class="card">
-    <div class="card__head">Buchdaten</div>
-    <label class="label" for="idea-title">Titel</label>
+    <div class="card-h">
+      Buchdaten
+      <span class="muted"
+        >(auswählen oder selbst eintragen — alles editierbar)</span
+      >
+    </div>
+    <label class="lbl" for="idea-title">Titel</label>
     <input
       id="idea-title"
-      class="input"
+      class="inp"
       type="text"
       [(ngModel)]="title"
       (ngModelChange)="save({ title: $event })"
+      placeholder="Titel deines Workbooks"
     />
-    <label class="label" for="idea-subtitle">Untertitel</label>
+    <label class="lbl" for="idea-subtitle">Untertitel</label>
     <input
       id="idea-subtitle"
-      class="input"
+      class="inp"
       type="text"
       [(ngModel)]="subtitle"
       (ngModelChange)="save({ subtitle: $event })"
+      placeholder="Nutzen-Untertitel mit Keywords"
     />
-    <div class="grid2">
-      <div class="field">
-        <label class="label" for="idea-author">Autor:in</label>
+    <div class="row">
+      <div class="grow">
+        <label class="lbl" for="idea-audience">Zielgruppe</label>
+        <input
+          id="idea-audience"
+          class="inp"
+          type="text"
+          [(ngModel)]="audience"
+          (ngModelChange)="save({ audience: $event })"
+          placeholder="Für wen ist das Buch?"
+        />
+      </div>
+      <div class="grow">
+        <label class="lbl" for="idea-author">Autor:in / Pseudonym</label>
         <input
           id="idea-author"
-          class="input"
+          class="inp"
           type="text"
           [(ngModel)]="author"
           (ngModelChange)="save({ author: $event })"
-        />
-      </div>
-      <div class="field">
-        <label class="label" for="idea-chapters">Kapitelanzahl</label>
-        <input
-          id="idea-chapters"
-          class="input"
-          type="number"
-          min="1"
-          max="15"
-          [(ngModel)]="chapterCount"
-          (ngModelChange)="save({ chapterCount: +$event })"
+          placeholder="Name auf dem Cover"
         />
       </div>
     </div>
+    <label class="lbl" for="idea-promise">Transformations-Versprechen</label>
+    <input
+      id="idea-promise"
+      class="inp"
+      type="text"
+      [(ngModel)]="promise"
+      (ngModelChange)="save({ promise: $event })"
+      placeholder="Was verändert sich für die Leser:in?"
+    />
+    <div class="row" style="margin-top: 12px">
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparkles" [size]="13" /> Titel-Tester: 8 Varianten
+        bewerten
+      </button>
+      @if (!providerReady) {
+      <span class="notconf">Integration nicht konfiguriert.</span>
+      }
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h row-sb">
+      <span
+        ><lucide-icon [img]="feather" [size]="15" /> Autoren-DNA — dein
+        Schreibstil für alle Texte</span
+      >
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparkles" [size]="13" /> Stil-Profil erstellen
+      </button>
+    </div>
+    <p class="muted" style="margin-bottom: 8px">
+      Füge eine Textprobe von dir ein (mind. 200 Zeichen). Daraus wird ein
+      Stil-Profil erstellt, an das sich alle KI-Texte halten — so klingen deine
+      Bücher nach dir, nicht nach KI.
+    </p>
+    <textarea
+      class="ta"
+      [(ngModel)]="voiceSample"
+      (ngModelChange)="saveVoice()"
+      placeholder="Hier deine Textprobe einfügen …"
+    ></textarea>
+    @if (voiceProfile) {
+    <label class="lbl" for="idea-voice-profile"
+      >Dein Stil-Profil (aktiv — editierbar)</label
+    >
+    <textarea
+      id="idea-voice-profile"
+      class="ta"
+      [(ngModel)]="voiceProfile"
+      (ngModelChange)="saveVoice()"
+    ></textarea>
+    } @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    }
+  </div>
+
+  <div class="next">
+    <button
+      class="btn primary"
+      type="button"
+      [disabled]="!title"
+      (click)="save({ currentStep: 1 })"
+    >
+      Weiter zur Gliederung <lucide-icon [img]="check" [size]="15" />
+    </button>
   </div>
 </div>

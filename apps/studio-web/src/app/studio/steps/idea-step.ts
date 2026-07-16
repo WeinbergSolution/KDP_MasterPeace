@@ -6,23 +6,34 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  BOOK_LANGUAGES,
-  BOOK_TYPES,
+  Check,
+  Feather,
+  LucideAngularModule,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  TrendingUp,
+} from 'lucide-angular';
+import {
+  BOOK_TYPE_LABELS,
   type BookProject,
+  LANG_LABELS,
   NICHES,
 } from '../../core/models/book-project';
 import { ActiveProjectService } from '../active-project.service';
 
-// Step 1 (Idee): edit book type, language, niche and the core book fields.
-// Local fields are two-way bound (stable caret); every change autosaves.
+// Step 1 (Idee), ported 1:1 from the Legacy V3 reference: type/language/niche +
+// Konzepte, Trend-Radar, Digital-Produkt-Ideen, Rezensions-Lücken-Finder,
+// Konzeptkarten, Buchdaten + Titel-Tester, Autoren-DNA, "Weiter zur Gliederung".
+// Provider-backed buttons are disabled with "Integration nicht konfiguriert"
+// until the server AI adapter is configured — no fake results.
 
-/** Idea step: book meta editing wired to the active-project autosave. */
+/** Idea step: book meta editing + research entry points (parity port). */
 @Component({
   selector: 'app-idea-step',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule],
+  imports: [FormsModule, LucideAngularModule],
   templateUrl: './idea-step.html',
-  styleUrl: './idea-step.scss',
 })
 export class IdeaStepComponent {
   private readonly active = inject(ActiveProjectService);
@@ -30,15 +41,28 @@ export class IdeaStepComponent {
 
   protected title = '';
   protected subtitle = '';
+  protected audience = '';
   protected author = '';
+  protected promise = '';
+  protected bio = '';
   protected niche = '';
   protected language = 'de';
   protected bookType = 'workbook';
   protected chapterCount = 8;
+  protected voiceSample = '';
+  protected voiceProfile = '';
 
-  protected readonly bookTypes = BOOK_TYPES;
-  protected readonly languages = BOOK_LANGUAGES;
+  protected readonly bookTypeEntries = Object.entries(BOOK_TYPE_LABELS);
+  protected readonly langEntries = Object.entries(LANG_LABELS);
   protected readonly niches = NICHES;
+  protected readonly providerReady = false;
+
+  protected readonly sparkles = Sparkles;
+  protected readonly trending = TrendingUp;
+  protected readonly smartphone = Smartphone;
+  protected readonly shield = ShieldCheck;
+  protected readonly feather = Feather;
+  protected readonly check = Check;
 
   constructor() {
     effect(() => this.syncFromProject());
@@ -53,26 +77,38 @@ export class IdeaStepComponent {
   }
 
   /**
-   * Copies a project's fields into the local editable state.
+   * Copies a project's editable fields into the local state.
    *
-   * @param project The active project.
+   * @param p The active project.
    */
-  private applyLocal(project: BookProject): void {
-    this.title = project.title;
-    this.subtitle = project.subtitle;
-    this.author = project.author;
-    this.niche = project.niche;
-    this.language = project.language;
-    this.bookType = project.bookType;
-    this.chapterCount = project.chapterCount;
+  private applyLocal(p: BookProject): void {
+    this.title = p.title;
+    this.subtitle = p.subtitle;
+    this.audience = p.audience;
+    this.author = p.author;
+    this.promise = p.promise;
+    this.bio = p.bio;
+    this.niche = p.niche;
+    this.language = p.language;
+    this.bookType = p.bookType;
+    this.chapterCount = p.chapterCount;
+    this.voiceSample = p.voice.sample;
+    this.voiceProfile = p.voice.profile;
   }
 
   /**
-   * Persists a single changed field through the autosave service.
+   * Persists changed field(s) through the autosave service.
    *
-   * @param patch The changed field(s).
+   * @param patch The changed fields.
    */
   protected save(patch: Partial<BookProject>): void {
     this.active.patch(patch);
+  }
+
+  /** Persists the author-voice sample and profile. */
+  protected saveVoice(): void {
+    this.active.patch({
+      voice: { sample: this.voiceSample, profile: this.voiceProfile },
+    });
   }
 }

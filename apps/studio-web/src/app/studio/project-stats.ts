@@ -1,5 +1,7 @@
 // Pure, deterministic project statistics for the studio rail. No AI, no I/O.
 
+import type { BookProject } from '../core/models/book-project';
+
 export const STEP_LABELS: readonly string[] = [
   'Idee',
   'Gliederung',
@@ -48,4 +50,48 @@ export function estimatePages(words: number): number {
 export function computeStats(markup: string): ProjectStats {
   const words = countWords(markup);
   return { words, pages: estimatePages(words) };
+}
+
+/** Rail statistics for a full project (Legacy V3 parity). */
+export interface RailStats {
+  readonly words: number;
+  readonly written: number;
+  readonly pages: number;
+}
+
+/**
+ * Sums the word count across all outline chapters and extras.
+ *
+ * @param project The active project.
+ * @returns The total word count.
+ */
+function totalWords(project: BookProject): number {
+  const chapters = project.outline.reduce(
+    (n, c) => n + countWords(c.content),
+    0,
+  );
+  const extras = Object.values(project.extras).reduce(
+    (n, t) => n + countWords(t),
+    0,
+  );
+  return chapters + extras;
+}
+
+/**
+ * Computes the rail statistics (words, written chapters, estimated pages).
+ *
+ * @param project The active project.
+ * @returns The rail statistics matching the Legacy V3 formula.
+ */
+export function computeRailStats(project: BookProject): RailStats {
+  const words = totalWords(project);
+  const written = project.outline.filter(
+    (c) => countWords(c.content) > 150,
+  ).length;
+  const chapters = project.outline.length;
+  const pages = Math.max(
+    0,
+    Math.ceil(words / 235) + Math.round(chapters * 1.5) + (words ? 5 : 0),
+  );
+  return { words, written, pages };
 }

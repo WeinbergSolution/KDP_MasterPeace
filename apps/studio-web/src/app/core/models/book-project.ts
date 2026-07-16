@@ -1,41 +1,129 @@
 // Book project model persisted per user in Firestore (users/{uid}/projects).
-// Deterministic normalization on read replaces the legacy free-object merge.
-// This slice keeps the fields the idea step + WP-C1 preview need; later packages
-// extend it (outline, extras, cover, kdp, launch, …) — no field is removed.
+// Mirrors the Legacy V3 `emptyProject` shape 1:1 so no visible reference field is
+// lost. Deterministic normalization on read replaces the legacy free-object merge.
 
 export type BookType = 'workbook' | 'ratgeber' | 'roman';
 export type BookLanguage = 'de' | 'en' | 'es' | 'fr' | 'it';
 
-/** A single publishing project owned by one authenticated user. */
+/** Author voice profile (Autoren-DNA). */
+export interface VoiceProfile {
+  sample: string;
+  profile: string;
+}
+
+/** Launch kit content (social posts + email sequence). */
+export interface LaunchKit {
+  posts: Record<string, unknown>[];
+  emails: Record<string, unknown>[];
+}
+
+/** A single outline chapter. */
+export interface Chapter {
+  id: string;
+  title: string;
+  goal: string;
+  content: string;
+}
+
+/** Front/back matter sections. */
+export interface Extras {
+  einleitung: string;
+  arbeitsweise: string;
+  schlusswort: string;
+  autorin: string;
+  bonus: string;
+}
+
+/** Cover spec + generated assets. */
+export interface CoverSpec {
+  pageCount: number;
+  paper: string;
+  bg: string;
+  fg: string;
+  blurb: string;
+  brief: string;
+  imgPrompt: string;
+  imageUrl: string;
+}
+
+/** Publishing config (binding, prices, guide checks). */
+export interface PubSpec {
+  binding: string;
+  price: number;
+  ebookPrice: number;
+  checks: Record<string, boolean>;
+}
+
+/** Digital-product export config. */
+export interface DigitalSpec {
+  format: string;
+  fontSize: number;
+  accent: string;
+  align: string;
+  withExtras: boolean;
+  sel: Record<string, boolean>;
+}
+
+/** Print/format settings. */
+export interface FormatSettings {
+  trim: string;
+  pages: string;
+  font: string;
+  fontSize: number;
+  lineHeight: number;
+  align: string;
+  wordTarget: number;
+}
+
+/** A publishing project owned by one authenticated user (Legacy V3 parity). */
 export interface BookProject {
   id: string;
   ownerId: string;
-  title: string;
-  subtitle: string;
-  author: string;
   niche: string;
   language: BookLanguage;
   bookType: BookType;
-  currentStep: number;
   chapterCount: number;
-  markup: string;
+  ideas: Record<string, unknown>[];
+  trends: Record<string, unknown>[];
+  digitalIdeas: Record<string, unknown>[];
+  gaps: Record<string, unknown>[];
+  titleTests: Record<string, unknown>[];
+  series: Record<string, unknown>[];
+  voice: VoiceProfile;
+  launch: LaunchKit;
+  title: string;
+  subtitle: string;
+  audience: string;
+  promise: string;
+  author: string;
+  bio: string;
+  outline: Chapter[];
+  extras: Extras;
+  cover: CoverSpec;
+  pub: PubSpec;
+  digital: DigitalSpec;
+  settings: FormatSettings;
+  kdp: Record<string, unknown> | null;
+  currentStep: number;
+  activeChapter: number;
   createdAt: number;
   updatedAt: number;
   version: number;
 }
 
-export const BOOK_TYPES: readonly BookType[] = [
-  'workbook',
-  'ratgeber',
-  'roman',
-];
-export const BOOK_LANGUAGES: readonly BookLanguage[] = [
-  'de',
-  'en',
-  'es',
-  'fr',
-  'it',
-];
+export const BOOK_TYPE_LABELS: Record<BookType, string> = {
+  workbook: 'Workbook / Arbeitsbuch (mit Übungen & Schreiblinien)',
+  ratgeber: 'Ratgeber / Sachbuch (Fließtext, ohne Ausfüllelemente)',
+  roman: 'Roman / Erzählung (Belletristik)',
+};
+
+export const LANG_LABELS: Record<BookLanguage, string> = {
+  de: 'Deutsch',
+  en: 'Englisch',
+  es: 'Spanisch',
+  fr: 'Französisch',
+  it: 'Italienisch',
+};
 
 export const NICHES: readonly string[] = [
   'Selbstwert & toxische Beziehungen',
@@ -47,27 +135,69 @@ export const NICHES: readonly string[] = [
   'Gewohnheiten & Disziplin',
   'Produktivität & Fokus',
   'Finanzen & Money Mindset',
+  'Eltern & Erziehung',
+  'Spiritualität & Manifestation',
   'Kreativität & Journaling',
 ];
 
-const STARTER_MARKUP = `## Verstehen, was Selbstwert ist
-Dein Selbstwert ist **keine feste Eigenschaft**, sondern eine Fähigkeit.
-> Du musst dich nicht beweisen, um wertvoll zu sein.
-:::uebung Deine innere Stimme
-[linien:3]
-- [ ] aufgeschrieben
-:::`;
-
-const DEFAULTS = {
-  title: '',
-  subtitle: '',
-  author: '',
-  niche: '',
+export const PROJECT_DEFAULTS = {
+  niche: 'Selbstwert stärken nach toxischen Beziehungen',
   language: 'de' as BookLanguage,
   bookType: 'workbook' as BookType,
-  currentStep: 0,
   chapterCount: 8,
-  markup: STARTER_MARKUP,
+  ideas: [] as Record<string, unknown>[],
+  trends: [] as Record<string, unknown>[],
+  digitalIdeas: [] as Record<string, unknown>[],
+  gaps: [] as Record<string, unknown>[],
+  titleTests: [] as Record<string, unknown>[],
+  series: [] as Record<string, unknown>[],
+  voice: { sample: '', profile: '' },
+  launch: { posts: [], emails: [] },
+  title: '',
+  subtitle: '',
+  audience: '',
+  promise: '',
+  author: '',
+  bio: '',
+  outline: [] as Chapter[],
+  extras: {
+    einleitung: '',
+    arbeitsweise: '',
+    schlusswort: '',
+    autorin: '',
+    bonus: '',
+  },
+  cover: {
+    pageCount: 0,
+    paper: 'cream',
+    bg: '#2E2A3B',
+    fg: '#F5F1E6',
+    blurb: '',
+    brief: '',
+    imgPrompt: '',
+    imageUrl: '',
+  },
+  pub: { binding: 'paperback', price: 12.99, ebookPrice: 4.99, checks: {} },
+  digital: {
+    format: 'phone',
+    fontSize: 14,
+    accent: '#6C57B8',
+    align: 'left',
+    withExtras: true,
+    sel: {},
+  },
+  settings: {
+    trim: '7x10',
+    pages: '151-300',
+    font: 'garamond',
+    fontSize: 11.5,
+    lineHeight: 1.55,
+    align: 'justify',
+    wordTarget: 1200,
+  },
+  kdp: null,
+  currentStep: 0,
+  activeChapter: 0,
   version: 1,
 };
 
@@ -83,72 +213,41 @@ export function createEmptyProject(
   title: string,
 ): Omit<BookProject, 'id'> {
   const now = Date.now();
-  return { ...DEFAULTS, ownerId, title, createdAt: now, updatedAt: now };
-}
-
-/**
- * Coerces a raw Firestore value into a typed BookProject with safe defaults.
- *
- * @param id The document id.
- * @param raw The stored document data (untrusted shape).
- * @returns A normalized BookProject.
- */
-export function normalizeProject(id: string, raw: unknown): BookProject {
-  const r = (raw ?? {}) as Record<string, unknown>;
-  const now = Date.now();
   return {
-    ...DEFAULTS,
-    ...pickKnown(r),
-    id,
-    ownerId: str(r['ownerId']),
-    createdAt: num(r['createdAt'], now),
-    updatedAt: num(r['updatedAt'], now),
+    ...PROJECT_DEFAULTS,
+    ownerId,
+    title,
+    createdAt: now,
+    updatedAt: now,
   };
 }
 
 /**
- * Extracts the known editable fields from a raw record.
+ * Extracts the copyable content fields of a project (for "duplicate").
  *
- * @param r The raw record.
- * @returns A partial project with validated primitive fields.
+ * @param source The project to copy from.
+ * @returns The editable content fields, excluding id/owner/timestamps.
  */
-function pickKnown(r: Record<string, unknown>): Partial<BookProject> {
-  return {
-    title: str(r['title']),
-    subtitle: str(r['subtitle']),
-    author: str(r['author']),
-    niche: str(r['niche']),
-    language: pickLanguage(r['language']),
-    bookType: pickBookType(r['bookType']),
-    currentStep: num(r['currentStep'], 0),
-    chapterCount: num(r['chapterCount'], 8),
-    markup: str(r['markup']) || DEFAULTS.markup,
-    version: num(r['version'], 1),
-  };
+export function projectCopyFields(source: BookProject): Partial<BookProject> {
+  const copy: Partial<BookProject> = { ...source };
+  delete copy.id;
+  delete copy.ownerId;
+  delete copy.createdAt;
+  delete copy.updatedAt;
+  copy.title = `${source.title || 'Projekt'} (Kopie)`;
+  return copy;
 }
 
 /**
- * Validates the book language, defaulting to German.
+ * Coerces a value to a plain record (empty when not one).
  *
- * @param value The candidate language value.
- * @returns A supported BookLanguage.
+ * @param value The candidate value.
+ * @returns The value as a record, or an empty record.
  */
-function pickLanguage(value: unknown): BookLanguage {
-  return BOOK_LANGUAGES.includes(value as BookLanguage)
-    ? (value as BookLanguage)
-    : 'de';
-}
-
-/**
- * Validates the book type, defaulting to workbook.
- *
- * @param value The candidate book-type value.
- * @returns A supported BookType.
- */
-function pickBookType(value: unknown): BookType {
-  return BOOK_TYPES.includes(value as BookType)
-    ? (value as BookType)
-    : 'workbook';
+function asRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
 }
 
 /**
@@ -173,19 +272,46 @@ function num(value: unknown, fallback: number): number {
 }
 
 /**
- * Extracts the copyable content fields of a project (for "duplicate").
+ * Merges the raw nested section objects onto their defaults.
  *
- * @param source The project to copy from.
- * @returns The editable content fields, excluding id/owner/title/timestamps.
+ * @param r The raw project record.
+ * @returns The normalized nested sections.
  */
-export function projectCopyFields(source: BookProject): Partial<BookProject> {
+function nestedSections(r: Record<string, unknown>) {
+  const d = PROJECT_DEFAULTS;
   return {
-    subtitle: source.subtitle,
-    author: source.author,
-    niche: source.niche,
-    language: source.language,
-    bookType: source.bookType,
-    chapterCount: source.chapterCount,
-    markup: source.markup,
+    voice: { ...d.voice, ...asRecord(r['voice']) } as VoiceProfile,
+    launch: { ...d.launch, ...asRecord(r['launch']) } as LaunchKit,
+    extras: { ...d.extras, ...asRecord(r['extras']) } as Extras,
+    cover: { ...d.cover, ...asRecord(r['cover']) } as CoverSpec,
+    pub: { ...d.pub, ...asRecord(r['pub']) } as PubSpec,
+    digital: { ...d.digital, ...asRecord(r['digital']) } as DigitalSpec,
+    settings: { ...d.settings, ...asRecord(r['settings']) } as FormatSettings,
+    outline: Array.isArray(r['outline']) ? (r['outline'] as Chapter[]) : [],
+    kdp:
+      asRecord(r['kdp']) && r['kdp']
+        ? (r['kdp'] as Record<string, unknown>)
+        : null,
   };
+}
+
+/**
+ * Coerces a raw Firestore value into a typed BookProject with safe defaults.
+ *
+ * @param id The document id.
+ * @param raw The stored document data (untrusted shape).
+ * @returns A normalized BookProject preserving every stored field.
+ */
+export function normalizeProject(id: string, raw: unknown): BookProject {
+  const r = asRecord(raw);
+  const now = Date.now();
+  return {
+    ...PROJECT_DEFAULTS,
+    ...r,
+    ...nestedSections(r),
+    id,
+    ownerId: str(r['ownerId']),
+    createdAt: num(r['createdAt'], now),
+    updatedAt: num(r['updatedAt'], now),
+  } as BookProject;
 }

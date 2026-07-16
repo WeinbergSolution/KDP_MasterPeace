@@ -1,12 +1,18 @@
-<div class="app-shell">
-  <aside class="app-rail">
-    <div class="app-rail__brand">KDP MasterPeace</div>
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <lucide-icon [img]="brandIcon" [size]="20" />
+      <div>
+        <div class="brand-t">KDP MasterPeace</div>
+        <div class="brand-s">Workbook Studio · für Amazon KDP</div>
+      </div>
+    </div>
 
-    <div class="switcher">
-      <label class="switcher__label" for="project-select">Buchprojekt</label>
+    <div class="projbox">
+      <label class="proj-lbl" for="project-select">Buchprojekt</label>
       <select
         id="project-select"
-        class="switcher__select"
+        class="proj-sel"
         [value]="project()?.id ?? ''"
         (change)="onSwitch($event)"
       >
@@ -14,39 +20,37 @@
         <option [value]="p.id">{{ p.title || 'Ohne Titel' }}</option>
         }
       </select>
-      <div class="switcher__actions">
-        <button type="button" class="switcher__btn" (click)="createProject()">
-          Neu
+      <div class="proj-actions">
+        <button class="proj-btn" type="button" (click)="createProject()">
+          <lucide-icon [img]="newIcon" [size]="13" /> Neu
         </button>
-        <button
-          type="button"
-          class="switcher__btn"
-          (click)="duplicateProject()"
-        >
-          Kopie
+        <button class="proj-btn" type="button" (click)="duplicateProject()">
+          <lucide-icon [img]="copyIcon" [size]="13" /> Kopie
         </button>
-        <button
-          type="button"
-          class="switcher__btn switcher__btn--danger"
-          (click)="requestDelete()"
-        >
+        <button class="proj-btn danger" type="button" (click)="requestDelete()">
+          <lucide-icon [img]="deleteIcon" [size]="13" />
           {{ confirmDelete() ? 'Sicher?' : 'Löschen' }}
         </button>
       </div>
     </div>
 
-    <nav class="app-rail__nav" aria-label="Workflow-Schritte">
-      @for (label of steps; track label; let i = $index) {
+    <nav>
+      @for (s of steps; track s.label; let i = $index) {
       <button
         type="button"
-        class="app-rail__link step-link"
-        [class.app-rail__link--active]="(project()?.currentStep ?? 0) === i"
+        class="rail-step"
+        [class.on]="(project()?.currentStep ?? 0) === i"
         [attr.aria-current]="(project()?.currentStep ?? 0) === i ? 'step' : null"
         [disabled]="!project()"
         (click)="setStep(i)"
       >
-        <span class="step-link__num">{{ i + 1 }}</span>
-        <span>{{ label }}</span>
+        <span class="rail-idx">
+          @if (isDone(i)) {
+          <lucide-icon [img]="checkIcon" [size]="13" />
+          } @else { {{ i + 1 }} }
+        </span>
+        <lucide-icon [img]="s.icon" [size]="15" />
+        <span>{{ s.label }}</span>
       </button>
       }
     </nav>
@@ -54,35 +58,36 @@
     <div class="rail-foot">
       <div class="rail-stats">
         <div><b>{{ stats().words }}</b> Wörter</div>
-        <div><b>{{ project()?.chapterCount ?? '—' }}</b> Kapitel (Ziel)</div>
-        <div><b>≈ {{ stats().pages }}</b> Seiten</div>
+        <div>
+          <b>{{ stats().written }}/{{ project()?.outline?.length || '—' }}</b>
+          Kapitel geschrieben
+        </div>
+        <div><b>≈ {{ stats().pages }}</b> Buchseiten</div>
       </div>
       <div class="rail-save">
-        {{ saving() ? 'Speichert …' : 'Gespeichert' }}
+        @if (saving()) {
+        <lucide-icon [img]="saveIcon" [size]="12" /> Speichert … } @else {
+        <lucide-icon [img]="checkIcon" [size]="12" /> Gespeichert }
       </div>
-      <a class="rail-account" routerLink="/account">Konto & Abmelden</a>
+      <a class="rail-account" routerLink="/account">Konto &amp; Abmelden</a>
     </div>
   </aside>
 
-  <main class="app-main">
-    <div class="app-main__content">
-      @if (project(); as p) { @switch (p.currentStep) { @case (0) {
-      <app-idea-step />
-      } @case (2) {
-      <app-writing-step />
-      } @default {
-      <app-placeholder-step [label]="steps[p.currentStep]" />
-      } } } @else {
-      <div class="empty">
-        <h1 class="empty__title">Willkommen im Studio</h1>
-        <p class="empty__text">
-          Lege dein erstes Buchprojekt an, um zu starten.
-        </p>
-        <button type="button" class="empty__btn" (click)="createProject()">
-          Neues Buchprojekt
-        </button>
-      </div>
-      }
+  <main class="main">
+    @if (project(); as p) { @switch (p.currentStep) { @case (0) {
+    <app-idea-step />
+    } @case (2) {
+    <app-writing-step />
+    } @default {
+    <app-placeholder-step [label]="steps[p.currentStep].label" />
+    } } } @else {
+    <div class="panel">
+      <h1 class="pt">Willkommen im Studio</h1>
+      <p class="ps">Lege dein erstes Buchprojekt an, um zu starten.</p>
+      <button class="btn primary" type="button" (click)="createProject()">
+        Neues Buchprojekt
+      </button>
     </div>
+    }
   </main>
 </div>

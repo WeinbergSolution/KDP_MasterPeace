@@ -10,12 +10,12 @@ import {
 } from '@angular/core';
 import { parseMarkup, type LegacyParseResult } from '@kdp/document-model';
 import { BookPreviewComponent } from '@kdp/preview';
+import type { BookProject } from '../../core/models/book-project';
 import { ActiveProjectService } from '../active-project.service';
 
-// Step 3 (Schreiben): the WP-C1 engine inside the tool — legacy-markup editor →
-// debounced parse → Book AST → warnings → live preview. Content persists to the
-// project (autosave) and survives reload. The editor is uncontrolled to keep the
-// caret; only project switches write the value imperatively.
+// Step 3 (Schreiben) — interim: the WP-C1 engine (markup editor -> Book AST ->
+// live preview) bound to the active chapter. The full Legacy V3 writing step
+// (autopilot, per-chapter tabs, book scaffold) is ported in a later package.
 
 const PARSE_DEBOUNCE_MS = 300;
 
@@ -44,26 +44,50 @@ export class WritingStepComponent {
     effect(() => this.syncFromProject());
   }
 
-  /** Loads markup into the editor + preview when a project becomes active. */
+  /**
+   * Reads the content of the active chapter.
+   *
+   * @param project The active project.
+   * @returns The active chapter's markup, or an empty string.
+   */
+  private chapterContent(project: BookProject): string {
+    return project.outline[project.activeChapter]?.content ?? '';
+  }
+
+  /** Loads chapter markup into the editor + preview on project change. */
   private syncFromProject(): void {
     const project = this.active.current();
     const editor = this.editorRef();
     if (!project || !editor || project.id === this.loadedId) return;
     this.loadedId = project.id;
-    editor.nativeElement.value = project.markup;
-    this.reparse(project.markup);
+    editor.nativeElement.value = this.chapterContent(project);
+    this.reparse(this.chapterContent(project));
   }
 
   /**
-   * Handles editor input: autosaves markup and schedules a re-parse.
+   * Handles editor input: saves the chapter and schedules a re-parse.
    *
    * @param event The textarea input event.
    */
   protected onInput(event: Event): void {
     const markup = (event.target as HTMLTextAreaElement).value;
-    this.active.patch({ markup });
+    this.saveChapter(markup);
     clearTimeout(this.timer);
     this.timer = setTimeout(() => this.reparse(markup), PARSE_DEBOUNCE_MS);
+  }
+
+  /**
+   * Persists edited markup back into the active chapter.
+   *
+   * @param content The new chapter content.
+   */
+  private saveChapter(content: string): void {
+    const project = this.active.current();
+    if (!project || !project.outline.length) return;
+    const outline = project.outline.map((c, i) =>
+      i === project.activeChapter ? { ...c, content } : c,
+    );
+    this.active.patch({ outline });
   }
 
   /**

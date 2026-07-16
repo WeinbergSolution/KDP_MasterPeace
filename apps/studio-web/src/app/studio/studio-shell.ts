@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ViewEncapsulation,
   computed,
   effect,
   inject,
@@ -8,30 +9,68 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import {
+  BookOpen,
+  Check,
+  Copy,
+  Download,
+  FolderPlus,
+  LayoutTemplate,
+  ListTree,
+  type LucideIconData,
+  LucideAngularModule,
+  Megaphone,
+  Palette,
+  PenLine,
+  Rocket,
+  Save,
+  Sparkles,
+  Trash2,
+} from 'lucide-angular';
 import { ProjectStore } from '../core/firestore/project-store.service';
 import {
   type BookProject,
   projectCopyFields,
 } from '../core/models/book-project';
 import { ActiveProjectService } from './active-project.service';
-import { STEP_LABELS, computeStats } from './project-stats';
+import { STEP_LABELS, computeRailStats } from './project-stats';
 import { IdeaStepComponent } from './steps/idea-step';
 import { WritingStepComponent } from './steps/writing-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
 
-// The tool shell: dark rail (brand, project switcher, 8 steps, stats, save
-// status) + main step area. Mirrors the Legacy V3 layout; persistence is
-// Firestore (not window.storage). Rendering libs come from WP-C1.
+// The tool shell in Legacy V3 optics: dark rail (brand, project box, 8 steps,
+// stats, save status) + wide main area. ViewEncapsulation.None ports the legacy
+// stylesheet 1:1 (AGENTS §2: current instruction outranks §12). Persistence is
+// Firestore (not window.storage).
 
 const DELETE_ARM_MS = 4000;
+
+/** A rail step with its label and lucide icon. */
+interface RailStep {
+  readonly label: string;
+  readonly icon: LucideIconData;
+}
+
+const STEP_ICONS: LucideIconData[] = [
+  Sparkles,
+  ListTree,
+  PenLine,
+  LayoutTemplate,
+  Palette,
+  Download,
+  Megaphone,
+  Rocket,
+];
 
 /** Studio tool shell hosting project switching, the 8 steps and preview. */
 @Component({
   selector: 'app-studio-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   providers: [ActiveProjectService],
   imports: [
     RouterLink,
+    LucideAngularModule,
     IdeaStepComponent,
     WritingStepComponent,
     PlaceholderStepComponent,
@@ -47,12 +86,23 @@ export class StudioShellComponent {
   readonly projectId = input<string>();
   protected readonly projects = signal<BookProject[]>([]);
   protected readonly confirmDelete = signal(false);
-  protected readonly steps = STEP_LABELS;
+  protected readonly steps: RailStep[] = STEP_LABELS.map((label, i) => ({
+    label,
+    icon: STEP_ICONS[i],
+  }));
   protected readonly project = this.active.current;
   protected readonly saving = this.active.isSaving;
-  protected readonly stats = computed(() =>
-    computeStats(this.project()?.markup ?? ''),
-  );
+  protected readonly stats = computed(() => {
+    const p = this.project();
+    return p ? computeRailStats(p) : { words: 0, written: 0, pages: 0 };
+  });
+
+  protected readonly brandIcon = BookOpen;
+  protected readonly newIcon = FolderPlus;
+  protected readonly copyIcon = Copy;
+  protected readonly deleteIcon = Trash2;
+  protected readonly checkIcon = Check;
+  protected readonly saveIcon = Save;
 
   constructor() {
     effect(() => {
@@ -62,9 +112,7 @@ export class StudioShellComponent {
     void this.refreshProjects();
   }
 
-  /**
-   * Loads the project list; opens the newest when none is selected.
-   */
+  /** Loads the project list; opens the newest when none is selected. */
   private async refreshProjects(): Promise<void> {
     const list = await this.store.list();
     this.projects.set(list);
@@ -130,5 +178,21 @@ export class StudioShellComponent {
    */
   protected setStep(index: number): void {
     this.active.patch({ currentStep: index });
+  }
+
+  /**
+   * Reports whether a step is considered done (Legacy V3 rail logic).
+   *
+   * @param index The step index.
+   * @returns True when the step's completion condition is met.
+   */
+  protected isDone(index: number): boolean {
+    const p = this.project();
+    if (!p) return false;
+    if (index === 0) return !!p.title;
+    if (index === 1) return p.outline.length > 0;
+    if (index === 4) return !!p.cover.blurb;
+    if (index === 6) return !!p.kdp;
+    return false;
   }
 }
