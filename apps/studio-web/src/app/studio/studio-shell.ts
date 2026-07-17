@@ -35,6 +35,7 @@ import {
 import { ActiveProjectService } from './active-project.service';
 import { STEP_LABELS, computeRailStats } from './project-stats';
 import { IdeaStepComponent } from './steps/idea-step';
+import { GliederungStepComponent } from './steps/gliederung-step';
 import { WritingStepComponent } from './steps/writing-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
 
@@ -72,6 +73,7 @@ const STEP_ICONS: LucideIconData[] = [
     RouterLink,
     LucideAngularModule,
     IdeaStepComponent,
+    GliederungStepComponent,
     WritingStepComponent,
     PlaceholderStepComponent,
   ],

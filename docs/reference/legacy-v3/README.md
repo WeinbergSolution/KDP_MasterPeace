@@ -20,25 +20,29 @@ outputs, error states), NOT a code template. See `../../migration/legacy-v3-*.md
   CDN script injection, browser-print "PDF", `.doc`=HTML, random-id domain keys).
   See `source-manifest.json → detectedSecurityRisks`.
 
-## Raw file status — ACTION REQUIRED
+## Raw file status — VERIFIED (byte-exact archive committed)
 
-**The byte-exact raw file is not yet committed here.** The reference was delivered
-as inline message content with UTF-8→Latin-1 mojibake (`Ã¼`, `Ã©`, `â`), so:
+**`kdp-workbook-studio_aktuell.jsx` is the byte-exact original**, archived
+verbatim in this folder. The three canonical values reproduce exactly:
 
-- The claimed SHA-256 `f8bc9fe4…72324` is recorded as **UNVERIFIED**
-  (`source-manifest.json → sha256.verified: false`).
-- No `kdp-workbook-studio.tsx` is committed, because a reconstruction from the
-  corrupted inline copy would not be byte-identical and must not masquerade as the
-  original.
+| Metric | Value |
+| --- | --- |
+| Lines (`wc -l`) | **3823** |
+| Bytes (`wc -c`) | **239911** |
+| SHA-256 | **`f8bc9fe43427a95c957522710cdaa4d7ddb664fcc4ac7f5c5f1c6bc5b5a72324`** |
 
-**To close this out:** drop the raw `kdp-workbook-studio.tsx` into this folder,
-then run a SHA-256 check and update `source-manifest.json` (`verified: true`,
-fill `byteSize.verified`/`lineCount.verified`). Until then, Package 1 is based on
-the readable inline content, which is sufficient for behavioral inventory but not
-for byte verification.
+**Encoding note:** the file is **Latin-1 (ISO-8859-1 / Windows-1252)**, so German
+umlauts are single-byte and the total is 239911 bytes (not 242442 as it would be
+in UTF-8). Opened as UTF-8 it *looks* like mojibake (`Ã¼`, `Ã©`), but those bytes
+are the canonical original — that is exactly why the SHA-256 matches. **Do not
+re-encode this file to UTF-8 and do not let a formatter touch it** (it is covered
+by the `/docs` rule in `.prettierignore`); re-encoding changes every umlaut byte
+and breaks the hash.
 
 ```bash
-# once the raw file is present:
-sha256sum docs/reference/legacy-v3/kdp-workbook-studio.tsx
-wc -l -c docs/reference/legacy-v3/kdp-workbook-studio.tsx
+# reproduce the verification:
+sha256sum docs/reference/legacy-v3/kdp-workbook-studio_aktuell.jsx
+wc -l -c docs/reference/legacy-v3/kdp-workbook-studio_aktuell.jsx
 ```
+
+See `source-manifest.json → archivedCurrentReference` (`verified: true`).

@@ -76,6 +76,8 @@
   <main class="main">
     @if (project(); as p) { @switch (p.currentStep) { @case (0) {
     <app-idea-step />
+    } @case (1) {
+    <app-gliederung-step />
     } @case (2) {
     <app-writing-step />
     } @default {

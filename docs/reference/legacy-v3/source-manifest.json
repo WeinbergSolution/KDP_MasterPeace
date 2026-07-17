@@ -16,6 +16,19 @@
     "byteHashVerified": false,
     "requiredOwnerAction": "commit the raw kdp-workbook-studio.tsx to docs/reference/legacy-v3/, then confirm SHA-256 and flip sha256.verified + byteSize.verified + lineCount.verified to true"
   },
+  "archivedCurrentReference": {
+    "fileName": "kdp-workbook-studio_aktuell.jsx",
+    "purpose": "Byte-exact verbatim archive of the current JSX version, used as the authoritative source for the exact parity port (rail, Idee, Gliederung, ...).",
+    "encoding": "latin1 (ISO-8859-1 / Windows-1252); German umlauts are single-byte. Viewing as UTF-8 shows mojibake but the bytes are the canonical original. Do NOT re-encode to UTF-8 (that changes the hash).",
+    "byteSize": 239911,
+    "lineCount": 3823,
+    "sha256": "f8bc9fe43427a95c957522710cdaa4d7ddb664fcc4ac7f5c5f1c6bc5b5a72324",
+    "verified": true,
+    "verifiedOn": "2026-07-17",
+    "verificationNote": "Recovered byte-exact from the conversation transcript, written without UTF-8 re-encoding; wc -l -c + sha256sum on the committed file reproduce 3823 / 239911 / f8bc9fe... exactly.",
+    "notImportedCompiledOrBundled": true,
+    "prettierIgnored": "covered by /docs entry in .prettierignore"
+  },
   "importDate": "2026-07-15",
   "origin": "Working React/TSX single-file app 'KdpWorkbookStudio' (v2 UI label), provided by product owner as the authoritative product-behavior reference for the Legacy V3 integration.",
   "usageConstraints": [
