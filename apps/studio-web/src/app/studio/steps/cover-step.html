@@ -1,0 +1,274 @@
+<div class="panel">
+  <h1 class="pt">Cover</h1>
+  <p class="ps">
+    Berechnet die exakten KDP-Cover-Maße inkl. Buchrücken und erstellt dir eine
+    druckfertige Komplett-Vorlage (hinten + Rücken + vorne) — plus Klappentext
+    und Design-Briefing für Canva.
+  </p>
+
+  @if (cover(); as c) {
+  <div class="card">
+    <div class="card-h">Maße berechnen</div>
+    <div class="row">
+      <div>
+        <label class="lbl" for="cover-pages">Finale Seitenzahl</label>
+        <input
+          id="cover-pages"
+          class="inp num"
+          type="number"
+          inputmode="numeric"
+          min="24"
+          max="800"
+          [value]="c.pageCount || ''"
+          [attr.placeholder]="pageEstimate()"
+          (input)="onPageCount($any($event.target).value)"
+        />
+      </div>
+      <div class="grow">
+        <label class="lbl" for="cover-paper">Papier</label>
+        <select
+          id="cover-paper"
+          class="inp"
+          (change)="saveCover({ paper: $any($event.target).value })"
+        >
+          @for (opt of paperOptions; track opt.key) {
+          <option [value]="opt.key" [selected]="opt.key === c.paper">
+            {{ opt.label }}
+          </option>
+          }
+        </select>
+      </div>
+    </div>
+    <p class="muted small-t">
+      Ohne Eingabe wird die Schätzung (≈ {{ pageEstimate() }} Seiten) verwendet.
+      <b>Wichtig:</b> Trage vor dem finalen Cover-Export die echte Seitenzahl
+      aus deinem fertigen Print-PDF ein!
+    </p>
+    <div class="dims">
+      <div><span>Buchrücken</span><b>{{ spine().mm }} mm</b></div>
+      <div>
+        <span>Cover gesamt (mit Beschnitt)</span><b>{{ dimsLabel() }} mm</b>
+      </div>
+      <div>
+        <span>Rückentext möglich</span>
+        <b>{{ spinePossible() ? 'Ja' : 'Nein (erst ab ~100 Seiten)' }}</b>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+      <div>
+        <label class="lbl" for="cover-bg">Hintergrundfarbe</label>
+        <input
+          id="cover-bg"
+          class="colorinp"
+          type="color"
+          [value]="c.bg"
+          (input)="saveCover({ bg: $any($event.target).value })"
+        />
+      </div>
+      <div>
+        <label class="lbl" for="cover-fg">Textfarbe</label>
+        <input
+          id="cover-fg"
+          class="colorinp"
+          type="color"
+          [value]="c.fg"
+          (input)="saveCover({ fg: $any($event.target).value })"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h row-sb">
+      Klappentext (Buchrückseite)
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparklesIcon" [size]="13" />
+        {{ c.blurb ? 'Neu generieren' : 'Generieren' }}
+      </button>
+    </div>
+    <textarea
+      class="ta short"
+      [value]="c.blurb"
+      (change)="saveCover({ blurb: $any($event.target).value })"
+      placeholder="Der Text für die Buchrückseite – wird automatisch in die Cover-Vorlage gesetzt."
+    ></textarea>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    }
+  </div>
+
+  <div class="card">
+    <div class="card-h row-sb">
+      Design-Briefing für Canva
+      <div class="row" style="gap: 6px">
+        @if (c.brief) {
+        <button
+          class="btn tiny"
+          type="button"
+          (click)="copyText('brief', c.brief)"
+        >
+          <lucide-icon
+            [img]="copied() === 'brief' ? checkIcon : copyIcon"
+            [size]="13"
+          />
+          Kopieren
+        </button>
+        }
+        <button class="btn tiny" type="button" [disabled]="!providerReady">
+          <lucide-icon [img]="sparklesIcon" [size]="13" />
+          {{ c.brief ? 'Neu generieren' : 'Generieren' }}
+        </button>
+      </div>
+    </div>
+    @if (c.brief) {
+    <div class="desc">
+      @for (paragraph of briefLines(); track $index) {
+      <p>{{ paragraph }}</p>
+      }
+    </div>
+    } @else {
+    <p class="muted">
+      Stilrichtung, Farbpaletten, Typografie und Bildwelt – als Anleitung für
+      dein Cover-Design in Canva.
+    </p>
+    } @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    }
+  </div>
+
+  <div class="card trendcard">
+    <div class="card-h row-sb">
+      <span>
+        <lucide-icon [img]="paletteIcon" [size]="15" /> KI-Cover-Bild
+        (Higgsfield)
+      </span>
+      <div class="row" style="gap: 6px">
+        <button class="btn tiny" type="button" [disabled]="!providerReady">
+          <lucide-icon [img]="sparklesIcon" [size]="13" /> Cover-Prompt (vorne +
+          hinten)
+        </button>
+        <button class="btn tiny" type="button" [disabled]="!providerReady">
+          <lucide-icon [img]="wandIcon" [size]="13" /> Bild generieren
+        </button>
+      </div>
+    </div>
+    <p class="muted">
+      Zwei Wege: <b>„Cover-Prompt"</b> erstellt einen detaillierten Bild-Prompt
+      für Vorder- <b>und</b> Rückseite (mit Farbcodes, Komposition, „kein Text
+      im Bild") – zum Kopieren in Higgsfield, Midjourney oder ein anderes
+      Bild-Tool. <b>„Bild generieren"</b> erzeugt das Vorderseiten-Motiv direkt
+      über deinen Higgsfield-Konnektor (verbraucht Higgsfield-Credits) und legt
+      es automatisch hinter die Vorderseite deiner druckfertigen Cover-Vorlage.
+    </p>
+    @if (c.imgPrompt) {
+    <div class="row-sb" style="margin-top: 10px">
+      <span class="lbl" style="margin: 0">Dein Cover-Prompt (editierbar)</span>
+      <button
+        class="btn tiny"
+        type="button"
+        (click)="copyText('imgprompt', c.imgPrompt)"
+      >
+        <lucide-icon
+          [img]="copied() === 'imgprompt' ? checkIcon : copyIcon"
+          [size]="13"
+        />
+        Kopieren
+      </button>
+    </div>
+    <textarea
+      class="ta short"
+      [value]="c.imgPrompt"
+      (change)="saveCover({ imgPrompt: $any($event.target).value })"
+    ></textarea>
+    } @if (c.imageUrl) {
+    <div style="margin-top: 10px">
+      <div class="row-sb">
+        <span class="lbl" style="margin: 0">
+          Generiertes Vorderseiten-Motiv (liegt hinter der Cover-Vorlage)
+        </span>
+        <button
+          class="btn tiny"
+          type="button"
+          (click)="saveCover({ imageUrl: '' })"
+        >
+          <lucide-icon [img]="trashIcon" [size]="12" /> Entfernen
+        </button>
+      </div>
+      <img
+        [src]="c.imageUrl"
+        alt="KI-Cover-Motiv"
+        style="
+          max-width: 220px;
+          border-radius: 10px;
+          border: 1px solid #e3dfee;
+          margin-top: 6px;
+        "
+      />
+      <p class="muted small-t">
+        Per Rechtsklick/Langdruck zusätzlich sichern – generierte URLs können
+        nach einiger Zeit ablaufen. In der Cover-Vorlage wird das Bild mit einem
+        Farbschleier deiner Cover-Farbe überlagert, damit der Titel lesbar
+        bleibt.
+      </p>
+    </div>
+    } @if (!providerReady) {
+    <p class="notconf">
+      Integration nicht konfiguriert (Higgsfield-Credential fehlt).
+    </p>
+    }
+  </div>
+
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="paletteIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Druckfertige Cover-Vorlage</div>
+      <p class="muted">
+        Komplett-Cover in exakten KDP-Maßen: Rückseite mit Klappentext und
+        ausgespartem Barcode-Bereich, Buchrücken, Vorderseite. Als PDF speichern
+        und direkt bei KDP hochladen – oder als maßgenaue Vorlage in Canva
+        nachbauen.
+      </p>
+      <div class="row">
+        <button
+          class="btn primary"
+          type="button"
+          [disabled]="!hasConcept()"
+          (click)="openCover(false)"
+        >
+          <lucide-icon [img]="printerIcon" [size]="15" /> Cover öffnen (final)
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasConcept()"
+          (click)="openCover(true)"
+        >
+          Mit Hilfslinien
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasConcept()"
+          (click)="downloadCover()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> Als Datei
+        </button>
+      </div>
+      @if (notice()) {
+      <p class="warn-inline">{{ notice() }}</p>
+      } @if (!hasConcept()) {
+      <p class="notconf">
+        Trage zuerst in Schritt 1 einen Titel ein, um die Cover-Vorlage zu
+        erzeugen.
+      </p>
+      }
+    </div>
+  </div>
+  }
+
+  <div class="next">
+    <button class="btn primary" type="button" (click)="next()">
+      Weiter zum Export <lucide-icon [img]="chevronIcon" [size]="15" />
+    </button>
+  </div>
+</div>

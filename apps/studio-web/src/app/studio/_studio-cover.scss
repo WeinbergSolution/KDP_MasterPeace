@@ -1,0 +1,40 @@
+// Legacy V3 Cover styles (ported). Part 5 of the studio stylesheet (@used by
+// studio-shell.scss): computed dimension chips, colour inputs and the Canva
+// design-briefing text block.
+
+.dims {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.dims > div {
+  background: #f4f1fa;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 12px;
+}
+.dims span {
+  display: block;
+  color: #8b84a0;
+  margin-bottom: 2px;
+}
+.dims b {
+  font-size: 14px;
+}
+
+.colorinp {
+  width: 60px;
+  height: 38px;
+  border: 1px solid #d8d3e6;
+  border-radius: 9px;
+  padding: 3px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.desc p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
