@@ -1,41 +1,226 @@
-<div class="step">
-  <h1 class="step__title">Kapitel schreiben</h1>
-  <p class="step__lead">
-    Schreibe im Workbook-Markup — die Vorschau rechts rendert dein Buch live aus
-    dem Book AST. Änderungen werden automatisch gespeichert.
+<div class="panel wide">
+  <h1 class="pt">Kapitel schreiben</h1>
+  <p class="ps">
+    Autopilot schreibt das ganze Buch durch — oder du gehst Kapitel für Kapitel
+    vor. Rechts siehst du die Buchvorschau live.
   </p>
 
-  <div class="writing">
-    <section class="writing__editor" aria-label="Markup-Editor">
-      <label class="label" for="writing-input">Workbook-Markup</label>
+  @if (auto(); as run) {
+  <div class="autobar">
+    <lucide-icon [img]="refreshIcon" [size]="15" />
+    <div class="grow">
+      <div class="auto-msg">{{ run.msg }}</div>
+      <div class="auto-track">
+        <div class="auto-fill" [style.width.%]="run.pct"></div>
+      </div>
+    </div>
+    <button class="btn tiny" type="button">
+      <lucide-icon [img]="squareIcon" [size]="12" /> Stopp
+    </button>
+  </div>
+  }
+
+  <div class="card autopilot">
+    <div class="exp-ico gold"><lucide-icon [img]="wandIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Autopilot — das ganze Buch schreiben lassen</div>
+      <p class="muted" style="margin-bottom: 10px">
+        Erstellt die Gliederung (falls noch keine da ist), schreibt alle Kapitel
+        bis zur Ziellänge und erzeugt danach Einleitung, Schlusswort & Co.
+        Bereits geschriebene Kapitel werden übersprungen — du kannst also
+        jederzeit stoppen und später weitermachen.
+      </p>
+      <div class="row">
+        <div>
+          <label class="lbl" for="word-target">Ziellänge pro Kapitel</label>
+          <select
+            id="word-target"
+            class="inp"
+            [value]="project()?.settings?.wordTarget ?? 1200"
+            (change)="saveWordTarget($any($event.target).value)"
+          >
+            @for (opt of wordTargets; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+        <div style="align-self: flex-end">
+          <button class="btn primary" type="button" [disabled]="!providerReady">
+            <lucide-icon [img]="wandIcon" [size]="15" /> Autopilot starten
+          </button>
+        </div>
+      </div>
+      @if (!providerReady) {
+      <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+      }
+    </div>
+  </div>
+
+  @if (hasOutline()) {
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="langIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Buch übersetzen</div>
+      <p class="muted">
+        Übersetzt das komplette Manuskript <b>sinngemäß und idiomatisch</b> —
+        keine Wort-für-Wort-Übersetzung: Redewendungen, Beispiele und Ansprache
+        werden natürlich an die Zielsprache angepasst. Kapitel, Überschriften,
+        Buchgerüst und Buchdaten werden übertragen; die Buchsprache im Export
+        (Silbentrennung, Kapitel-Beschriftung, Copyright) stellt sich
+        automatisch um. <b>Tipp:</b> Lade vorher im Export-Schritt ein Backup
+        herunter.
+      </p>
+      <div class="row">
+        <div>
+          <label class="lbl" for="trans-target">Zielsprache</label>
+          <select
+            id="trans-target"
+            class="inp"
+            [value]="transTarget()"
+            (change)="transTarget.set($any($event.target).value)"
+          >
+            @for (opt of langOptions(); track opt.key) {
+            <option [value]="opt.key">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+        <div style="align-self: flex-end">
+          <button class="btn primary" type="button" [disabled]="!providerReady">
+            <lucide-icon [img]="langIcon" [size]="15" /> Übersetzung starten
+          </button>
+        </div>
+      </div>
+      @if (!providerReady) {
+      <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+      }
+    </div>
+  </div>
+  } @if (!hasOutline()) {
+  <div class="card">
+    Noch keine Gliederung: Starte den Autopiloten oben (erstellt sie
+    automatisch) oder lege sie in Schritt 2 an.
+  </div>
+  } @else {
+  <div class="chtabs">
+    @for (ch of project()?.outline ?? []; track ch.id; let i = $index) {
+    <button
+      type="button"
+      class="chtab"
+      [class.on]="activeIndex() === i"
+      [class.done]="!!ch.content"
+      (click)="setActiveCh(i)"
+    >
+      @if (ch.content) {
+      <lucide-icon [img]="checkIcon" [size]="11" />
+      } {{ i + 1 }}
+    </button>
+    }
+  </div>
+
+  @if (activeChapter(); as ch) {
+  <div class="writegrid">
+    <div class="card">
+      <div class="card-h">
+        {{ chapterWord() }} {{ activeIndex() + 1 }}: {{ ch.title }}
+      </div>
+      <div class="row" style="margin-bottom: 10px">
+        <button class="btn primary" type="button" [disabled]="!providerReady">
+          <lucide-icon [img]="penIcon" [size]="15" />
+          {{ ch.content ? 'Neu schreiben' : 'Kapitel schreiben lassen' }}
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!providerReady || !ch.content"
+        >
+          <lucide-icon [img]="plusIcon" [size]="15" /> Verlängern
+        </button>
+      </div>
       <textarea
         #editor
-        id="writing-input"
-        class="writing__textarea"
+        class="ta"
         spellcheck="false"
         autocomplete="off"
-        (input)="onInput($event)"
+        (input)="onEditorInput($event)"
+        placeholder="Hier entsteht dein Kapitel. Du kannst auch selbst schreiben — Format:&#10;## Überschrift&#10;:::uebung Titel&#10;[linien:4]&#10;:::&#10;- [ ] Checkpunkt&#10;[skala] Frage"
       ></textarea>
+      <div class="muted small-t">{{ wordCount() }} Wörter</div>
+      @if (!providerReady) {
+      <p class="notconf">
+        KI-Schreiben nicht konfiguriert — Editor und Vorschau funktionieren.
+      </p>
+      }
+    </div>
 
-      @if (warnings().length > 0) {
-      <div class="writing__diag">
-        <h2 class="writing__diag-title">Migrationswarnungen</h2>
-        <ul class="writing__diag-list">
-          @for (warn of warnings(); track $index) {
-          <li>
-            <code>{{ warn.code }}</code> {{ warn.message }}
-            <span class="writing__line">Zeile {{ warn.position.line }}</span>
-          </li>
+    <div class="prevwrap">
+      <div class="prevlabel">Vorschau · {{ trimLabel() }}</div>
+      <div
+        class="page"
+        [attr.lang]="project()?.language"
+        [style]="previewStyle()"
+      >
+        <div class="page-inner">
+          <div class="bk-chnum">
+            {{ chapterWord() }} {{ activeIndex() + 1 }}
+          </div>
+          <div class="bk-h1">{{ ch.title }}</div>
+          @for (node of blocks(); track trackBlock($index)) {
+          <kdp-ast-node [node]="node" />
           }
-        </ul>
+        </div>
       </div>
-      }
-    </section>
+    </div>
+  </div>
+  }
 
-    <section class="writing__preview" aria-label="Buchvorschau">
-      @if (document(); as doc) {
-      <kdp-book-preview [document]="doc" />
-      }
-    </section>
+  <h2 class="sect">Buchgerüst — Einleitung, Schlusswort & Co.</h2>
+  <p class="ps">
+    Diese Rahmenteile machen dein Buch komplett und professionell. Sie landen
+    automatisch an der richtigen Stelle im Export. Der Autopilot füllt sie mit —
+    oder du generierst sie einzeln.
+  </p>
+  @if (!providerReady) {
+  <p class="notconf">
+    Automatische Generierung nicht konfiguriert (KI-Provider fehlt) — jeder
+    Abschnitt ist manuell editierbar.
+  </p>
+  } @for (def of scaffold(); track def.key) {
+  <div class="card">
+    <div class="card-h row-sb">
+      {{ def.label }}
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        @if (extraValue(def.key)) {
+        <lucide-icon [img]="refreshIcon" [size]="13" /> Neu generieren } @else {
+        <lucide-icon [img]="sparklesIcon" [size]="13" /> Generieren }
+      </button>
+    </div>
+    <p class="muted" style="margin-bottom: 8px">{{ def.hint }}</p>
+    @if (def.key === 'autorin') {
+    <label class="lbl" for="author-bio">
+      Stichworte zu dir (optional, fließen in die Bio ein)
+    </label>
+    <input
+      id="author-bio"
+      class="inp"
+      type="text"
+      [value]="project()?.bio ?? ''"
+      (change)="onBioChange($any($event.target).value)"
+      placeholder="z. B. selbst toxische Beziehung erlebt, Coach, Mutter, schreibt seit 2020 …"
+      style="margin-bottom: 8px"
+    />
+    }
+    <textarea
+      class="ta short"
+      [value]="extraValue(def.key)"
+      (change)="onExtraChange(def.key, $any($event.target).value)"
+      placeholder="Noch leer — generieren lassen oder selbst schreiben."
+    ></textarea>
+  </div>
+  } }
+
+  <div class="next">
+    <button class="btn primary" type="button" (click)="next()">
+      Weiter zur Formatierung <lucide-icon [img]="chevronIcon" [size]="15" />
+    </button>
   </div>
 </div>

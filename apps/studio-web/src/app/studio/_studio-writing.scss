@@ -1,0 +1,154 @@
+// Legacy V3 Schreiben/writing styles (ported). Part 4 of the studio stylesheet
+// (@used by studio-shell.scss): autopilot + translate cards, autopilot progress
+// bar, chapter tabs, two-column write grid and the live preview page.
+
+.autobar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #241e31;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  position: sticky;
+  top: 10px;
+  z-index: 20;
+  box-shadow: 0 8px 24px -10px rgba(36, 30, 49, 0.5);
+}
+.auto-msg {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.auto-track {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.auto-fill {
+  height: 100%;
+  background: #9c86e8;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+.card.autopilot {
+  display: flex;
+  gap: 16px;
+  background: linear-gradient(135deg, #fdfbf4, #f4effc);
+  border-color: #d9cbee;
+}
+.exp {
+  display: flex;
+  gap: 16px;
+}
+.exp-ico {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 12px;
+  background: #ede8f8;
+  color: #6c57b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.exp-ico.gold {
+  background: #f3ead3;
+  color: #9a7b2d;
+}
+.exp p {
+  margin-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.chtabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.chtab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #d8d3e6;
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #5a5370;
+  font-family: inherit;
+}
+.chtab.done {
+  border-color: #7fbfa5;
+  color: #3e8e7e;
+}
+.chtab.on {
+  background: #6c57b8;
+  border-color: #6c57b8;
+  color: #fff;
+}
+
+.writegrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+.ta.short {
+  min-height: 130px;
+}
+
+.prevwrap {
+  position: sticky;
+  top: 20px;
+}
+.prevlabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8b84a0;
+  margin-bottom: 8px;
+}
+.page {
+  background: #fff;
+  border: 1px solid #dcd7e8;
+  box-shadow:
+    0 14px 34px -18px rgba(38, 30, 60, 0.4),
+    0 2px 6px rgba(38, 30, 60, 0.07);
+  overflow: hidden;
+}
+.page-inner {
+  padding: 9% 9.5%;
+  height: 100%;
+  overflow-y: auto;
+}
+.bk-chnum {
+  font-size: 0.72em;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #6b6480;
+  margin-bottom: 0.8em;
+}
+.bk-h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.9em;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1em;
+}
+
+@media (max-width: 900px) {
+  .writegrid {
+    grid-template-columns: 1fr;
+  }
+  .prevwrap {
+    position: static;
+  }
+}

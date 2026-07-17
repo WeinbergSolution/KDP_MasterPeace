@@ -13,6 +13,9 @@
     },
     {
       "path": "../../libs/document-model/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/contracts/tsconfig.lib.json"
     }
   ]
 }
