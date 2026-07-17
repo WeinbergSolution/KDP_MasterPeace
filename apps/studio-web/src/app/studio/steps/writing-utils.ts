@@ -2,7 +2,11 @@
 // V3 reference: book-scaffold definitions (EXTRA_DEFS/extrasFor), autopilot word
 // targets, trim labels + dimensions, preview font families and chapter words.
 
-import type { BookType, Extras } from '../../core/models/book-project';
+import type {
+  BookType,
+  Extras,
+  FormatSettings,
+} from '../../core/models/book-project';
 
 /** A book-scaffold (front/back matter) definition. */
 export interface ExtraDef {
@@ -96,3 +100,18 @@ export const CHAPTER_WORD: Record<string, string> = {
   fr: 'Chapitre',
   it: 'Capitolo',
 };
+
+/**
+ * Builds the inline preview-page style (font, size, line height, aspect ratio,
+ * text-align variable) from the format settings — the Legacy `previewStyle`.
+ *
+ * @param settings The project's format settings.
+ * @returns An inline style string for the `.page` element.
+ */
+export function previewPageStyle(settings: FormatSettings): string {
+  const dims = TRIM_DIMS[settings.trim] ?? TRIM_DIMS['7x10'];
+  const family = FONT_FAMILIES[settings.font] ?? FONT_FAMILIES['garamond'];
+  const align = settings.align === 'left' ? 'left' : 'justify';
+  const size = settings.fontSize * 1.05;
+  return `font-family:${family};font-size:${size}px;line-height:${settings.lineHeight};aspect-ratio:${dims.w}/${dims.h};--al:${align};`;
+}

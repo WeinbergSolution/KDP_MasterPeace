@@ -36,11 +36,15 @@
           <select
             id="word-target"
             class="inp"
-            [value]="project()?.settings?.wordTarget ?? 1200"
             (change)="saveWordTarget($any($event.target).value)"
           >
             @for (opt of wordTargets; track opt.value) {
-            <option [value]="opt.value">{{ opt.label }}</option>
+            <option
+              [value]="opt.value"
+              [selected]="opt.value === (project()?.settings?.wordTarget ?? 1200)"
+            >
+              {{ opt.label }}
+            </option>
             }
           </select>
         </div>
@@ -76,11 +80,12 @@
           <select
             id="trans-target"
             class="inp"
-            [value]="transTarget()"
             (change)="transTarget.set($any($event.target).value)"
           >
             @for (opt of langOptions(); track opt.key) {
-            <option [value]="opt.key">{{ opt.label }}</option>
+            <option [value]="opt.key" [selected]="opt.key === transTarget()">
+              {{ opt.label }}
+            </option>
             }
           </select>
         </div>

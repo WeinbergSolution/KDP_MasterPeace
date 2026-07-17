@@ -37,6 +37,7 @@ import { STEP_LABELS, computeRailStats } from './project-stats';
 import { IdeaStepComponent } from './steps/idea-step';
 import { GliederungStepComponent } from './steps/gliederung-step';
 import { WritingStepComponent } from './steps/writing-step';
+import { FormatStepComponent } from './steps/format-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
 
 // The tool shell in Legacy V3 optics: dark rail (brand, project box, 8 steps,
@@ -75,6 +76,7 @@ const STEP_ICONS: LucideIconData[] = [
     IdeaStepComponent,
     GliederungStepComponent,
     WritingStepComponent,
+    FormatStepComponent,
     PlaceholderStepComponent,
   ],
   templateUrl: './studio-shell.html',

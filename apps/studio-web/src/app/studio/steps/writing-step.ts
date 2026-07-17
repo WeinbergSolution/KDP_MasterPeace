@@ -32,11 +32,10 @@ import { ActiveProjectService } from '../active-project.service';
 import { countWords } from '../project-stats';
 import {
   CHAPTER_WORD,
-  FONT_FAMILIES,
-  TRIM_DIMS,
   TRIM_LABELS,
   WORD_TARGETS,
   extrasFor,
+  previewPageStyle,
   type ExtraDef,
 } from './writing-utils';
 
@@ -262,12 +261,7 @@ export class WritingStepComponent {
 
   /** Builds the inline preview page style (font, size, aspect ratio, align). */
   private buildPreviewStyle(): string {
-    const s = this.active.current()?.settings;
-    const dims = TRIM_DIMS[s?.trim ?? '7x10'] ?? TRIM_DIMS['7x10'];
-    const family =
-      FONT_FAMILIES[s?.font ?? 'garamond'] ?? FONT_FAMILIES['garamond'];
-    const align = s?.align === 'left' ? 'left' : 'justify';
-    const size = (s?.fontSize ?? 11.5) * 1.05;
-    return `font-family:${family};font-size:${size}px;line-height:${s?.lineHeight ?? 1.55};aspect-ratio:${dims.w}/${dims.h};--al:${align};`;
+    const settings = this.active.current()?.settings;
+    return settings ? previewPageStyle(settings) : '';
   }
 }

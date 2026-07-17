@@ -103,6 +103,10 @@
 .ta.short {
   min-height: 130px;
 }
+.range {
+  width: 100%;
+  accent-color: #6c57b8;
+}
 
 .prevwrap {
   position: sticky;
@@ -128,6 +132,11 @@
   padding: 9% 9.5%;
   height: 100%;
   overflow-y: auto;
+  // The chosen text alignment (Blocksatz/Linksbündig) cascades to the prose via
+  // the --al custom property set in the preview style; Blocksatz hyphenates.
+  text-align: var(--al, justify);
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 .bk-chnum {
   font-size: 0.72em;
