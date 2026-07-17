@@ -8,18 +8,21 @@ import { mkdir } from 'node:fs/promises';
 
 const TARGET_URL = process.env.SHOTS_URL ?? 'http://127.0.0.1:4200';
 const OUT_DIR = 'artifacts/visual/parity';
-const EMAIL = `gliederung-${Date.now()}@example.com`;
 const PASSWORD = 'Test1234!';
 
+// Each block is intentionally > 80 words so the Legacy mergeShort step keeps the
+// chapters separate — the screenshot then shows several chapter rows, the merge
+// buttons and the (disabled) structure-check card, i.e. the full layout.
+const BODY =
+  'Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes ' +
+  'Beispiel aus dem Alltag der Leserin sowie eine kleine praktische Übung zum ' +
+  'Mitmachen und Ausprobieren im eigenen Tempo. ';
 const SAMPLE = [
-  'Warum Gewohnheiten zählen',
-  'Kleine Schritte, große Wirkung. Der Einstieg in das Thema und was dich erwartet.',
+  'Warum Gewohnheiten zählen. ' + BODY.repeat(7),
   '===',
-  'Der Auslöser',
-  'Jede Gewohnheit beginnt mit einem Auslöser, der eine Routine in Gang setzt.',
+  'Der Auslöser. ' + BODY.repeat(7),
   '===',
-  'Die Belohnung',
-  'Am Ende steht die Belohnung, die das Verhalten im Gehirn verankert.',
+  'Die Belohnung. ' + BODY.repeat(7),
 ].join('\n');
 
 /**
@@ -40,10 +43,11 @@ async function loadChromium() {
  * Registers a fresh emulator user and lands in the studio.
  *
  * @param page The Playwright page.
+ * @param email A unique email for this run.
  */
-async function register(page) {
+async function register(page, email) {
   await page.goto(`${TARGET_URL}/register`, { waitUntil: 'domcontentloaded' });
-  await page.fill('input[type="email"]', EMAIL);
+  await page.fill('input[type="email"]', email);
   await page.fill('input[type="password"]', PASSWORD);
   await page.click('button[type="submit"]');
   await page.waitForURL(/\/studio/, { timeout: 15000 });
@@ -82,7 +86,8 @@ async function seedOutline(page) {
  */
 async function shot(browser, label, width, height) {
   const page = await browser.newPage({ viewport: { width, height } });
-  await register(page);
+  const email = `gliederung-${label}-${Date.now()}@example.com`;
+  await register(page, email);
   await seedOutline(page);
   await page.screenshot({
     path: `${OUT_DIR}/gliederung-${label}.png`,
