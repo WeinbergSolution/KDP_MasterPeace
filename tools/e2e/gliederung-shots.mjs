@@ -54,7 +54,10 @@ async function register(page, email) {
 }
 
 /**
- * Creates a project, seeds a title + imported outline, opens Gliederung.
+ * Creates an untitled project and seeds an imported outline in Gliederung.
+ *
+ * The title is intentionally left empty so the "Trage zuerst … Titel …" hint
+ * card renders at the top of the step (Legacy parity for an untitled project).
  *
  * @param page The Playwright page.
  */
@@ -65,9 +68,6 @@ async function seedOutline(page) {
     await create.first().click();
   }
   await page.waitForSelector('.rail-step:not([disabled])', { timeout: 15000 });
-  await page.click('.rail-step:has-text("Idee")');
-  await page.fill('input#idea-title', 'Die Macht der Gewohnheit');
-  await page.waitForTimeout(600);
   await page.click('.rail-step:has-text("Gliederung")');
   await page.waitForSelector('textarea#import-text', { timeout: 10000 });
   await page.fill('textarea#import-text', SAMPLE);

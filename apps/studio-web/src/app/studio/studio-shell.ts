@@ -121,9 +121,9 @@ export class StudioShellComponent {
     if (!this.projectId() && list.length) void this.open(list[0].id);
   }
 
-  /** Creates a new project and opens it. */
+  /** Creates a new (untitled) project and opens it (Legacy: emptyProject.title=""). */
   protected async createProject(): Promise<void> {
-    const created = await this.store.create('Neues Buchprojekt');
+    const created = await this.store.create('');
     await this.refreshProjects();
     await this.open(created.id);
   }

@@ -51,7 +51,7 @@ export class GliederungStepComponent {
     () => this.active.current()?.outline ?? [],
   );
   protected readonly hasConcept = computed(
-    () => !!this.active.current()?.title,
+    () => (this.active.current()?.title ?? '').trim().length > 0,
   );
 
   protected readonly fileIcon = FileText;
