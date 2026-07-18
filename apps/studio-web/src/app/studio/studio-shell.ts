@@ -39,6 +39,7 @@ import { GliederungStepComponent } from './steps/gliederung-step';
 import { WritingStepComponent } from './steps/writing-step';
 import { FormatStepComponent } from './steps/format-step';
 import { CoverStepComponent } from './steps/cover-step';
+import { ExportStepComponent } from './steps/export-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
 
 // The tool shell in Legacy V3 optics: dark rail (brand, project box, 8 steps,
@@ -79,6 +80,7 @@ const STEP_ICONS: LucideIconData[] = [
     WritingStepComponent,
     FormatStepComponent,
     CoverStepComponent,
+    ExportStepComponent,
     PlaceholderStepComponent,
   ],
   templateUrl: './studio-shell.html',

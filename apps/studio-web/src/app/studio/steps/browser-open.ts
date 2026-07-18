@@ -30,6 +30,24 @@ export function downloadTextFile(
 }
 
 /**
+ * Triggers a client-side download of an already-built Blob (e.g. an EPUB).
+ *
+ * @param filename The download file name.
+ * @param blob The file blob.
+ */
+export function downloadBlobFile(filename: string, blob: Blob): void {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.rel = 'noopener';
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), REVOKE_DOWNLOAD_MS);
+}
+
+/**
  * Opens an HTML document in a new tab; falls back to a download when blocked.
  *
  * @param html The HTML document.

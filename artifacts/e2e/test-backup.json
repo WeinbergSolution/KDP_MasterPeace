@@ -1,0 +1,103 @@
+{
+  "app": "kdp-masterpeace",
+  "schema": 1,
+  "exportedAt": "2026-07-18T01:50:45.595Z",
+  "step": 5,
+  "activeChapter": 0,
+  "project": {
+    "niche": "Selbstwert stärken nach toxischen Beziehungen",
+    "language": "de",
+    "bookType": "workbook",
+    "chapterCount": 8,
+    "ideas": [],
+    "trends": [],
+    "digitalIdeas": [],
+    "gaps": [],
+    "titleTests": [],
+    "series": [],
+    "voice": {
+      "sample": "",
+      "profile": ""
+    },
+    "launch": {
+      "posts": [],
+      "emails": []
+    },
+    "title": "Genug",
+    "subtitle": "",
+    "audience": "",
+    "promise": "",
+    "author": "Mara Feld",
+    "bio": "",
+    "outline": [
+      {
+        "id": "10bb3bb7-f45a-4748-96a2-11a0ae6cff7e",
+        "title": "Kapitel 1",
+        "goal": "",
+        "content": "Warum Gewohnheiten zählen. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. \n:::uebung Übung\n[linien:3]\n- [ ] erledigt\n[skala] Wie klar?\n:::"
+      },
+      {
+        "id": "8a0e57cc-f671-422e-a4ab-f100f7b60a67",
+        "title": "Kapitel 2",
+        "goal": "",
+        "content": "Der Auslöser. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. \n:::uebung Übung\n[linien:3]\n- [ ] erledigt\n[skala] Wie klar?\n:::"
+      },
+      {
+        "id": "8edcc2d4-7382-4c9b-89a6-0407b3aa3878",
+        "title": "Kapitel 3",
+        "goal": "",
+        "content": "Die Belohnung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. Dieser Absatz beschreibt ausführlich eine Idee und gibt ein konkretes Beispiel aus dem Alltag der Leserin sowie eine Anleitung. \n:::uebung Übung\n[linien:3]\n- [ ] erledigt\n[skala] Wie klar?\n:::"
+      }
+    ],
+    "extras": {
+      "einleitung": "",
+      "arbeitsweise": "",
+      "schlusswort": "",
+      "autorin": "",
+      "bonus": ""
+    },
+    "cover": {
+      "pageCount": 0,
+      "paper": "cream",
+      "bg": "#2E2A3B",
+      "fg": "#F5F1E6",
+      "blurb": "",
+      "brief": "",
+      "imgPrompt": "",
+      "imageUrl": ""
+    },
+    "pub": {
+      "binding": "paperback",
+      "price": 12.99,
+      "ebookPrice": 4.99,
+      "checks": {}
+    },
+    "digital": {
+      "format": "a4",
+      "fontSize": 14,
+      "accent": "#c0392b",
+      "align": "left",
+      "withExtras": true,
+      "sel": {
+        "10bb3bb7-f45a-4748-96a2-11a0ae6cff7e": false
+      }
+    },
+    "settings": {
+      "trim": "7x10",
+      "pages": "151-300",
+      "font": "garamond",
+      "fontSize": 11.5,
+      "lineHeight": 1.55,
+      "align": "justify",
+      "wordTarget": 1200
+    },
+    "kdp": null,
+    "currentStep": 5,
+    "activeChapter": 0,
+    "version": 1,
+    "ownerId": "kQ0I2wag47MmrsaFkLO4lZxGxiUJ",
+    "createdAt": 1784339441602,
+    "updatedAt": 1784339444596,
+    "id": "TZX5RO31HnuV5fILjIYL"
+  }
+}
