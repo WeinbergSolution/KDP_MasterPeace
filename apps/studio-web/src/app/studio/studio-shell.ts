@@ -41,7 +41,9 @@ import { FormatStepComponent } from './steps/format-step';
 import { CoverStepComponent } from './steps/cover-step';
 import { ExportStepComponent } from './steps/export-step';
 import { KdpStepComponent } from './steps/kdp-step';
+import { PublishStepComponent } from './steps/publish-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
+import { KDP_GUIDE } from './steps/publish/kdp-guide';
 
 // The tool shell in Legacy V3 optics: dark rail (brand, project box, 8 steps,
 // stats, save status) + wide main area. ViewEncapsulation.None ports the legacy
@@ -83,6 +85,7 @@ const STEP_ICONS: LucideIconData[] = [
     CoverStepComponent,
     ExportStepComponent,
     KdpStepComponent,
+    PublishStepComponent,
     PlaceholderStepComponent,
   ],
   templateUrl: './studio-shell.html',
@@ -217,8 +220,11 @@ export class StudioShellComponent {
     if (!p) return false;
     if (index === 0) return !!p.title;
     if (index === 1) return p.outline.length > 0;
+    if (index === 2)
+      return p.outline.length > 0 && this.stats().written === p.outline.length;
     if (index === 4) return !!p.cover.blurb;
     if (index === 6) return !!p.kdp;
+    if (index === 7) return KDP_GUIDE.every((g) => p.pub.checks[g.k]);
     return false;
   }
 }

@@ -1,0 +1,210 @@
+@if (project(); as project) {
+<div class="panel">
+  <h1 class="pt">Veröffentlichen bei KDP</h1>
+  <p class="ps">
+    Erst prüfen, dann Preis kalkulieren, dann Schritt für Schritt durch das
+    KDP-Dashboard — auch wenn du es noch nie gemacht hast.
+  </p>
+
+  <div class="card">
+    <div class="card-h">
+      <lucide-icon
+        [img]="shieldIcon"
+        [size]="15"
+        style="vertical-align: -2px"
+      />
+      Pre-Flight-Check gegen die KDP-Vorgaben
+      <span class="pf-badge {{ badgeClass() }}">{{ badgeText() }}</span>
+    </div>
+    @for (ch of preflight().checks; track track($index)) {
+    <div class="pf-row {{ ch.level }}">
+      <span class="pf-ico"
+        >{{ ch.level === 'ok' ? '✓' : ch.level === 'warn' ? '!' : '✕' }}</span
+      >
+      <span>{{ ch.text }}</span>
+    </div>
+    }
+    <p class="muted small-t">
+      Der Check prüft alles, was das Tool sehen kann. Was er nicht prüfen kann:
+      das fertige PDF selbst (gerade Seitenzahl, Schrift-Einbettung) — dafür ist
+      der KDP-Previewer in Schritt 8 der Anleitung da, der ist verbindlich.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Preis-Kalkulator</div>
+    <div class="row">
+      <div class="grow">
+        <label class="lbl" for="pub-binding">Ausgabe</label>
+        <select
+          id="pub-binding"
+          class="inp"
+          (change)="onBinding($any($event.target).value)"
+        >
+          <option
+            value="paperback"
+            [selected]="project.pub.binding === 'paperback'"
+          >
+            Taschenbuch
+          </option>
+          <option
+            value="hardcover"
+            [selected]="project.pub.binding === 'hardcover'"
+          >
+            Hardcover (gebunden)
+          </option>
+        </select>
+      </div>
+      <div>
+        <label class="lbl" for="pub-price">Print-Listenpreis (€)</label>
+        <input
+          id="pub-price"
+          type="number"
+          step="0.5"
+          min="1"
+          class="inp num"
+          [value]="project.pub.price"
+          (input)="onPrice($any($event.target).value)"
+        />
+      </div>
+      <div>
+        <label class="lbl" for="pub-ebook">E-Book-Preis (€)</label>
+        <input
+          id="pub-ebook"
+          type="number"
+          step="0.5"
+          min="0"
+          class="inp num"
+          [value]="project.pub.ebookPrice"
+          (input)="onEbookPrice($any($event.target).value)"
+        />
+      </div>
+    </div>
+    <div class="dims" style="margin-top: 12px">
+      <div>
+        <span>Druckkosten (≈ bei {{ pricingPages() }} S.)</span>
+        <b>{{ pricing().cost.toFixed(2) }} €</b>
+      </div>
+      <div>
+        <span>Mindest-Listenpreis</span
+        ><b>{{ pricing().minPrice.toFixed(2) }} €</b>
+      </div>
+      <div>
+        <span>Deine Print-Tantieme</span>
+        <b [class.bad]="pricing().royalty < 0">
+          {{ pricing().royalty.toFixed(2) }} € / Buch
+        </b>
+      </div>
+      <div>
+        <span>E-Book-Tantieme ({{ pricing().e70 ? '70 %' : '35 %' }})</span>
+        <b>{{ pricing().eRoyalty.toFixed(2) }} € / Verkauf</b>
+      </div>
+    </div>
+    <p class="muted small-t">
+      Formel: 60 % vom Nettopreis minus Druckkosten (s/w, Amazon.de); E-Book 70
+      % zwischen 2,99–9,99 €, sonst 35 %. Das ist eine Schätzung als
+      Orientierung — der verbindliche Rechner ist der im KDP-Preis-Tab.
+      Hardcover-Werte sind Richtwerte.
+    </p>
+    @if (isHardcover()) {
+    <p class="warn-inline">
+      Hardcover: Dein Interior-PDF passt unverändert (Minimum 75 Seiten). Für
+      das Cover nutze aber den KDP-Vorlagenrechner („KDP Cover-Vorlage
+      berechnen") statt unserer Taschenbuch-Vorlage — Hardcover-Cover haben
+      zusätzliche Einschlag-Ränder.
+    </p>
+    }
+  </div>
+
+  <div class="card">
+    <div class="card-h">
+      Deine Upload-Anleitung ({{ guideDone() }}/{{ guideTotal }} erledigt)
+    </div>
+    @for (g of guide; track g.k; let i = $index) {
+    <div class="guide {{ project.pub.checks[g.k] ? 'done' : '' }}">
+      <button
+        class="guide-check"
+        type="button"
+        (click)="togglePubCheck(g.k)"
+        aria-label="Erledigt umschalten"
+      >
+        @if (project.pub.checks[g.k]) {
+        <lucide-icon [img]="checkIcon" [size]="13" />
+        } @else {
+        <span class="guide-num">{{ i + 1 }}</span>
+        }
+      </button>
+      <div class="grow">
+        <div class="guide-t">{{ g.t }}</div>
+        <div class="guide-d">{{ g.d }}</div>
+        @if (g.k === 'details') {
+        <div class="row" style="margin-top: 8px">
+          <button
+            class="btn tiny"
+            type="button"
+            (click)="copyText('g-t', project.title)"
+          >
+            <lucide-icon
+              [img]="copied() === 'g-t' ? checkIcon : copyIcon"
+              [size]="12"
+            />
+            Titel
+          </button>
+          <button
+            class="btn tiny"
+            type="button"
+            (click)="copyText('g-st', project.subtitle)"
+          >
+            <lucide-icon
+              [img]="copied() === 'g-st' ? checkIcon : copyIcon"
+              [size]="12"
+            />
+            Untertitel
+          </button>
+          <button
+            class="btn tiny"
+            type="button"
+            (click)="copyText('g-au', project.author)"
+          >
+            <lucide-icon
+              [img]="copied() === 'g-au' ? checkIcon : copyIcon"
+              [size]="12"
+            />
+            Autor
+          </button>
+          @if (hasKdp()) {
+          <button class="btn tiny" type="button" (click)="copyBeschreibung()">
+            <lucide-icon
+              [img]="copied() === 'g-d' ? checkIcon : copyIcon"
+              [size]="12"
+            />
+            Beschreibung
+          </button>
+          }
+        </div>
+        } @if (g.k === 'keywords' && hasKdp()) {
+        <div class="row" style="margin-top: 8px">
+          <button class="btn tiny" type="button" (click)="copyKeywords()">
+            <lucide-icon
+              [img]="copied() === 'g-kw' ? checkIcon : copyIcon"
+              [size]="12"
+            />
+            Alle 7 Keywords kopieren
+          </button>
+        </div>
+        } @if (g.k === 'interior') {
+        <div class="guide-d" style="margin-top: 6px">
+          <b>Deine Werte:</b> Trim-Größe {{ trimLabel() }} · Kein Beschnitt · {{
+          paperLabel() }} Papier
+        </div>
+        }
+      </div>
+    </div>
+    }
+    <p class="muted small-t">
+      Deine Häkchen werden im Projekt gespeichert — du kannst jederzeit
+      unterbrechen und später weitermachen.
+    </p>
+  </div>
+</div>
+}
