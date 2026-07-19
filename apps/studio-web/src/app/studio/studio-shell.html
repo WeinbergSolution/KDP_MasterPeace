@@ -10,14 +10,11 @@
 
     <div class="projbox">
       <label class="proj-lbl" for="project-select">Buchprojekt</label>
-      <select
-        id="project-select"
-        class="proj-sel"
-        [value]="project()?.id ?? ''"
-        (change)="onSwitch($event)"
-      >
+      <select id="project-select" class="proj-sel" (change)="onSwitch($event)">
         @for (p of projects(); track p.id) {
-        <option [value]="p.id">{{ p.title || 'Ohne Titel' }}</option>
+        <option [value]="p.id" [selected]="p.id === project()?.id">
+          {{ p.title || 'Ohne Titel' }}
+        </option>
         }
       </select>
       <div class="proj-actions">
@@ -86,6 +83,8 @@
     <app-cover-step />
     } @case (5) {
     <app-export-step />
+    } @case (6) {
+    <app-kdp-step />
     } @default {
     <app-placeholder-step [label]="steps[p.currentStep].label" />
     } } } @else {

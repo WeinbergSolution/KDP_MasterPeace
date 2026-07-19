@@ -15,17 +15,20 @@ export class ActiveProjectService {
   private readonly projectSignal = signal<BookProject | null>(null);
   private readonly savingSignal = signal(false);
   private pending: Partial<BookProject> = {};
+  private pendingId: string | null = null;
   private timer: ReturnType<typeof setTimeout> | undefined;
 
   readonly current = this.projectSignal.asReadonly();
   readonly isSaving = this.savingSignal.asReadonly();
 
   /**
-   * Loads a project by id into the active slot.
+   * Loads a project by id, flushing any pending edits of the previous project
+   * first so a project switch never loses or misroutes an autosave.
    *
    * @param id The project id to open.
    */
   async load(id: string): Promise<void> {
+    await this.flush();
     this.projectSignal.set(await this.store.get(id));
   }
 
@@ -39,6 +42,7 @@ export class ActiveProjectService {
     if (!project) return;
     this.projectSignal.set({ ...project, ...patch });
     this.pending = { ...this.pending, ...patch };
+    this.pendingId = project.id;
     this.scheduleSave();
   }
 
@@ -49,14 +53,17 @@ export class ActiveProjectService {
     this.timer = setTimeout(() => void this.flush(), AUTOSAVE_MS);
   }
 
-  /** Writes the coalesced pending changes and clears the saving flag. */
+  /** Writes the coalesced pending changes to their own project id. */
   private async flush(): Promise<void> {
-    const project = this.projectSignal();
+    clearTimeout(this.timer);
+    const id = this.pendingId;
     const patch = this.pending;
     this.pending = {};
-    if (!project) return this.savingSignal.set(false);
+    this.pendingId = null;
+    if (!id || Object.keys(patch).length === 0)
+      return this.savingSignal.set(false);
     try {
-      await this.store.update(project.id, patch);
+      await this.store.update(id, patch);
     } finally {
       this.savingSignal.set(false);
     }

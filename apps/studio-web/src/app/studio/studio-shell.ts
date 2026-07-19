@@ -40,6 +40,7 @@ import { WritingStepComponent } from './steps/writing-step';
 import { FormatStepComponent } from './steps/format-step';
 import { CoverStepComponent } from './steps/cover-step';
 import { ExportStepComponent } from './steps/export-step';
+import { KdpStepComponent } from './steps/kdp-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
 
 // The tool shell in Legacy V3 optics: dark rail (brand, project box, 8 steps,
@@ -81,6 +82,7 @@ const STEP_ICONS: LucideIconData[] = [
     FormatStepComponent,
     CoverStepComponent,
     ExportStepComponent,
+    KdpStepComponent,
     PlaceholderStepComponent,
   ],
   templateUrl: './studio-shell.html',
@@ -112,12 +114,28 @@ export class StudioShellComponent {
   protected readonly checkIcon = Check;
   protected readonly saveIcon = Save;
 
+  private lastLoadedId: string | null = null;
+
   constructor() {
     effect(() => {
       const id = this.projectId();
-      if (id) void this.active.load(id);
+      if (id) void this.openProject(id);
     });
     void this.refreshProjects();
+  }
+
+  /**
+   * Loads a project and refreshes the switcher list when the id changes (so a
+   * project created elsewhere — e.g. a series volume — appears in the switcher).
+   *
+   * @param id The project id to open.
+   */
+  private async openProject(id: string): Promise<void> {
+    await this.active.load(id);
+    if (id !== this.lastLoadedId) {
+      this.lastLoadedId = id;
+      await this.refreshProjects();
+    }
   }
 
   /** Loads the project list; opens the newest when none is selected. */
