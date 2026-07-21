@@ -342,6 +342,13 @@
   gap: 0.8rem;
   justify-content: center;
 }
+.lp-final__trust {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.1rem;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.88rem;
+}
 
 // ---- responsive ----
 @media (max-width: 980px) {

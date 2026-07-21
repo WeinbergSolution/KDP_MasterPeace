@@ -1,0 +1,32 @@
+<div class="auth">
+  <a class="auth__brand" routerLink="/">KDP MasterPeace</a>
+  <div class="auth__card">
+    @switch (state()) { @case ('loading') {
+    <h1 class="auth__title">E-Mail wird bestätigt …</h1>
+    <p class="auth__lead">Einen Moment bitte.</p>
+    } @case ('success') {
+    <h1 class="auth__title">Bestätigt</h1>
+    <p class="auth__ok" role="status">{{ message() }}</p>
+    <div class="auth__actions">
+      <button class="auth__submit" type="button" (click)="goLogin()">
+        Jetzt anmelden
+      </button>
+    </div>
+    } @default {
+    <h1 class="auth__title">Bestätigung nicht möglich</h1>
+    <p class="auth__error" role="alert">{{ message() }}</p>
+    <p class="auth__lead">
+      Der Link ist möglicherweise abgelaufen oder wurde bereits verwendet.
+      Fordere eine neue Bestätigungs-E-Mail an oder melde dich an.
+    </p>
+    <div class="auth__actions">
+      <a class="auth__submit auth__submit--link" routerLink="/verify-email">
+        Neue E-Mail anfordern
+      </a>
+      <a class="auth__ghost auth__ghost--link" routerLink="/login">
+        Zum Login
+      </a>
+    </div>
+    } }
+  </div>
+</div>

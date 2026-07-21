@@ -4,7 +4,11 @@
     <h1 class="auth__title">Anmelden</h1>
     <p class="auth__lead">Melde dich an und arbeite direkt im Studio weiter.</p>
 
-    @if (!configured) {
+    @if (verifiedHint) {
+    <p class="auth__ok" role="status">
+      E-Mail-Adresse erfolgreich bestätigt. Du kannst dich jetzt anmelden.
+    </p>
+    } @if (!configured) {
     <p class="auth__error" role="alert">
       Integration nicht konfiguriert: Die Firebase-Umgebungsvariablen fehlen.
       Anmeldung ist derzeit nicht möglich.

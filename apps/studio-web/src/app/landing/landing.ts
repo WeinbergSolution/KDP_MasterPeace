@@ -29,6 +29,7 @@ import {
 } from 'lucide-angular';
 import { AuthService } from '../core/firebase/auth.service';
 import { BOOKING_PENDING_NOTICE, PLANS } from './pricing-data';
+import { FAQS } from './faq-data';
 
 // Public marketing landing page at `/`. Premium publishing-SaaS composition for
 // KDP MasterPeace: warm ivory base, deep-ink contrast sections, gold + cover
@@ -78,6 +79,7 @@ export class LandingComponent {
   protected readonly bookingNotice = signal('');
 
   protected readonly plans = PLANS;
+  protected readonly faqs = FAQS;
 
   protected readonly covers: Cover[] = [
     {

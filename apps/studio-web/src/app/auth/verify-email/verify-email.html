@@ -1,0 +1,72 @@
+<div class="auth">
+  <a class="auth__brand" routerLink="/">KDP MasterPeace</a>
+  <div class="auth__card">
+    <h1 class="auth__title">Bestätige deine E-Mail-Adresse</h1>
+    <p class="auth__lead">
+      Wir haben dir einen Bestätigungslink gesendet. Öffne die E-Mail und klicke
+      auf den Link, um dein Konto freizuschalten.
+    </p>
+    <ul class="auth__hints">
+      <li>Prüfe auch deinen Spam-Ordner.</li>
+      <li>Prüfe die Schreibweise deiner E-Mail-Adresse.</li>
+      <li>Der Link kann ablaufen — fordere bei Bedarf einen neuen an.</li>
+      <li>Nach der Bestätigung kehrst du zum Login zurück.</li>
+    </ul>
+
+    @if (notice()) {
+    <p [class]="noticeOk() ? 'auth__ok' : 'auth__error'" role="status">
+      {{ notice() }}
+    </p>
+    }
+
+    <div class="auth__actions">
+      <a class="auth__submit auth__submit--link" routerLink="/login">
+        Zum Login
+      </a>
+      <button class="auth__ghost" type="button" (click)="toggleForm()">
+        Bestätigungs-E-Mail erneut senden
+      </button>
+    </div>
+
+    @if (showForm()) {
+    <form (ngSubmit)="resend()">
+      <p class="auth__lead auth__lead--sm">
+        Melde dich kurz an, um eine neue Bestätigungs-E-Mail zu senden. Dein
+        Passwort wird nicht gespeichert.
+      </p>
+      <div class="auth__field">
+        <label class="auth__label" for="ve-email">E-Mail</label>
+        <input
+          id="ve-email"
+          class="auth__input"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          [(ngModel)]="email"
+        />
+      </div>
+      <div class="auth__field">
+        <label class="auth__label" for="ve-password">Passwort</label>
+        <input
+          id="ve-password"
+          class="auth__input"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          [(ngModel)]="password"
+        />
+      </div>
+      <button
+        class="auth__submit"
+        type="submit"
+        [disabled]="busy() || cooldown() > 0"
+      >
+        {{ busy() ? 'Wird gesendet …' : cooldown() > 0 ? 'Erneut senden in ' +
+        cooldown() + ' s' : 'Bestätigungs-E-Mail senden' }}
+      </button>
+    </form>
+    }
+  </div>
+</div>

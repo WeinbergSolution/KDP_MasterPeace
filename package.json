@@ -27,6 +27,7 @@
     "check:architecture": "nx run-many -t lint --parallel=1",
     "check:responsive": "node tools/checks/check-responsive.mjs",
     "check:frontend-secrets": "node tools/checks/check-frontend-secrets.mjs",
+    "check:free-claims": "node tools/checks/check-free-claims.mjs",
     "test:wp-c1": "node tools/e2e/wp-c1-smoke.mjs",
     "generate:env": "node tools/build/generate-env-js.mjs",
     "test:env-inject": "node --test tools/build/render-env-js.test.mjs",

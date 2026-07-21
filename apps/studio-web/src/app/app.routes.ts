@@ -35,6 +35,18 @@ export const appRoutes: Route[] = [
         (m) => m.ForgotPasswordComponent,
       ),
   },
+  {
+    path: 'verify-email',
+    loadComponent: () =>
+      import('./auth/verify-email/verify-email').then(
+        (m) => m.VerifyEmailComponent,
+      ),
+  },
+  {
+    path: 'auth/action',
+    loadComponent: () =>
+      import('./auth/action/auth-action').then((m) => m.AuthActionComponent),
+  },
   { path: 'impressum', data: { doc: 'impressum' }, loadComponent: legal },
   { path: 'datenschutz', data: { doc: 'datenschutz' }, loadComponent: legal },
   {

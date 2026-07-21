@@ -14,6 +14,10 @@ const AUTH_MESSAGES: Record<string, string> = {
   'auth/network-request-failed':
     'Keine Verbindung. Bitte Internet prüfen und erneut versuchen.',
   'auth/configuration-not-found': 'Anmeldung ist derzeit nicht konfiguriert.',
+  'auth/expired-action-code':
+    'Der Bestätigungslink ist abgelaufen. Bitte fordere einen neuen an.',
+  'auth/invalid-action-code':
+    'Der Bestätigungslink ist ungültig oder wurde bereits verwendet.',
 };
 
 /**

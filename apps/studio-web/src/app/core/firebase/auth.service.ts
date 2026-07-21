@@ -1,7 +1,10 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import {
+  applyActionCode,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  reload,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
@@ -31,6 +34,9 @@ export class AuthService {
   readonly currentUser = this.userSignal.asReadonly();
   readonly isReady = this.readySignal.asReadonly();
   readonly isAuthenticated = computed(() => this.userSignal() !== null);
+  readonly isEmailVerified = computed(
+    () => this.userSignal()?.emailVerified ?? false,
+  );
 
   constructor() {
     setTimeout(() => this.markReady(), READY_TIMEOUT_MS);
@@ -73,17 +79,21 @@ export class AuthService {
   }
 
   /**
-   * Registers a new account and sets its display name.
+   * Registers a new account, sets its display name and sends a German
+   * verification e-mail. The account is signed in but NOT yet verified.
    *
    * @param email The account email.
    * @param password The chosen password.
    * @param displayName The user's display name.
+   * @param continueUrl The same-origin continue URL for the verification e-mail.
    */
   async register(
     email: string,
     password: string,
     displayName: string,
+    continueUrl?: string,
   ): Promise<void> {
+    this.auth.languageCode = 'de';
     const cred = await createUserWithEmailAndPassword(
       this.auth,
       email,
@@ -91,6 +101,53 @@ export class AuthService {
     );
     if (displayName.trim())
       await updateProfile(cred.user, { displayName: displayName.trim() });
+    await sendEmailVerification(
+      cred.user,
+      continueUrl ? { url: continueUrl } : null,
+    );
+  }
+
+  /** Reloads the current user so a just-completed verification is reflected. */
+  async reload(): Promise<void> {
+    const user = this.auth.currentUser;
+    if (!user) return;
+    await reload(user);
+    this.userSignal.set(this.auth.currentUser);
+  }
+
+  /**
+   * Applies a Firebase e-mail action code (verify e-mail).
+   *
+   * @param oobCode The out-of-band action code from the e-mail link.
+   */
+  async applyEmailVerification(oobCode: string): Promise<void> {
+    await applyActionCode(this.auth, oobCode);
+  }
+
+  /**
+   * Signs in briefly to resend the verification e-mail, then signs out again.
+   * The password is never stored.
+   *
+   * @param email The account email.
+   * @param password The account password.
+   * @param continueUrl The same-origin continue URL for the verification e-mail.
+   * @returns 'already' when the address is already verified, else 'sent'.
+   */
+  async resendVerification(
+    email: string,
+    password: string,
+    continueUrl?: string,
+  ): Promise<'already' | 'sent'> {
+    const cred = await signInWithEmailAndPassword(this.auth, email, password);
+    try {
+      if (cred.user.emailVerified) return 'already';
+      this.auth.languageCode = 'de';
+      const settings = continueUrl ? { url: continueUrl } : null;
+      await sendEmailVerification(cred.user, settings);
+      return 'sent';
+    } finally {
+      await signOut(this.auth);
+    }
   }
 
   /**

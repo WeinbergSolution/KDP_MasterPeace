@@ -1,0 +1,61 @@
+// FAQ section (@used by landing.scss). A native <details>/<summary> accordion —
+// fully keyboard-accessible, no JavaScript and no external library. Elegant
+// dividers, a gold chevron and generous spacing to match the landing language.
+
+.lp-faq {
+  max-width: 780px;
+  margin-inline: auto;
+}
+.lp-faq__item {
+  border-bottom: 1px solid var(--lp-line);
+}
+.lp-faq__item:first-child {
+  border-top: 1px solid var(--lp-line);
+}
+.lp-faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 0.25rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--lp-text);
+}
+.lp-faq__q::-webkit-details-marker {
+  display: none;
+}
+.lp-faq__q::after {
+  content: '';
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-right: 2px solid var(--lp-gold-2);
+  border-bottom: 2px solid var(--lp-gold-2);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.lp-faq__item[open] .lp-faq__q::after {
+  transform: rotate(-135deg);
+}
+.lp-faq__q:focus-visible {
+  outline: 2px solid var(--lp-gold-2);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.lp-faq__a {
+  padding: 0 0.25rem 1.25rem;
+  max-width: 64ch;
+  color: var(--lp-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-faq__q::after {
+    transition: none;
+  }
+}
