@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   ArrowRight,
   BookOpen,
+  Check,
   Download,
   Feather,
   FileText,
@@ -21,6 +27,9 @@ import {
   Sparkles,
   Store,
 } from 'lucide-angular';
+import { AuthService } from '../core/firebase/auth.service';
+import { AI_CREDIT_RULES, BOOKING_PENDING_NOTICE, PLANS } from './pricing-data';
+import { COMPARE_COLUMNS, COMPARE_NOTE, COMPARE_ROWS } from './comparison-data';
 
 // Public marketing landing page at `/`. Premium publishing-SaaS composition for
 // KDP MasterPeace: warm ivory base, deep-ink contrast sections, gold + cover
@@ -60,8 +69,20 @@ interface Step {
   styleUrl: './landing.scss',
 })
 export class LandingComponent {
+  private readonly auth = inject(AuthService);
+
   protected readonly year = new Date().getFullYear();
   protected readonly arrow = ArrowRight;
+  protected readonly checkIcon = Check;
+
+  protected readonly isAuthed = this.auth.isAuthenticated;
+  protected readonly bookingNotice = signal('');
+
+  protected readonly plans = PLANS;
+  protected readonly aiRules = AI_CREDIT_RULES;
+  protected readonly compareColumns = COMPARE_COLUMNS;
+  protected readonly compareRows = COMPARE_ROWS;
+  protected readonly compareNote = COMPARE_NOTE;
 
   protected readonly covers: Cover[] = [
     {
@@ -226,4 +247,12 @@ export class LandingComponent {
       text: 'Von der Idee bis zum KDP-Upload ohne Tool-Wechsel.',
     },
   ];
+
+  /**
+   * Handles a plan CTA for a signed-in user: shows an honest "booking is being
+   * prepared" notice (no payment integration and no studio access is granted).
+   */
+  protected selectPlan(): void {
+    this.bookingNotice.set(BOOKING_PENDING_NOTICE);
+  }
 }

@@ -2,6 +2,8 @@
 // warm ivory base, deep-ink contrast, gold + cover accents. Component-scoped;
 // sections live in the sibling partial. No third-party assets or fonts.
 @use 'landing-sections' as *;
+@use 'landing-comparison' as *;
+@use 'landing-pricing' as *;
 
 :host {
   --lp-cream: #fbf7ef;
@@ -29,6 +31,12 @@
   overflow-x: clip;
 }
 
+// Offset in-page anchor targets (Tarife/Vergleich) below the sticky header.
+#tarife,
+#vergleich {
+  scroll-margin-top: 4.75rem;
+}
+
 .lp-accent {
   color: var(--lp-gold-2);
 }
@@ -40,9 +48,12 @@
   gap: 0.5rem;
   padding: 0.7rem 1.15rem;
   border-radius: 999px;
+  font-family: inherit;
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   border: 1px solid transparent;
+  cursor: pointer;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,

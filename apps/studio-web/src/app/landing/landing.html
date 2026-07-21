@@ -4,7 +4,8 @@
       <span class="lp-mark" aria-hidden="true">K</span>
       <span>KDP MasterPeace</span>
     </a>
-    <nav class="lp-head__nav" aria-label="Anmeldung">
+    <nav class="lp-head__nav" aria-label="Navigation und Anmeldung">
+      <a class="lp-link" href="#tarife">Tarife</a>
       <a class="lp-link" routerLink="/login">Anmelden</a>
       <a class="lp-btn lp-btn--gold" routerLink="/register"
         >Kostenlos starten</a
@@ -208,6 +209,118 @@
           <p class="lp-aud__text">{{ a.text }}</p>
         </article>
         }
+      </div>
+    </section>
+
+    <!-- ============ VERGLEICH ============ -->
+    <section id="vergleich" class="lp-sec" aria-labelledby="cmp-h">
+      <div class="lp-sec__head">
+        <p class="lp-eyebrow">Vergleich</p>
+        <h2 id="cmp-h" class="lp-sec__title">
+          Ein geführter Workflow statt vieler einzelner Werkzeuge.
+        </h2>
+      </div>
+      <div class="lp-cmp">
+        <table class="lp-cmp__table">
+          <caption class="lp-vh">
+            Vergleich von KDP MasterPeace, einzelnen Software-Werkzeugen sowie
+            Ghostwriter oder Agentur nach Kategorie.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Kategorie</th>
+              @for (c of compareColumns; track c.name) {
+              <th scope="col" [class.lp-cmp__hl]="c.highlighted">
+                {{ c.name }}
+              </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of compareRows; track row.category) {
+            <tr>
+              <th scope="row" class="lp-cmp__cat">{{ row.category }}</th>
+              <td class="lp-cmp__hl" data-label="KDP MasterPeace">
+                {{ row.mp }}
+              </td>
+              <td data-label="Einzelne Software-Werkzeuge">{{ row.tools }}</td>
+              <td data-label="Ghostwriter oder Agentur">{{ row.agency }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="lp-cmp__note">{{ compareNote }}</p>
+    </section>
+
+    <!-- ============ TARIFE ============ -->
+    <section id="tarife" class="lp-sec lp-sec--warm" aria-labelledby="price-h">
+      <div class="lp-sec__head">
+        <h2 id="price-h" class="lp-sec__title">
+          Wähle das passende Kontingent für deine Buchprojekte.
+        </h2>
+        <p class="lp-sec__sub">
+          Jeder Tarif kombiniert eine feste Anzahl an Buchproduktionen mit einem
+          begrenzten KI-Guthaben. Manuelle Bearbeitung und gespeicherte Inhalte
+          bleiben auch nach Verbrauch des KI-Guthabens zugänglich.
+        </p>
+      </div>
+      <div class="lp-plans">
+        @for (p of plans; track p.id) {
+        <article class="lp-plan" [class.lp-plan--hl]="p.highlighted">
+          @if (p.highlighted) {
+          <span class="lp-plan__flag">{{ p.highlightLabel }}</span>
+          }
+          <h3 class="lp-plan__name">{{ p.name }}</h3>
+          <p class="lp-plan__billing">{{ p.billingLabel }}</p>
+          <p class="lp-plan__price">{{ p.priceLabel }}</p>
+          <div class="lp-plan__quota">
+            <span class="lp-plan__books">{{ p.bookLimit }}</span>
+            <span class="lp-plan__credit">{{ p.aiCreditLabel }}</span>
+          </div>
+          <ul class="lp-plan__features">
+            @for (f of p.features; track f) {
+            <li>
+              <lucide-icon [img]="checkIcon" [size]="15" /><span>{{ f }}</span>
+            </li>
+            }
+          </ul>
+          @if (isAuthed()) {
+          <button
+            type="button"
+            class="lp-btn lp-plan__cta"
+            [class.lp-btn--gold]="p.highlighted"
+            [class.lp-btn--ghost]="!p.highlighted"
+            (click)="selectPlan()"
+          >
+            {{ p.ctaLabel }}
+          </button>
+          } @else {
+          <a
+            class="lp-btn lp-plan__cta"
+            [class.lp-btn--gold]="p.highlighted"
+            [class.lp-btn--ghost]="!p.highlighted"
+            routerLink="/register"
+            [queryParams]="{ plan: p.id }"
+          >
+            {{ p.ctaLabel }}
+          </a>
+          }
+        </article>
+        }
+      </div>
+      @if (bookingNotice()) {
+      <p class="lp-plans__notice" role="status">{{ bookingNotice() }}</p>
+      }
+      <div class="lp-rules">
+        <h3 class="lp-rules__title">So funktioniert dein KI-Guthaben</h3>
+        <ul class="lp-rules__list">
+          @for (r of aiRules; track r) {
+          <li>
+            <lucide-icon [img]="checkIcon" [size]="15" /><span>{{ r }}</span>
+          </li>
+          }
+        </ul>
       </div>
     </section>
 
