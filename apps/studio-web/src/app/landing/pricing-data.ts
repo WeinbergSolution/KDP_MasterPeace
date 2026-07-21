@@ -1,8 +1,8 @@
-// Central, type-safe pricing configuration for the landing page. Prices and AI
-// credit amounts are NOT yet decided — every plan shows PRICE_PLACEHOLDER and
-// only qualitative, real product features are listed (no invented prices,
-// tokens, discounts or capabilities). Swap priceLabel / aiCreditLabel here once
-// final values exist; the UI needs no change.
+// Central, type-safe pricing configuration for the landing page. Final prices
+// are not decided yet — every plan shows PRICE_PLACEHOLDER, and only real,
+// currently shipping product features are listed (no invented prices, discounts,
+// free trials or capabilities). The real differentiator is the number of
+// included book productions. Swap priceLabel here once final.
 
 export type BillingType = 'oneTime' | 'subscription';
 
@@ -10,105 +10,102 @@ export type BillingType = 'oneTime' | 'subscription';
 export interface Plan {
   readonly id: string;
   readonly name: string;
+  readonly audience: string;
+  readonly books: string;
+  readonly booksLabel: string;
+  readonly booksNote: string;
   readonly billingType: BillingType;
   readonly billingLabel: string;
   readonly priceLabel: string;
-  readonly bookLimit: string;
-  readonly aiCreditLabel: string;
   readonly highlighted: boolean;
   readonly highlightLabel?: string;
   readonly features: readonly string[];
   readonly ctaLabel: string;
 }
 
-/** Shown until final prices are decided (centrally swappable). */
-export const PRICE_PLACEHOLDER = 'Preis wird vor Verkaufsstart bekannt gegeben';
+/** Shown until final prices are decided (centrally swappable, kept subtle). */
+export const PRICE_PLACEHOLDER = 'Preis folgt';
 
 export const PLANS: readonly Plan[] = [
   {
     id: 'tester',
     name: 'Tester',
+    audience: 'Zum Kennenlernen mit einem vollständigen Buch',
+    books: '1',
+    booksLabel: 'Buchproduktion',
+    booksNote: 'einmalig',
     billingType: 'oneTime',
-    billingLabel: 'Einmaliger Kauf · kein Abo',
+    billingLabel: 'Einmaliger Kauf',
     priceLabel: PRICE_PLACEHOLDER,
-    bookLimit: '1 Buchproduktion',
-    aiCreditLabel: 'Begrenztes KI-Guthaben',
     highlighted: false,
     features: [
-      'Vollständiger 8-Schritte-Workflow',
-      'Ideen- und Gliederungsbereich',
-      'Schreibbereich',
-      'Formatierungsbereich',
-      'Cover-Workflow',
-      'Vorhandene Exportfunktionen',
-      'KDP-Paket',
-      'Veröffentlichungs-Checkliste',
-      'Automatische Projektspeicherung',
-      'Manuelle Bearbeitung ohne zusätzlichen KI-Verbrauch',
+      'Geführter 8-Schritte-Workflow',
+      'Schreiben und manuelle Bearbeitung',
+      'Formatierung und Cover-Workflow',
+      'Vorhandene Exportformate',
+      'KDP-Paket und Veröffentlichungs-Checkliste',
+      'Projektspeicherung',
     ],
     ctaLabel: '1 Buch testen',
   },
   {
     id: 'starter',
     name: 'Starter',
+    audience: 'Für den Einstieg in die regelmäßige Buchproduktion',
+    books: '5',
+    booksLabel: 'Buchproduktionen',
+    booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
     billingLabel: 'Monatliches Abo',
     priceLabel: PRICE_PLACEHOLDER,
-    bookLimit: 'Bis zu 5 Buchproduktionen pro Abrechnungszeitraum',
-    aiCreditLabel: 'Monatliches KI-Guthaben für bis zu 5 Buchproduktionen',
     highlighted: false,
     features: [
       'Alles aus Tester',
       'Mehrere gespeicherte Buchprojekte',
-      'Erneute manuelle Bearbeitung bestehender Projekte',
-      'Erneute Exporte bestehender Inhalte',
+      'Bestehende Projekte erneut bearbeiten',
+      'Vorhandene Inhalte erneut exportieren',
     ],
     ctaLabel: 'Starter wählen',
   },
   {
     id: 'creator',
     name: 'Creator',
+    audience: 'Für regelmäßige Selfpublisher',
+    books: '12',
+    booksLabel: 'Buchproduktionen',
+    booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
     billingLabel: 'Monatliches Abo',
     priceLabel: PRICE_PLACEHOLDER,
-    bookLimit: 'Bis zu 12 Buchproduktionen pro Abrechnungszeitraum',
-    aiCreditLabel: 'Größeres monatliches KI-Guthaben',
     highlighted: true,
     highlightLabel: 'Beliebteste Wahl',
     features: [
       'Alles aus Starter',
-      'Mehr KI-gestützte Generierungen und Überarbeitungen',
-      'Manuelle Weiterbearbeitung bereits erstellter Inhalte',
+      'Für regelmäßige Veröffentlichungen',
+      'Mehr parallel gespeicherte Buchprojekte',
+      'Vollständiger Workflow je Buchprojekt',
     ],
     ctaLabel: 'Creator wählen',
   },
   {
     id: 'pro',
     name: 'Pro',
+    audience: 'Für ein größeres Veröffentlichungsvolumen',
+    books: '25',
+    booksLabel: 'Buchproduktionen',
+    booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
     billingLabel: 'Monatliches Abo',
     priceLabel: PRICE_PLACEHOLDER,
-    bookLimit: 'Bis zu 25 Buchproduktionen pro Abrechnungszeitraum',
-    aiCreditLabel: 'Höchstes monatliches KI-Guthaben',
     highlighted: false,
     features: [
       'Alles aus Creator',
-      'Größeres Kontingent für umfangreiche Buchproduktionen',
-      'Manuelle Weiterbearbeitung und erneute Exporte',
+      'Für umfangreichere Buchproduktion',
+      'Höchste enthaltene Projektanzahl',
+      'Vollständiger Workflow je Buchprojekt',
     ],
     ctaLabel: 'Pro wählen',
   },
-];
-
-/** Plain-language rules on what does / doesn't consume AI credit. */
-export const AI_CREDIT_RULES: readonly string[] = [
-  'KI-Aktionen verbrauchen KI-Guthaben.',
-  'Manuelles Schreiben und Bearbeiten verbraucht kein KI-Guthaben.',
-  'Navigation, Speicherung und das Öffnen bestehender Projekte verbrauchen kein KI-Guthaben.',
-  'Ein erneuter Export unveränderter Inhalte verbraucht kein KI-Guthaben.',
-  'Eine neue KI-Generierung, Erweiterung oder Neufassung verbraucht Guthaben.',
-  'Bei aufgebrauchtem Guthaben bleiben Projekte und manuelle Bearbeitung weiterhin erreichbar.',
-  'Neue KI-Aktionen sind dann erst nach neuem Guthaben oder im nächsten Abrechnungszeitraum möglich.',
 ];
 
 /** Honest interstitial shown to signed-in users (no payment integration yet). */

@@ -28,8 +28,7 @@ import {
   Store,
 } from 'lucide-angular';
 import { AuthService } from '../core/firebase/auth.service';
-import { AI_CREDIT_RULES, BOOKING_PENDING_NOTICE, PLANS } from './pricing-data';
-import { COMPARE_COLUMNS, COMPARE_NOTE, COMPARE_ROWS } from './comparison-data';
+import { BOOKING_PENDING_NOTICE, PLANS } from './pricing-data';
 
 // Public marketing landing page at `/`. Premium publishing-SaaS composition for
 // KDP MasterPeace: warm ivory base, deep-ink contrast sections, gold + cover
@@ -79,10 +78,6 @@ export class LandingComponent {
   protected readonly bookingNotice = signal('');
 
   protected readonly plans = PLANS;
-  protected readonly aiRules = AI_CREDIT_RULES;
-  protected readonly compareColumns = COMPARE_COLUMNS;
-  protected readonly compareRows = COMPARE_ROWS;
-  protected readonly compareNote = COMPARE_NOTE;
 
   protected readonly covers: Cover[] = [
     {

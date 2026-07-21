@@ -1,33 +1,61 @@
-// Pricing section (@used by landing.scss). Four quota plans, Creator highlighted
-// as an elevated dark card; matches the landing language (ivory cards, gold
-// accents, deep-ink highlight). Prices are placeholders until finalised.
+// Pricing section (@used by landing.scss). A composed tier row rather than four
+// identical cards: the included book count is the visual core; Tester reads as a
+// light entry, Starter/Pro as clean cards (Pro with a gold hairline), Creator as
+// an elevated dark ink card with a gold badge. Matches the landing language.
 
-.lp-plans {
-  max-width: 1160px;
+.lp-tiers {
+  max-width: 1180px;
   margin-inline: auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1rem, 1.6vw, 1.4rem);
+  gap: clamp(1rem, 1.6vw, 1.5rem);
   align-items: stretch;
 }
-.lp-plan {
+.lp-tier {
   position: relative;
   display: flex;
   flex-direction: column;
   background: #fff;
   border: 1px solid var(--lp-line);
-  border-radius: 18px;
-  padding: clamp(1.4rem, 2vw, 1.9rem);
+  border-radius: 20px;
+  padding: clamp(1.5rem, 2vw, 2rem);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
 }
-.lp-plan--hl {
-  border-color: transparent;
+.lp-tier:not(.lp-tier--hl):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 38px -24px rgba(25, 19, 32, 0.5);
+}
+
+// Tester — lighter, friendlier entry
+.lp-tier--lite {
+  background: linear-gradient(180deg, #fff, var(--lp-cream));
+  border-color: #efe7d6;
+}
+.lp-tier--lite .lp-tier__num {
+  color: var(--lp-text);
+}
+
+// Pro — confident, gold hairline
+.lp-tier--pro {
+  border-top: 2px solid var(--lp-gold);
+}
+
+// Creator — elevated dark ink card, gold border + badge
+.lp-tier--hl {
   color: #fff;
+  border: 1.5px solid rgba(195, 154, 62, 0.55);
   background: linear-gradient(180deg, var(--lp-ink), var(--lp-ink-2));
-  box-shadow: 0 26px 48px -24px rgba(25, 19, 32, 0.6);
+  box-shadow: 0 30px 55px -26px rgba(25, 19, 32, 0.65);
+  z-index: 1;
 }
-.lp-plan__flag {
+.lp-tier--hl:hover {
+  box-shadow: 0 38px 62px -26px rgba(25, 19, 32, 0.72);
+}
+.lp-tier__badge {
   position: absolute;
-  top: -0.8rem;
+  top: -0.85rem;
   left: 50%;
   transform: translateX(-50%);
   background: linear-gradient(180deg, #d0a748, var(--lp-gold-2));
@@ -36,45 +64,64 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 0.3rem 0.85rem;
+  padding: 0.3rem 0.9rem;
   border-radius: 999px;
   white-space: nowrap;
   box-shadow: 0 8px 18px -8px rgba(168, 127, 40, 0.9);
 }
-.lp-plan__name {
+
+.lp-tier__name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.4rem;
-  margin-top: 0.2rem;
+  font-size: 1.35rem;
 }
-.lp-plan__billing {
-  font-size: 0.85rem;
-  color: var(--lp-muted);
-  margin-bottom: 0.9rem;
-}
-.lp-plan__price {
-  font-weight: 600;
-  font-size: 1rem;
-  text-align: center;
-  padding: 0.7rem 0.9rem;
-  border-radius: 10px;
-  background: var(--lp-cream-2);
-  margin-bottom: 1rem;
-}
-.lp-plan__quota {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  margin-bottom: 1rem;
-}
-.lp-plan__books {
-  font-weight: 700;
-}
-.lp-plan__credit {
+.lp-tier__aud {
+  margin-top: 0.35rem;
   font-size: 0.9rem;
   color: var(--lp-muted);
+  min-height: 2.7em;
 }
-.lp-plan__features {
+
+.lp-tier__books {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin: 0.4rem 0 0.9rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--lp-line);
+}
+.lp-tier__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.9rem, 4.4vw, 3.7rem);
+  line-height: 0.85;
+  color: var(--lp-gold-2);
+}
+.lp-tier__unit {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.3rem;
+}
+.lp-tier__unit-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.lp-tier__unit-note {
+  font-size: 0.82rem;
+  color: var(--lp-muted);
+}
+
+.lp-tier__billing {
+  font-size: 0.88rem;
+  color: var(--lp-muted);
+  margin-bottom: 1.1rem;
+}
+.lp-tier__price {
+  font-weight: 600;
+  color: var(--lp-text);
+}
+
+.lp-tier__features {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -82,38 +129,42 @@
   margin-bottom: 1.4rem;
   font-size: 0.92rem;
 }
-.lp-plan__features li {
+.lp-tier__features li {
   display: flex;
   gap: 0.5rem;
   align-items: flex-start;
 }
-.lp-plan__features lucide-icon {
+.lp-tier__features lucide-icon {
   color: var(--lp-gold-2);
   flex: none;
   margin-top: 1px;
 }
-.lp-plan__cta {
+.lp-tier__cta {
   margin-top: auto;
   width: 100%;
   justify-content: center;
 }
 
-// highlighted (dark) card overrides
-.lp-plan--hl .lp-plan__billing,
-.lp-plan--hl .lp-plan__credit {
+// Creator (dark) text/accent overrides
+.lp-tier--hl .lp-tier__aud,
+.lp-tier--hl .lp-tier__unit-note,
+.lp-tier--hl .lp-tier__billing {
   color: rgba(255, 255, 255, 0.72);
 }
-.lp-plan--hl .lp-plan__price {
-  background: rgba(255, 255, 255, 0.08);
-  color: #f2e8cf;
+.lp-tier--hl .lp-tier__books {
+  border-bottom-color: rgba(255, 255, 255, 0.16);
 }
-.lp-plan--hl .lp-plan__features lucide-icon {
+.lp-tier--hl .lp-tier__num,
+.lp-tier--hl .lp-tier__features lucide-icon {
   color: #e6c877;
 }
+.lp-tier--hl .lp-tier__price {
+  color: #f2e8cf;
+}
 
-.lp-plans__notice {
-  max-width: 1160px;
-  margin: 1.2rem auto 0;
+.lp-tiers__notice {
+  max-width: 1180px;
+  margin: 1.3rem auto 0;
   text-align: center;
   background: #fff;
   border: 1px solid var(--lp-line);
@@ -123,48 +174,26 @@
   font-size: 0.95rem;
 }
 
-.lp-rules {
-  max-width: 1160px;
-  margin: clamp(1.6rem, 3vw, 2.4rem) auto 0;
-  background: #fff;
-  border: 1px solid var(--lp-line);
-  border-radius: 16px;
-  padding: clamp(1.3rem, 2.4vw, 2rem);
-}
-.lp-rules__title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-.lp-rules__list {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.7rem 1.6rem;
-}
-.lp-rules__list li {
-  display: flex;
-  gap: 0.55rem;
-  align-items: flex-start;
-  font-size: 0.93rem;
-}
-.lp-rules__list lucide-icon {
-  color: var(--lp-gold-2);
-  flex: none;
-  margin-top: 1px;
-}
-
-@media (max-width: 980px) {
-  .lp-plans {
-    grid-template-columns: repeat(2, 1fr);
+@media (min-width: 981px) {
+  .lp-tier--hl {
+    transform: translateY(-14px);
   }
-  .lp-rules__list {
-    grid-template-columns: 1fr;
+}
+@media (max-width: 980px) {
+  .lp-tiers {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 560px) {
-  .lp-plans {
+  .lp-tiers {
     grid-template-columns: 1fr;
+  }
+  .lp-tier__aud {
+    min-height: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-tier {
+    transition: none;
   }
 }

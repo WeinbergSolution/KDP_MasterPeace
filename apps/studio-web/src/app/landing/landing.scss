@@ -2,7 +2,6 @@
 // warm ivory base, deep-ink contrast, gold + cover accents. Component-scoped;
 // sections live in the sibling partial. No third-party assets or fonts.
 @use 'landing-sections' as *;
-@use 'landing-comparison' as *;
 @use 'landing-pricing' as *;
 
 :host {
@@ -31,9 +30,8 @@
   overflow-x: clip;
 }
 
-// Offset in-page anchor targets (Tarife/Vergleich) below the sticky header.
-#tarife,
-#vergleich {
+// Offset the in-page anchor target (Tarife) below the sticky header.
+#tarife {
   scroll-margin-top: 4.75rem;
 }
 
