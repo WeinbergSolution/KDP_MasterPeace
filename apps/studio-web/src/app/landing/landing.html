@@ -246,9 +246,10 @@
               <span class="lp-tier__unit-note">{{ p.booksNote }}</span>
             </span>
           </div>
-          <p class="lp-tier__billing">
-            {{ p.billingLabel }} <span aria-hidden="true">·</span>
-            <span class="lp-tier__price">{{ p.priceLabel }}</span>
+          <p class="lp-tier__price">
+            <span class="lp-tier__amount">{{ p.priceValue }}</span>
+            <span class="lp-tier__cur">{{ p.priceCurrency }}</span>
+            <span class="lp-tier__period">{{ p.pricePeriod }}</span>
           </p>
           <ul class="lp-tier__features">
             @for (f of p.features; track f) {

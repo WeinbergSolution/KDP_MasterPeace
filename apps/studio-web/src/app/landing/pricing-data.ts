@@ -1,8 +1,8 @@
-// Central, type-safe pricing configuration for the landing page. Final prices
-// are not decided yet — every plan shows PRICE_PLACEHOLDER, and only real,
-// currently shipping product features are listed (no invented prices, discounts,
-// free trials or capabilities). The real differentiator is the number of
-// included book productions. Swap priceLabel here once final.
+// Central, type-safe pricing configuration for the landing page. Prices are
+// preliminary launch prices, split into value / currency / period so the amount
+// can read large with a smaller currency and billing note. Only real, currently
+// shipping product features are listed (no invented discounts, annual prices,
+// strike-throughs, VAT statements or free trials). Swap the values here.
 
 export type BillingType = 'oneTime' | 'subscription';
 
@@ -15,16 +15,14 @@ export interface Plan {
   readonly booksLabel: string;
   readonly booksNote: string;
   readonly billingType: BillingType;
-  readonly billingLabel: string;
-  readonly priceLabel: string;
+  readonly priceValue: string;
+  readonly priceCurrency: string;
+  readonly pricePeriod: string;
   readonly highlighted: boolean;
   readonly highlightLabel?: string;
   readonly features: readonly string[];
   readonly ctaLabel: string;
 }
-
-/** Shown until final prices are decided (centrally swappable, kept subtle). */
-export const PRICE_PLACEHOLDER = 'Preis folgt';
 
 export const PLANS: readonly Plan[] = [
   {
@@ -35,8 +33,9 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktion',
     booksNote: 'einmalig',
     billingType: 'oneTime',
-    billingLabel: 'Einmaliger Kauf',
-    priceLabel: PRICE_PLACEHOLDER,
+    priceValue: '9,90',
+    priceCurrency: '€',
+    pricePeriod: 'einmalig',
     highlighted: false,
     features: [
       'Geführter 8-Schritte-Workflow',
@@ -56,8 +55,9 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktionen',
     booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
-    billingLabel: 'Monatliches Abo',
-    priceLabel: PRICE_PLACEHOLDER,
+    priceValue: '29',
+    priceCurrency: '€',
+    pricePeriod: '/ Monat',
     highlighted: false,
     features: [
       'Alles aus Tester',
@@ -75,8 +75,9 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktionen',
     booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
-    billingLabel: 'Monatliches Abo',
-    priceLabel: PRICE_PLACEHOLDER,
+    priceValue: '59',
+    priceCurrency: '€',
+    pricePeriod: '/ Monat',
     highlighted: true,
     highlightLabel: 'Beliebteste Wahl',
     features: [
@@ -95,8 +96,9 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktionen',
     booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
-    billingLabel: 'Monatliches Abo',
-    priceLabel: PRICE_PLACEHOLDER,
+    priceValue: '99',
+    priceCurrency: '€',
+    pricePeriod: '/ Monat',
     highlighted: false,
     features: [
       'Alles aus Creator',

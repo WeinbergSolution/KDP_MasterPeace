@@ -111,14 +111,29 @@
   color: var(--lp-muted);
 }
 
-.lp-tier__billing {
-  font-size: 0.88rem;
-  color: var(--lp-muted);
+.lp-tier__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.3rem;
   margin-bottom: 1.1rem;
 }
-.lp-tier__price {
+.lp-tier__amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--lp-text);
+}
+.lp-tier__cur {
+  font-size: 1rem;
   font-weight: 600;
   color: var(--lp-text);
+}
+.lp-tier__period {
+  font-size: 0.9rem;
+  color: var(--lp-muted);
 }
 
 .lp-tier__features {
@@ -148,7 +163,7 @@
 // Creator (dark) text/accent overrides
 .lp-tier--hl .lp-tier__aud,
 .lp-tier--hl .lp-tier__unit-note,
-.lp-tier--hl .lp-tier__billing {
+.lp-tier--hl .lp-tier__period {
   color: rgba(255, 255, 255, 0.72);
 }
 .lp-tier--hl .lp-tier__books {
@@ -158,8 +173,9 @@
 .lp-tier--hl .lp-tier__features lucide-icon {
   color: #e6c877;
 }
-.lp-tier--hl .lp-tier__price {
-  color: #f2e8cf;
+.lp-tier--hl .lp-tier__amount,
+.lp-tier--hl .lp-tier__cur {
+  color: #fff;
 }
 
 .lp-tiers__notice {
