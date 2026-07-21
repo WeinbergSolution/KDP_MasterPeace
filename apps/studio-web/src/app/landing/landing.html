@@ -1,121 +1,243 @@
 <div class="lp">
-  <header class="lp-header">
-    <a class="lp-brand" routerLink="/">KDP MasterPeace</a>
-    <nav class="lp-nav" aria-label="Anmeldung">
-      <a class="lp-nav__link" routerLink="/login">Anmelden</a>
-      <a class="lp-btn lp-btn--solid" routerLink="/register"
+  <header class="lp-head">
+    <a class="lp-head__brand" routerLink="/">
+      <span class="lp-mark" aria-hidden="true">K</span>
+      <span>KDP MasterPeace</span>
+    </a>
+    <nav class="lp-head__nav" aria-label="Anmeldung">
+      <a class="lp-link" routerLink="/login">Anmelden</a>
+      <a class="lp-btn lp-btn--gold" routerLink="/register"
         >Kostenlos starten</a
       >
     </nav>
   </header>
 
   <main>
+    <!-- ============ HERO ============ -->
     <section class="lp-hero">
-      <p class="lp-eyebrow">Publishing-Studio für Amazon KDP</p>
-      <h1 class="lp-hero__title">
-        Von der Idee zum fertigen Buch — an einem Ort.
-      </h1>
-      <p class="lp-hero__lead">
-        KDP MasterPeace begleitet dich von der Marktchance über das Schreiben
-        und die Formatierung bis zu Cover, Export und Launch. Mit sichtbarer
-        Live-Vorschau bei jedem Schritt.
-      </p>
-      <div class="lp-hero__cta">
-        <a class="lp-btn lp-btn--solid lp-btn--lg" routerLink="/register"
-          >Jetzt loslegen</a
-        >
-        <a class="lp-btn lp-btn--ghost lp-btn--lg" routerLink="/login"
-          >Ich habe ein Konto</a
-        >
-      </div>
-      <div class="lp-hero__book" aria-hidden="true">
-        <div class="lp-book">
-          <span class="lp-book__title">Dein Buch</span>
-          <span class="lp-book__sub">Idee → Manuskript → Veröffentlichung</span>
+      <div class="lp-hero__copy">
+        <p class="lp-eyebrow">Publishing-Studio für Amazon KDP</p>
+        <h1 class="lp-hero__title">
+          Dein Buch.<br />Von der ersten Idee bis zur
+          <span class="lp-accent">Veröffentlichung</span>.
+        </h1>
+        <p class="lp-hero__lead">
+          Entwickle Workbooks, Ratgeber und Romane in einem geführten
+          8-Schritte-Workflow — inklusive Schreiben, Formatierung, Cover, Export
+          und KDP-Paket.
+        </p>
+        <div class="lp-hero__cta">
+          <a class="lp-btn lp-btn--gold lp-btn--lg" routerLink="/register">
+            Kostenlos starten <lucide-icon [img]="arrow" [size]="18" />
+          </a>
+          <a class="lp-btn lp-btn--ghost lp-btn--lg" routerLink="/login">
+            Anmelden
+          </a>
         </div>
+        <ul class="lp-hero__trust">
+          <li>Ein durchgehender Workflow</li>
+          <li>Keine Tool-Wechsel</li>
+          <li>KDP-fertige Dateien</li>
+        </ul>
+      </div>
+
+      <div
+        class="lp-hero__show"
+        aria-label="Beispiel-Cover, mit KDP MasterPeace gebaut"
+      >
+        <div class="lp-stack">
+          <figure class="lp-stack__item lp-stack__item--back2">
+            <img
+              src="/covers/das-kind-in-mir.webp"
+              alt="Beispielcover: Das Kind in mir"
+              width="800"
+              height="1433"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <figure class="lp-stack__item lp-stack__item--back1">
+            <img
+              src="/covers/mein-kreatives-lebens-journal.webp"
+              alt="Beispielcover: Mein kreatives Lebens-Journal"
+              width="800"
+              height="1433"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <figure class="lp-stack__item lp-stack__item--mid">
+            <img
+              src="/covers/der-weg-zur-inneren-ruhe.webp"
+              alt="Beispielcover: Der Weg zur inneren Ruhe"
+              width="800"
+              height="1433"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <figure class="lp-stack__item lp-stack__item--front">
+            <img
+              src="/covers/der-weg-zu-finanzieller-freiheit.webp"
+              alt="Beispielcover: Der Weg zu finanzieller Freiheit"
+              width="800"
+              height="1433"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        </div>
+        <span class="lp-show__note"
+          >4 Beispielprojekte · in KDP MasterPeace gebaut</span
+        >
       </div>
     </section>
 
-    <section class="lp-section" aria-labelledby="benefits-h">
-      <h2 id="benefits-h" class="lp-section__title">Warum KDP MasterPeace</h2>
-      <div class="lp-grid lp-grid--3">
-        @for (b of benefits; track b.title) {
-        <article class="lp-card">
-          <h3 class="lp-card__title">{{ b.title }}</h3>
-          <p class="lp-card__text">{{ b.text }}</p>
+    <!-- ============ COVER-GALERIE ============ -->
+    <section class="lp-sec" aria-labelledby="gal-h">
+      <div class="lp-sec__head">
+        <h2 id="gal-h" class="lp-sec__title">Vier Beispielprojekte</h2>
+        <p class="lp-sec__sub">
+          Vom Achtsamkeits-Workbook bis zum Roman — komplett in KDP MasterPeace
+          entwickelt. Beispielprojekte, keine echten Verkaufstitel.
+        </p>
+      </div>
+      <div class="lp-gallery">
+        @for (c of covers; track c.file) {
+        <article class="lp-cov lp-cov--{{ c.tone }}">
+          <div class="lp-cov__frame">
+            <span class="lp-cov__tag">Beispielprojekt</span>
+            <img
+              src="/covers/{{ c.file }}"
+              [alt]="'Beispielcover: ' + c.title"
+              width="800"
+              height="1433"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div class="lp-cov__meta">
+            <span class="lp-badge lp-badge--{{ c.tone }}">{{ c.type }}</span>
+            <h3 class="lp-cov__title">{{ c.title }}</h3>
+            <p class="lp-cov__cat">{{ c.category }}</p>
+          </div>
         </article>
         }
       </div>
     </section>
 
-    <section class="lp-section lp-section--muted" aria-labelledby="workflow-h">
-      <h2 id="workflow-h" class="lp-section__title">
-        So funktioniert's — 8 Schritte
-      </h2>
-      <ol class="lp-steps">
-        @for (s of workflow; track s.index) {
-        <li class="lp-step">
-          <span class="lp-step__num">{{ s.index }}</span>
-          <span class="lp-step__body">
-            <span class="lp-step__title">{{ s.title }}</span>
-            <span class="lp-step__text">{{ s.text }}</span>
-          </span>
+    <!-- ============ CAPABILITIES (BENTO) ============ -->
+    <section class="lp-sec lp-sec--warm" aria-labelledby="cap-h">
+      <div class="lp-sec__head">
+        <h2 id="cap-h" class="lp-sec__title">
+          Alles für dein Buch an einem Ort
+        </h2>
+        <p class="lp-sec__sub">
+          Acht Werkzeuge, die ineinandergreifen — von der Marktchance bis zum
+          fertigen KDP-Upload.
+        </p>
+      </div>
+      <div class="lp-bento">
+        @for (cap of capabilities; track cap.title) {
+        <article class="lp-bento__cell">
+          <span class="lp-ic"
+            ><lucide-icon [img]="cap.icon" [size]="22"
+          /></span>
+          <h3 class="lp-bento__title">{{ cap.title }}</h3>
+          <p class="lp-bento__text">{{ cap.text }}</p>
+        </article>
+        }
+      </div>
+    </section>
+
+    <!-- ============ 8-SCHRITTE-PROZESS (DARK) ============ -->
+    <section class="lp-proc" aria-labelledby="proc-h">
+      <div class="lp-sec__head lp-sec__head--light">
+        <p class="lp-eyebrow lp-eyebrow--onDark">Der Workflow</p>
+        <h2 id="proc-h" class="lp-sec__title lp-sec__title--light">
+          In acht klaren Schritten zum fertigen Buch
+        </h2>
+      </div>
+      <ol class="lp-flow">
+        @for (s of steps; track s.index) {
+        <li class="lp-flow__step">
+          <span class="lp-flow__num">{{ s.index }}</span>
+          <h3 class="lp-flow__title">{{ s.title }}</h3>
+          <p class="lp-flow__text">{{ s.text }}</p>
         </li>
         }
       </ol>
     </section>
 
-    <section class="lp-section" aria-labelledby="features-h">
-      <h2 id="features-h" class="lp-section__title">Funktionen</h2>
-      <div class="lp-grid lp-grid--3">
-        @for (f of features; track f.title) {
-        <article class="lp-card">
-          <h3 class="lp-card__title">{{ f.title }}</h3>
-          <p class="lp-card__text">{{ f.text }}</p>
+    <!-- ============ ERGEBNISSE ============ -->
+    <section class="lp-sec" aria-labelledby="res-h">
+      <div class="lp-sec__head">
+        <h2 id="res-h" class="lp-sec__title">Das kommt am Ende heraus</h2>
+        <p class="lp-sec__sub">
+          Fertige, hochladbare Dateien — kein Zwischenschritt in einem anderen
+          Programm.
+        </p>
+      </div>
+      <div class="lp-results">
+        @for (r of results; track r.title) {
+        <article class="lp-res">
+          <span class="lp-ic lp-ic--gold"
+            ><lucide-icon [img]="r.icon" [size]="20"
+          /></span>
+          <div>
+            <h3 class="lp-res__title">{{ r.title }}</h3>
+            <p class="lp-res__text">{{ r.text }}</p>
+          </div>
         </article>
         }
       </div>
     </section>
 
-    <section class="lp-section lp-section--muted" aria-labelledby="exports-h">
-      <h2 id="exports-h" class="lp-section__title">Echte Export-Wege</h2>
-      <ul class="lp-tags">
-        @for (e of exports; track e) {
-        <li class="lp-tag">{{ e }}</li>
-        }
-      </ul>
-    </section>
-
-    <section class="lp-section" aria-labelledby="audiences-h">
-      <h2 id="audiences-h" class="lp-section__title">Für wen</h2>
-      <div class="lp-grid lp-grid--3">
+    <!-- ============ ZIELGRUPPEN ============ -->
+    <section class="lp-sec lp-sec--warm" aria-labelledby="aud-h">
+      <div class="lp-sec__head">
+        <h2 id="aud-h" class="lp-sec__title">
+          Für wen KDP MasterPeace gebaut ist
+        </h2>
+      </div>
+      <div class="lp-aud">
         @for (a of audiences; track a.title) {
-        <article class="lp-card">
-          <h3 class="lp-card__title">{{ a.title }}</h3>
-          <p class="lp-card__text">{{ a.text }}</p>
+        <article class="lp-aud__card">
+          <span class="lp-ic"><lucide-icon [img]="a.icon" [size]="22" /></span>
+          <h3 class="lp-aud__title">{{ a.title }}</h3>
+          <p class="lp-aud__text">{{ a.text }}</p>
         </article>
         }
       </div>
     </section>
 
-    <section class="lp-cta" aria-labelledby="cta-h">
-      <h2 id="cta-h" class="lp-cta__title">Bereit, dein Buch zu bauen?</h2>
-      <p class="lp-cta__text">Starte kostenlos und leg direkt im Studio los.</p>
-      <a class="lp-btn lp-btn--solid lp-btn--lg" routerLink="/register"
-        >Kostenlos starten</a
-      >
+    <!-- ============ ABSCHLUSS-CTA ============ -->
+    <section class="lp-final" aria-labelledby="cta-h">
+      <h2 id="cta-h" class="lp-final__title">Bereit, dein Buch zu bauen?</h2>
+      <p class="lp-final__text">
+        Starte kostenlos und arbeite dich Schritt für Schritt bis zum
+        KDP-fertigen Buch vor.
+      </p>
+      <div class="lp-final__cta">
+        <a class="lp-btn lp-btn--gold lp-btn--lg" routerLink="/register">
+          Kostenlos starten <lucide-icon [img]="arrow" [size]="18" />
+        </a>
+        <a class="lp-btn lp-btn--light lp-btn--lg" routerLink="/login">
+          Anmelden
+        </a>
+      </div>
     </section>
   </main>
 
-  <footer class="lp-footer">
-    <span class="lp-footer__brand">KDP MasterPeace</span>
-    <nav class="lp-footer__nav" aria-label="Rechtliches">
+  <footer class="lp-foot">
+    <span class="lp-foot__brand">KDP MasterPeace</span>
+    <nav class="lp-foot__nav" aria-label="Rechtliches und Anmeldung">
       <a routerLink="/impressum">Impressum</a>
       <a routerLink="/datenschutz">Datenschutz</a>
       <a routerLink="/nutzungsbedingungen">Nutzungsbedingungen</a>
       <a routerLink="/login">Anmelden</a>
       <a routerLink="/register">Registrieren</a>
     </nav>
-    <span class="lp-footer__copy">© {{ year }} KDP MasterPeace</span>
+    <span class="lp-foot__copy">© {{ year }} KDP MasterPeace</span>
   </footer>
 </div>
