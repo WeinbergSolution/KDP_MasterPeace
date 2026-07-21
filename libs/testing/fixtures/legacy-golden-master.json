@@ -1,0 +1,82 @@
+{
+  "project": {
+    "niche": "Selbstwert staerken nach toxischen Beziehungen",
+    "chapterCount": 3,
+    "ideas": [
+      {
+        "titel": "Wieder bei dir ankommen",
+        "untertitel": "Ein Workbook fuer echten Selbstwert",
+        "zielgruppe": "Frauen nach belastenden Beziehungen",
+        "versprechen": "In acht Wochen zu einem stabilen inneren Fundament."
+      }
+    ],
+    "title": "Wieder bei dir ankommen",
+    "subtitle": "Ein Workbook fuer echten Selbstwert",
+    "audience": "Frauen nach belastenden Beziehungen",
+    "promise": "In acht Wochen zu einem stabilen inneren Fundament.",
+    "author": "M. Beispielautorin",
+    "bio": "Coachin fuer emotionale Resilienz, keine erfundenen Titel.",
+    "outline": [
+      {
+        "id": 1000,
+        "title": "Verstehen, was Selbstwert ist",
+        "goal": "Grundlagen begreifen",
+        "content": "## Verstehen, was Selbstwert ist\nVielleicht kennst du dieses Gefuehl: du gibst **alles** und fragst dich trotzdem, ob du genug bist.\n\n> Du musst dich nicht beweisen, um wertvoll zu sein.\n### Woher der innere Kritiker kommt\n- Fruehe Praegungen\n- Vergleich mit anderen\n* Alternatives Aufzaehlungszeichen\n[skala] Wie stark bestimmt die innere Kritik gerade deinen Alltag?\n:::uebung Deine innere Stimme kennenlernen\nNotiere drei Saetze, die dein innerer Kritiker dir haeufig sagt:\n[linien:3]\n- [ ] Ich habe die Saetze aufgeschrieben\n- [x] Ich habe sie laut ausgesprochen\n:::\n:::tipp\nBeobachte deine Gedanken diese Woche wie ein neugieriger Forscher.\n:::"
+      },
+      {
+        "id": 1001,
+        "title": "Alte Muster erkennen",
+        "goal": "Praegungen sichtbar machen",
+        "content": "# Alte Ueberschrift auf Ebene eins\nDieser Absatz enthaelt **unbalancierten Fettdruck ohne Ende.\n1. Erster Schritt\n2. Zweiter Schritt\n3. Dritter Schritt\n5. Fuenftens mit falscher Startnummer\n6. Sechstens\n[linien:20]\n:::beispiel Ein Alltagsbeispiel\nAnna bemerkt ihren Kritiker mitten im Meeting und atmet bewusst durch.\n:::\n:::tipp\n:::"
+      },
+      {
+        "id": 1002,
+        "title": "Neue Wege gehen",
+        "goal": "Ins Handeln kommen",
+        "content": "## Ausblick und Abschluss\nEin letzter Gedanke zum Abschluss deiner Reise.\n:::unbekannt Dieser Boxtyp existiert nicht\nDiese Zeile beschreibt einen unbekannten Boxtyp und darf nicht verloren gehen.\n:::uebung Bewusst nicht geschlossene Box\nDiese Box wird absichtlich nie geschlossen und laeuft bis zum Kapitelende.\n[linien:5]\n- [ ] Letzter offener Punkt"
+      }
+    ],
+    "extras": {
+      "einleitung": "Willkommen. Dieses Buch begleitet dich Schritt fuer Schritt.\n\nDu bist hier genau richtig.",
+      "arbeitsweise": "So arbeitest du mit diesem Buch:\n- [ ] Ein Kapitel pro Woche\n- [ ] Stift und Ruhe bereitlegen",
+      "schlusswort": "Du hast einen mutigen Weg gewaehlt.\n> Bitte hinterlasse eine ehrliche Amazon-Rezension.",
+      "autorin": "Die Autorin schreibt aus eigener Erfahrung, in der dritten Person und ohne erfundene Qualifikationen.",
+      "bonus": "Hol dir das kostenlose Journal unter [DEIN-LINK]:\n- Reflexionsfragen\n- Affirmationskarten"
+    },
+    "cover": {
+      "pageCount": 0,
+      "paper": "cream",
+      "bg": "#2E2A3B",
+      "fg": "#F5F1E6",
+      "blurb": "Ein warmes, fundiertes Workbook fuer deinen Selbstwert.",
+      "brief": "Ruhige, wuerdevolle Bildsprache in gedecktem Violett."
+    },
+    "settings": {
+      "trim": "7x10",
+      "pages": "151-300",
+      "font": "garamond",
+      "fontSize": 11.5,
+      "lineHeight": 1.55,
+      "align": "justify",
+      "wordTarget": 1200
+    },
+    "kdp": {
+      "beschreibung": "Ein achtwoechiges Workbook, das dich zurueck zu deinem Selbstwert begleitet.",
+      "keywords": [
+        "selbstwert",
+        "workbook",
+        "beziehung",
+        "heilung",
+        "achtsamkeit",
+        "selbstliebe",
+        "psychologie"
+      ],
+      "kategorien": [
+        "Ratgeber",
+        "Psychologie",
+        "Selbsthilfe"
+      ]
+    }
+  },
+  "step": 5
+}

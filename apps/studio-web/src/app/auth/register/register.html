@@ -1,0 +1,64 @@
+<div class="auth">
+  <a class="auth__brand" routerLink="/">KDP MasterPeace</a>
+  <div class="auth__card">
+    <h1 class="auth__title">Konto erstellen</h1>
+    <p class="auth__lead">Kostenlos starten und direkt im Studio loslegen.</p>
+
+    @if (!configured) {
+    <p class="auth__error" role="alert">
+      Integration nicht konfiguriert: Die Firebase-Umgebungsvariablen fehlen.
+      Registrierung ist derzeit nicht möglich.
+    </p>
+    } @if (error()) {
+    <p class="auth__error" role="alert">{{ error() }}</p>
+    }
+
+    <form (ngSubmit)="submit()">
+      <div class="auth__field">
+        <label class="auth__label" for="reg-name">Name (Anzeige)</label>
+        <input
+          id="reg-name"
+          class="auth__input"
+          name="displayName"
+          type="text"
+          autocomplete="name"
+          [(ngModel)]="displayName"
+        />
+      </div>
+      <div class="auth__field">
+        <label class="auth__label" for="reg-email">E-Mail</label>
+        <input
+          id="reg-email"
+          class="auth__input"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          [(ngModel)]="email"
+        />
+      </div>
+      <div class="auth__field">
+        <label class="auth__label" for="reg-password"
+          >Passwort (min. 6 Zeichen)</label
+        >
+        <input
+          id="reg-password"
+          class="auth__input"
+          name="password"
+          type="password"
+          autocomplete="new-password"
+          minlength="6"
+          required
+          [(ngModel)]="password"
+        />
+      </div>
+      <button class="auth__submit" type="submit" [disabled]="busy()">
+        {{ busy() ? 'Konto wird erstellt …' : 'Konto erstellen' }}
+      </button>
+    </form>
+
+    <nav class="auth__alt" aria-label="Weitere Optionen">
+      <a routerLink="/login">Ich habe bereits ein Konto</a>
+    </nav>
+  </div>
+</div>

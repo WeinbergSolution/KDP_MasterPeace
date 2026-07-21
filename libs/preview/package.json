@@ -1,0 +1,15 @@
+{
+  "name": "@kdp/preview",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.2.0"
+  },
+  "dependencies": {
+    "@kdp/contracts": "*"
+  },
+  "devDependencies": {
+    "@kdp/document-model": "*",
+    "@kdp/testing": "*"
+  },
+  "sideEffects": false
+}

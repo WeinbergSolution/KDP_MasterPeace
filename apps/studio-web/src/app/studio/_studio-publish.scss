@@ -1,0 +1,109 @@
+// Legacy V3 Veröffentlichen styles (ported). Part 8 of the studio stylesheet
+// (@used by studio-shell.scss): the pre-flight badge + rows and the numbered
+// KDP upload-guide list with its reversible done state.
+
+.pf-badge {
+  float: right;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.ok-bg {
+  background: #eaf6f0;
+  color: #23694c;
+}
+.warn-bg {
+  background: #fbf3e4;
+  color: #8a5a1b;
+}
+.bad-bg {
+  background: #fbeaea;
+  color: #8c3535;
+}
+
+.pf-row {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e9e5f2;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+  &.err {
+    color: #8c3535;
+    font-weight: 500;
+  }
+}
+.pf-ico {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.pf-row.ok .pf-ico {
+  background: #eaf6f0;
+  color: #23694c;
+}
+.pf-row.warn .pf-ico {
+  background: #fbf3e4;
+  color: #8a5a1b;
+}
+.pf-row.err .pf-ico {
+  background: #fbeaea;
+  color: #8c3535;
+}
+
+.guide {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px dashed #e9e5f2;
+
+  &.done {
+    opacity: 0.55;
+
+    .guide-check {
+      background: #eaf6f0;
+      border-color: #7fbfa5;
+    }
+  }
+}
+.guide-check {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 8px;
+  border: 1.5px solid #c9c2dc;
+  background: #fff;
+  color: #3e8e7e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 2px;
+}
+.guide-num {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6c57b8;
+}
+.guide-t {
+  font-weight: 600;
+  font-size: 13.5px;
+  margin-bottom: 3px;
+}
+.guide-d {
+  font-size: 12.5px;
+  color: #5a5370;
+  line-height: 1.55;
+}

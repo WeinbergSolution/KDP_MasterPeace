@@ -1,0 +1,182 @@
+// Shared auth-form layout, @used (scoped) by login/register/forgot components.
+// Premium look matched to the redesigned landing page: warm ivory base with a
+// soft gold glow, a branded card with a gold accent bar, gradient submit button.
+// Markup and behaviour are untouched — this restyles the existing class names.
+
+:host {
+  --a-cream: #fbf7ef;
+  --a-cream-2: #f4ecdd;
+  --a-ink: #191320;
+  --a-gold: #c39a3e;
+  --a-gold-2: #a87f28;
+  --a-text: #221c2b;
+  --a-muted: #6a6076;
+  --a-line: #ece3d2;
+
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      62% 48% at 50% 0%,
+      rgba(195, 154, 62, 0.16),
+      transparent 62%
+    ),
+    var(--a-cream);
+  font-family: var(--font-sans);
+  color: var(--a-text);
+}
+
+.auth {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  max-width: 27rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.3rem 3rem;
+}
+
+.auth__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--a-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.auth__brand::before {
+  content: 'K';
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: linear-gradient(150deg, var(--a-ink), #3a2f47);
+  color: var(--a-gold);
+  font-family: var(--font-sans);
+  font-weight: 800;
+}
+
+.auth__card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--a-line);
+  border-top: 3px solid var(--a-gold);
+  border-radius: 18px;
+  padding: clamp(1.6rem, 4vw, 2.3rem);
+  box-shadow: 0 30px 60px -34px rgba(25, 19, 32, 0.5);
+}
+
+.auth__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1.15;
+  margin-bottom: 0.35rem;
+}
+
+.auth__lead {
+  color: var(--a-muted);
+  margin-bottom: 1.5rem;
+}
+
+.auth__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.auth__label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.auth__input {
+  width: 100%;
+  padding: 0.8rem 0.85rem;
+  border: 1px solid var(--a-line);
+  border-radius: 10px;
+  background: #fdfbf6;
+  font: inherit;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.auth__input:focus-visible {
+  outline: none;
+  border-color: var(--a-gold);
+  box-shadow: 0 0 0 3px rgba(195, 154, 62, 0.22);
+}
+
+.auth__error {
+  background: #fbeaea;
+  border: 1px solid #e8bdbd;
+  color: #8c3535;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.auth__ok {
+  background: #eaf6f0;
+  border: 1px solid #bce0ce;
+  color: #23694c;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.auth__submit {
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d0a748, var(--a-gold-2));
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem;
+  margin-top: 0.3rem;
+  cursor: pointer;
+  box-shadow: 0 12px 24px -14px rgba(168, 127, 40, 0.9);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.auth__submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px -16px rgba(168, 127, 40, 0.95);
+}
+.auth__submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.auth__alt {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.3rem;
+  font-size: 0.92rem;
+}
+.auth__alt a {
+  color: var(--a-gold-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth__alt a:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth__submit {
+    transition: none;
+  }
+}

@@ -1,0 +1,13 @@
+<div class="account">
+  <a class="account__brand" routerLink="/studio">← Zurück zum Studio</a>
+  <h1 class="account__title">Konto</h1>
+  <dl class="account__list">
+    <dt>Name</dt>
+    <dd>{{ user()?.displayName || '—' }}</dd>
+    <dt>E-Mail</dt>
+    <dd>{{ user()?.email || '—' }}</dd>
+  </dl>
+  <button class="account__signout" type="button" (click)="signOut()">
+    Abmelden
+  </button>
+</div>

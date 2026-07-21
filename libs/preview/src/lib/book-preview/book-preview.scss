@@ -1,0 +1,41 @@
+// Book-like preview page. Print-near presentation (page surface, readable
+// typography, capped column), responsive from 320px with no horizontal overflow.
+:host {
+  display: block;
+}
+
+.book-page {
+  max-width: 46rem;
+  margin: 0 auto;
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #26212f);
+  padding: var(--space-6, 2rem) var(--space-5, 1.5rem);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 1px 3px rgb(38 33 47 / 0.08);
+  overflow-wrap: break-word;
+}
+
+.book-page__header {
+  border-bottom: 1px solid var(--color-border, #e0dcec);
+  padding-bottom: var(--space-4, 1rem);
+  margin-bottom: var(--space-5, 1.5rem);
+}
+
+.book-page__title {
+  font-family: var(--font-display, serif);
+  font-size: 1.75rem;
+  line-height: var(--line-height-tight, 1.2);
+}
+
+.book-page__subtitle {
+  color: var(--color-text-muted, #6b6480);
+  font-style: italic;
+  margin-top: var(--space-1, 0.25rem);
+}
+
+@media (max-width: 640px) {
+  .book-page {
+    padding: var(--space-4, 1rem) var(--space-3, 0.75rem);
+    border-radius: 0;
+  }
+}

@@ -1,0 +1,43 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../core/firebase/auth.service';
+import { isFirebaseConfigured } from '../../core/firebase/firebase-app';
+import { toAuthMessage } from '../auth-error';
+
+/** Email/password sign-in form; on success routes to the studio. */
+@Component({
+  selector: 'app-login',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, RouterLink],
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
+})
+export class LoginComponent {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  protected email = '';
+  protected password = '';
+  protected readonly configured = isFirebaseConfigured();
+  protected readonly error = signal('');
+  protected readonly busy = signal(false);
+
+  /** Attempts sign-in, shows a friendly error, and routes on success. */
+  protected async submit(): Promise<void> {
+    this.busy.set(true);
+    this.error.set('');
+    try {
+      await this.auth.login(this.email, this.password);
+      await this.router.navigateByUrl('/studio');
+    } catch (error) {
+      this.error.set(toAuthMessage(error));
+    } finally {
+      this.busy.set(false);
+    }
+  }
+}

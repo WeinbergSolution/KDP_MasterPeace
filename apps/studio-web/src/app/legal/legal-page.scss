@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #fbf7ee;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+.legal {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-7);
+}
+
+.legal__brand {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+  margin-bottom: var(--space-5);
+}
+
+.legal__title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  margin-bottom: var(--space-4);
+}
+
+.legal__notice {
+  background: #fbf3e4;
+  border: 1px solid #e9d6ae;
+  color: #8a5a1b;
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.legal__text {
+  color: var(--color-text-muted);
+  line-height: var(--line-height-base);
+  margin-bottom: var(--space-4);
+}
+
+.legal__back a {
+  color: #a86f1e;
+}

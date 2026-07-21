@@ -1,0 +1,218 @@
+<div class="panel">
+  <h1 class="pt">KDP-Marketing-Paket</h1>
+  <p class="ps">
+    SEO-optimierte Buchbeschreibung, 7 recherchebasierte SEO-Keywords und
+    Kategorien – fertig zum Einfügen in dein KDP-Dashboard.
+  </p>
+
+  @if (notice()) {
+  <p class="warn-inline">{{ notice() }}</p>
+  }
+
+  <button
+    class="btn primary"
+    type="button"
+    [disabled]="!providerReady || !hasConcept()"
+  >
+    <lucide-icon [img]="megaphoneIcon" [size]="15" />
+    {{ kdp() ? 'Paket neu generieren' : 'Paket generieren' }}
+  </button>
+  @if (!providerReady) {
+  <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+  } @if (kdp(); as k) {
+  <div class="card" style="margin-top: 14px">
+    <div class="card-h row-sb">
+      Buchbeschreibung
+      <button
+        class="btn tiny"
+        type="button"
+        (click)="copyText('desc', k.beschreibung)"
+      >
+        <lucide-icon
+          [img]="copied() === 'desc' ? checkIcon : copyIcon"
+          [size]="13"
+        />
+        Kopieren
+      </button>
+    </div>
+    <div class="desc">
+      @for (p of beschreibungParagraphs(); track track($index)) {
+      <p>{{ p }}</p>
+      }
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h row-sb">
+      7 SEO-Keywords
+      <button class="btn tiny" type="button" (click)="copyKeywords()">
+        <lucide-icon
+          [img]="copied() === 'kw' ? checkIcon : copyIcon"
+          [size]="13"
+        />
+        Kopieren
+      </button>
+    </div>
+    <div class="tags">
+      @for (kw of keywords(); track track($index)) {
+      <span class="tag">{{ kw }}</span>
+      }
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h">Kategorie-Vorschläge</div>
+    @for (cat of kategorien(); track track($index)) {
+    <div class="cl">→ {{ cat }}</div>
+    }
+  </div>
+  }
+
+  <div class="card" style="margin-top: 14px">
+    <div class="card-h row-sb">
+      <span><lucide-icon [img]="rocketIcon" [size]="15" /> Launch-Kit</span>
+      <div class="row" style="gap: 6px">
+        <button class="btn tiny" type="button" [disabled]="!providerReady">
+          <lucide-icon [img]="sparklesIcon" [size]="13" /> 30-Tage-Content-Plan
+        </button>
+        <button class="btn tiny" type="button" [disabled]="!providerReady">
+          <lucide-icon [img]="sparklesIcon" [size]="13" /> E-Mail-Sequenz (5
+          Mails)
+        </button>
+      </div>
+    </div>
+    <p class="muted">
+      Social-Media-Post-Ideen direkt aus deinen Kapiteln und eine 5-teilige
+      E-Mail-Sequenz (Freebie → Kauf) – beides im Stil deiner Autoren-DNA, falls
+      hinterlegt.
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    } @if (posts().length > 0) {
+    <div class="card-h row-sb" style="margin-top: 12px">
+      Content-Plan ({{ posts().length }} Tage)
+      <button class="btn tiny" type="button" (click)="copyPosts()">
+        <lucide-icon
+          [img]="copied() === 'posts' ? checkIcon : copyIcon"
+          [size]="13"
+        />
+        Alle kopieren
+      </button>
+    </div>
+    <div class="postlist">
+      @for (p of posts(); track track($index)) {
+      <div class="cl"><b>Tag {{ p.t }}:</b> {{ p.idee }}</div>
+      }
+    </div>
+    } @for (m of emails(); track track($index); let i = $index) {
+    <div class="persona">
+      <div class="row-sb">
+        <b>Mail {{ i + 1 }} · Tag {{ m.tag }}: {{ m.betreff }}</b>
+        <button class="btn tiny" type="button" (click)="copyEmail(i, m)">
+          <lucide-icon
+            [img]="copied() === 'mail' + i ? checkIcon : copyIcon"
+            [size]="13"
+          />
+          Kopieren
+        </button>
+      </div>
+      <div class="muted" style="white-space: pre-wrap; margin-top: 6px">
+        {{ m.text }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="card">
+    <div class="card-h">
+      <lucide-icon [img]="quoteIcon" [size]="15" /> Zitat-Karten für Social
+      Media
+    </div>
+    <p class="muted">
+      Merksätze aus deinem Buch als teilbare 1080×1080-Grafiken in deiner
+      Markenfarbe – fertige PNG-Downloads für Instagram & Pinterest.
+    </p>
+    @if (quotes().length === 0) {
+    <p class="muted small-t">
+      Noch keine Merksätze gefunden – Merksätze entstehen aus >-Zeilen in deinen
+      Kapiteln (der Autopilot baut sie automatisch ein).
+    </p>
+    } @else { @for (q of quotes(); track track($index)) {
+    <div class="gap-row">
+      <div class="grow" style="font-style: italic">„{{ q }}"</div>
+      <button class="btn tiny" type="button" (click)="downloadQuoteCard(q)">
+        <lucide-icon [img]="downloadIcon" [size]="12" /> PNG
+      </button>
+    </div>
+    } }
+  </div>
+
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="globeIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Leseprobe-Landingpage</div>
+      <p class="muted">
+        Eine fertige, mobilfreundliche Verkaufsseite für deine Website: Hero in
+        Markenfarbe, Nutzen-Liste aus deinen Kapiteln, echte Leseprobe mit
+        Ausblend-Effekt, Kauf-Buttons und E-Mail-Eintragung. Platzhalter
+        [KAUF-LINK] und das Formular ersetzt du laut Anleitung in der Datei;
+        Impressum/Datenschutz sind als Pflicht-Links vorgesehen.
+      </p>
+      <div class="row">
+        <button
+          class="btn primary"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="openLanding()"
+        >
+          <lucide-icon [img]="globeIcon" [size]="15" /> Vorschau öffnen
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="downloadLanding()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> Als Datei speichern
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h row-sb">
+      <span><lucide-icon [img]="libraryIcon" [size]="15" /> Serien-Planer</span>
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparklesIcon" [size]="13" /> 2 Folgebände planen
+      </button>
+    </div>
+    <p class="muted">
+      Serien verkaufen sich besser als Einzeltitel: Wer Band 1 mag, kauft Band
+      2. Der Planer entwirft Folgebände mit gemeinsamem Titel-Branding – ein
+      Klick legt Band 2 als neues Projekt an, mit deiner Autoren-DNA und allen
+      Einstellungen.
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    } @for (b of series(); track track($index)) {
+    <div class="gap-row">
+      <div class="grow">
+        <b>{{ b.titel }}</b><br />
+        <span class="muted">{{ b.untertitel }}</span><br />
+        <span class="muted">Fokus: {{ b.fokus }}</span>
+      </div>
+      <button
+        class="btn tiny primary-t"
+        type="button"
+        (click)="createSeriesProject(b)"
+      >
+        <lucide-icon [img]="folderPlusIcon" [size]="12" /> Als Projekt anlegen
+      </button>
+    </div>
+    }
+  </div>
+
+  <div class="next">
+    <button class="btn primary" type="button" (click)="next()">
+      Weiter zum Veröffentlichen <lucide-icon [img]="chevronIcon" [size]="15" />
+    </button>
+  </div>
+</div>

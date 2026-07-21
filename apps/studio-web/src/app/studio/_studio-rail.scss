@@ -1,0 +1,182 @@
+// Legacy V3 rail styles (ported from kdp-workbook-studio_aktuell.jsx). Part 1 of
+// the studio stylesheet (@used by studio-shell.scss). Google-Fonts @import is
+// intentionally dropped (privacy); font stacks fall back to Georgia/serif + system.
+
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: #f1eff6;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #26212f;
+}
+
+.rail {
+  width: 236px;
+  flex: none;
+  background: #241e31;
+  color: #cfc8e2;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #fff;
+  padding: 0 8px 16px;
+}
+.brand-t {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+.brand-s {
+  font-size: 11px;
+  color: #9a8fc0;
+  letter-spacing: 0.06em;
+}
+.projbox {
+  background: #2f2841;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+.proj-lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9a8fc0;
+  margin-bottom: 6px;
+}
+.proj-sel {
+  width: 100%;
+  background: #241e31;
+  color: #fff;
+  border: 1px solid #4a4162;
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-size: 12.5px;
+  font-family: inherit;
+}
+.proj-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 7px;
+}
+.proj-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: 1px solid #4a4162;
+  color: #b4abce;
+  border-radius: 7px;
+  padding: 5px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.proj-btn:hover {
+  border-color: #6c57b8;
+  color: #fff;
+}
+.proj-btn.danger:hover {
+  border-color: #b04444;
+  color: #e58989;
+}
+.rail nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.rail-step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border: 0;
+  background: transparent;
+  color: #b4abce;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-family: inherit;
+  text-align: left;
+}
+.rail-step:hover:not(:disabled) {
+  background: #2f2841;
+  color: #fff;
+}
+.rail-step.on {
+  background: #6c57b8;
+  color: #fff;
+}
+.rail-step:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.rail-idx {
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex: none;
+}
+.rail-foot {
+  margin-top: auto;
+  padding: 14px 8px 0;
+  font-size: 12px;
+}
+.rail-stats {
+  border-top: 1px solid #3a3350;
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #9a8fc0;
+}
+.rail-stats b {
+  color: #fff;
+  font-weight: 600;
+}
+.rail-save {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  color: #7fbfa5;
+}
+.rail-account {
+  display: block;
+  margin-top: 10px;
+  color: #9a8fc0;
+  font-size: 12px;
+  text-decoration: none;
+}
+.rail-account:hover {
+  color: #fff;
+}
+.rail lucide-icon,
+.card-h lucide-icon,
+.proj-btn lucide-icon,
+.rail-save lucide-icon {
+  display: inline-flex;
+  align-items: center;
+}

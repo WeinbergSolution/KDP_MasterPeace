@@ -1,0 +1,112 @@
+// Prisma schema v1 (WP-B5). Core persistence for projects, books and versioned
+// documents with optimistic-concurrency ETags. Identity, skills, generation,
+// billing and the append-only ledgers (data-model.md) land with their own work
+// packages; this v1 is scoped to the project-persistence vertical slice.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrgKind {
+  personal
+  team
+}
+
+enum FormatProfile {
+  workbook
+  paperback
+  nonfiction
+  ebook
+}
+
+enum VersionLabel {
+  autosave
+  snapshot
+  pre_repair
+  export
+}
+
+enum AiDisclosureLevel {
+  human
+  ai_assisted
+  ai_generated
+}
+
+/// Tenant anchor. Every user gets a personal organization (data-model.md §2).
+model Organization {
+  id        String    @id @default(cuid())
+  name      String
+  kind      OrgKind   @default(personal)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+}
+
+/// A publishing project, owner-/org-scoped for tenant isolation.
+model Project {
+  id                       String            @id @default(cuid())
+  orgId                    String
+  org                      Organization      @relation(fields: [orgId], references: [id])
+  name                     String
+  contentLocale            String
+  marketLocale             String
+  demoMode                 Boolean           @default(false)
+  disclosureText           AiDisclosureLevel @default(ai_assisted)
+  disclosureCover          AiDisclosureLevel @default(human)
+  disclosureInteriorImages AiDisclosureLevel @default(human)
+  disclosureTranslation    AiDisclosureLevel @default(human)
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
+  deletedAt                DateTime?
+  books                    Book[]
+
+  @@index([orgId])
+}
+
+/// A book within a project; points at its active version.
+model Book {
+  id              String        @id @default(cuid())
+  projectId       String
+  project         Project       @relation(fields: [projectId], references: [id])
+  workingTitle    String
+  formatProfile   FormatProfile @default(workbook)
+  activeVersionId String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  versions        BookVersion[]
+
+  @@index([projectId])
+}
+
+/// An immutable book version. (bookId, versionNumber) is unique; `etag` guards
+/// optimistic concurrency (fixes legacy silent-overwrite finding N15/P10).
+model BookVersion {
+  id              String        @id @default(cuid())
+  bookId          String
+  book            Book          @relation(fields: [bookId], references: [id])
+  versionNumber   Int
+  parentVersionId String?
+  label           VersionLabel  @default(autosave)
+  etag            String
+  createdBy       String?
+  createdAt       DateTime      @default(now())
+  document        BookDocument?
+
+  @@unique([bookId, versionNumber])
+  @@index([bookId])
+}
+
+/// The canonical Book AST (JSONB) for a version, plus its content hash.
+model BookDocument {
+  id            String      @id @default(cuid())
+  bookVersionId String      @unique
+  bookVersion   BookVersion @relation(fields: [bookVersionId], references: [id])
+  schemaVersion Int
+  astHash       String
+  ast           Json
+}

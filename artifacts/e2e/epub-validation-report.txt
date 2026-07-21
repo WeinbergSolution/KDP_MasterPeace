@@ -1,0 +1,16 @@
+EPUB structural validation — test-book.epub (10930 bytes)
+================================================
+PASS  mimetype first
+PASS  stored (uncompressed)
+PASS  container.xml
+PASS  content.opf
+PASS  nav.xhtml
+PASS  toc.ncx
+PASS  stylesheet
+PASS  dc:title
+PASS  dc:language
+PASS  dc:creator
+PASS  chapter xhtml
+
+RESULT: STRUCTURALLY VALID EPUB 3
+Note: structural validation only (no external W3C epubcheck run).

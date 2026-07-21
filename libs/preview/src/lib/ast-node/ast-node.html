@@ -1,0 +1,157 @@
+@switch (node.type) { @case ('section') {
+<section class="ast-section">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</section>
+} @case ('frontMatter') {
+<section class="ast-matter" aria-label="Vorwort">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</section>
+} @case ('backMatter') {
+<section class="ast-matter" aria-label="Schlussteil">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</section>
+} @case ('authorProfile') {
+<section class="ast-author" aria-label="Über die Autorin oder den Autor">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</section>
+} @case ('chapter') {
+<section class="ast-chapter">
+  @if (attr('title')) {
+  <h2 class="ast-chapter__title">{{ attr('title') }}</h2>
+  } @if (attr('goal')) {
+  <p class="ast-chapter__goal">{{ attr('goal') }}</p>
+  } @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</section>
+} @case ('heading') { @if (headingLevel() === 3) {
+<h3 class="ast-heading">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</h3>
+} @else {
+<h2 class="ast-heading">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</h2>
+} } @case ('paragraph') {
+<p class="ast-paragraph">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</p>
+} @case ('quote') {
+<blockquote class="ast-quote">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</blockquote>
+} @case ('unorderedList') {
+<ul class="ast-ul">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</ul>
+} @case ('orderedList') {
+<ol class="ast-ol">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</ol>
+} @case ('listItem') {
+<li class="ast-li">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</li>
+} @case ('checklist') {
+<ul class="ast-checklist">
+  @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</ul>
+} @case ('checkItem') {
+<li class="ast-checkitem">
+  <input type="checkbox" [checked]="isChecked()" disabled aria-hidden="true" />
+  <span class="ast-checkitem__label">
+    @for (child of node.children ?? []; track child.id) {
+    <kdp-ast-node [node]="child" />
+    }
+  </span>
+</li>
+} @case ('writingLines') {
+<div
+  class="ast-writinglines"
+  role="img"
+  [attr.aria-label]="writingLines().length + ' Schreiblinien'"
+>
+  @for (line of writingLines(); track line) {
+  <span class="ast-writingline"></span>
+  }
+</div>
+} @case ('scale') {
+<fieldset class="ast-scale">
+  @if (attr('question')) {
+  <legend class="ast-scale__question">{{ attr('question') }}</legend>
+  }
+  <ol class="ast-scale__points">
+    @for (point of scalePoints; track point) {
+    <li class="ast-scale__point">{{ point }}</li>
+    }
+  </ol>
+</fieldset>
+} @case ('exerciseBox') {
+<aside class="ast-box ast-box--exercise" aria-label="Übung">
+  <span class="ast-box__kind">Übung</span>
+  @if (attr('title')) {
+  <h3 class="ast-box__title">{{ attr('title') }}</h3>
+  } @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</aside>
+} @case ('tipBox') {
+<aside class="ast-box ast-box--tip" aria-label="Tipp">
+  <span class="ast-box__kind">Tipp</span>
+  @if (attr('title')) {
+  <h3 class="ast-box__title">{{ attr('title') }}</h3>
+  } @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</aside>
+} @case ('exampleBox') {
+<aside class="ast-box ast-box--example" aria-label="Beispiel">
+  <span class="ast-box__kind">Beispiel</span>
+  @if (attr('title')) {
+  <h3 class="ast-box__title">{{ attr('title') }}</h3>
+  } @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</aside>
+} @case ('pageBreak') {
+<hr class="ast-pagebreak" aria-label="Seitenumbruch" />
+} @case ('text') { @if (isStrong()) {
+<strong>{{ node.text }}</strong>
+} @else if (isEmphasis()) {
+<em>{{ node.text }}</em>
+} @else {
+<span>{{ node.text }}</span>
+} } @default {
+<div class="ast-fallback" role="note">
+  <span class="ast-fallback__type">Unbekannt: {{ node.type }}</span>
+  @if (node.text) {
+  <span class="ast-fallback__text">{{ node.text }}</span>
+  } @for (child of node.children ?? []; track child.id) {
+  <kdp-ast-node [node]="child" />
+  }
+</div>
+} }

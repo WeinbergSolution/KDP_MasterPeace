@@ -1,0 +1,102 @@
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <lucide-icon [img]="brandIcon" [size]="20" />
+      <div>
+        <div class="brand-t">KDP MasterPeace</div>
+        <div class="brand-s">Workbook Studio · für Amazon KDP</div>
+      </div>
+    </div>
+
+    <div class="projbox">
+      <label class="proj-lbl" for="project-select">Buchprojekt</label>
+      <select id="project-select" class="proj-sel" (change)="onSwitch($event)">
+        @for (p of projects(); track p.id) {
+        <option [value]="p.id" [selected]="p.id === project()?.id">
+          {{ p.title || 'Ohne Titel' }}
+        </option>
+        }
+      </select>
+      <div class="proj-actions">
+        <button class="proj-btn" type="button" (click)="createProject()">
+          <lucide-icon [img]="newIcon" [size]="13" /> Neu
+        </button>
+        <button class="proj-btn" type="button" (click)="duplicateProject()">
+          <lucide-icon [img]="copyIcon" [size]="13" /> Kopie
+        </button>
+        <button class="proj-btn danger" type="button" (click)="requestDelete()">
+          <lucide-icon [img]="deleteIcon" [size]="13" />
+          {{ confirmDelete() ? 'Sicher?' : 'Löschen' }}
+        </button>
+      </div>
+    </div>
+
+    <nav>
+      @for (s of steps; track s.label; let i = $index) {
+      <button
+        type="button"
+        class="rail-step"
+        [class.on]="(project()?.currentStep ?? 0) === i"
+        [attr.aria-current]="(project()?.currentStep ?? 0) === i ? 'step' : null"
+        [disabled]="!project()"
+        (click)="setStep(i)"
+      >
+        <span class="rail-idx">
+          @if (isDone(i)) {
+          <lucide-icon [img]="checkIcon" [size]="13" />
+          } @else { {{ i + 1 }} }
+        </span>
+        <lucide-icon [img]="s.icon" [size]="15" />
+        <span>{{ s.label }}</span>
+      </button>
+      }
+    </nav>
+
+    <div class="rail-foot">
+      <div class="rail-stats">
+        <div><b>{{ stats().words }}</b> Wörter</div>
+        <div>
+          <b>{{ stats().written }}/{{ project()?.outline?.length || '—' }}</b>
+          Kapitel geschrieben
+        </div>
+        <div><b>≈ {{ stats().pages }}</b> Buchseiten</div>
+      </div>
+      <div class="rail-save">
+        @if (saving()) {
+        <lucide-icon [img]="saveIcon" [size]="12" /> Speichert … } @else {
+        <lucide-icon [img]="checkIcon" [size]="12" /> Gespeichert }
+      </div>
+      <a class="rail-account" routerLink="/account">Konto &amp; Abmelden</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    @if (project(); as p) { @switch (p.currentStep) { @case (0) {
+    <app-idea-step />
+    } @case (1) {
+    <app-gliederung-step />
+    } @case (2) {
+    <app-writing-step />
+    } @case (3) {
+    <app-format-step />
+    } @case (4) {
+    <app-cover-step />
+    } @case (5) {
+    <app-export-step />
+    } @case (6) {
+    <app-kdp-step />
+    } @case (7) {
+    <app-publish-step />
+    } @default {
+    <app-placeholder-step [label]="steps[p.currentStep].label" />
+    } } } @else {
+    <div class="panel">
+      <h1 class="pt">Willkommen im Studio</h1>
+      <p class="ps">Lege dein erstes Buchprojekt an, um zu starten.</p>
+      <button class="btn primary" type="button" (click)="createProject()">
+        Neues Buchprojekt
+      </button>
+    </div>
+    }
+  </main>
+</div>

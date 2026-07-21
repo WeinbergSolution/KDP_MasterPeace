@@ -1,0 +1,400 @@
+<div class="panel">
+  <h1 class="pt">Export für KDP</h1>
+  <p class="ps">
+    Qualität prüfen, sichern, exportieren – dann bist du bereit für den Upload.
+  </p>
+
+  @if (notice()) {
+  <p class="warn-inline">{{ notice() }}</p>
+  }
+
+  <div class="card">
+    <div class="card-h row-sb">
+      <span
+        ><lucide-icon [img]="shieldIcon" [size]="15" /> Qualitäts-Check</span
+      >
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparklesIcon" [size]="13" /> KI-Verbesserungstipps
+      </button>
+    </div>
+
+    @if (!hasOutline()) {
+    <p class="muted">Noch keine Kapitel vorhanden.</p>
+    } @else {
+    <div class="row" style="margin-bottom: 12px">
+      <button class="btn" type="button" (click)="applyTypography()">
+        <lucide-icon [img]="checkIcon" [size]="14" /> Typografie bereinigen
+      </button>
+      <button class="btn" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="shieldIcon" [size]="14" /> KI-Rechtschreibprüfung
+        (alle Kapitel)
+      </button>
+      <button class="btn" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="penIcon" [size]="14" /> Gedankenstriche reduzieren
+        (KI)
+      </button>
+      <button class="btn" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="featherIcon" [size]="14" /> Humanize-Durchlauf (alle
+        Kapitel)
+      </button>
+    </div>
+    @if (restore()) {
+    <button class="btn ghost" type="button" (click)="undoTypography()">
+      Typografie-Bereinigung rückgängig machen
+    </button>
+    }
+    <p class="muted" style="margin-bottom: 12px">
+      „Typografie bereinigen" korrigiert sofort Abstände, Satzzeichen und
+      Anführungszeichen in allen Kapiteln. Die KI-Prüfung geht danach Kapitel
+      für Kapitel durch Rechtschreibung und Grammatik und wendet Korrekturen
+      automatisch an (Protokoll unten).
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">
+      KI-Prüfungen nicht konfiguriert (KI-Provider fehlt) — „Typografie
+      bereinigen" und die Qualitätsmatrix funktionieren lokal.
+    </p>
+    }
+
+    <div class="qgrid qhead" [class.q2]="!isWb()">
+      <span>Kapitel</span><span>Wörter</span>
+      @if (isWb()) {
+      <span>Übung</span><span>Linien</span><span>Checkliste/Skala</span>
+      }
+    </div>
+    @for (r of rows(); track trackRow($index)) {
+    <div class="qgrid" [class.q2]="!isWb()">
+      <span class="qtitle">{{ r.i + 1 }}. {{ r.title }}</span>
+      <span [class]="r.words < 400 ? 'bad' : 'good'">{{ r.words }}</span>
+      @if (isWb()) {
+      <span [class]="r.uebung ? 'good' : 'bad'"
+        >{{ r.uebung ? '✓' : 'fehlt' }}</span
+      >
+      <span [class]="r.linien ? 'good' : 'bad'"
+        >{{ r.linien ? '✓' : 'fehlt' }}</span
+      >
+      <span [class]="r.check ? 'good' : 'bad'"
+        >{{ r.check ? '✓' : 'fehlt' }}</span
+      >
+      }
+    </div>
+    } @if (missing().length > 0) {
+    <p class="warn-inline" style="margin-top: 10px">
+      Noch offen im Buchgerüst (Schritt 3): {{ missing().join(', ') }}
+    </p>
+    }
+
+    <div class="card-h" style="margin-top: 18px">
+      Lesbarkeit (sofort, ohne KI)
+    </div>
+    <div class="qgrid q4 qhead">
+      <span>Kapitel</span><span>Ø Satzlänge</span><span>Sätze > 25 W.</span
+      ><span>Füllwörter</span>
+    </div>
+    @for (r of readability(); track trackRow($index)) {
+    <div class="qgrid q4">
+      <span class="qtitle">{{ r.i + 1 }}. {{ r.title }}</span>
+      <span [class]="r.avg > 18 ? 'bad' : 'good'">{{ r.avg }}</span>
+      <span [class]="r.long > 3 ? 'bad' : 'good'">{{ r.long }}</span>
+      <span [class]="r.fill > 4 ? 'bad' : 'good'">{{ r.fill }}</span>
+    </div>
+    }
+    <p class="muted small-t">
+      Richtwerte für Ratgeber/Workbooks: Ø Satzlänge unter 18 Wörtern, wenige
+      Schachtelsätze. Auffällige Kapitel gezielt in Schritt 3 überarbeiten oder
+      die KI-Rechtschreibprüfung ergänzt kürzen lassen.
+    </p>
+
+    <div class="card-h row-sb" style="margin-top: 18px">
+      <span
+        ><lucide-icon [img]="usersIcon" [size]="15" /> Beta-Leser-Panel</span
+      >
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparklesIcon" [size]="13" /> 3 Personas lesen dein
+        Buch
+      </button>
+    </div>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    } }
+  </div>
+
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="printerIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Taschenbuch (Print-Interior)</div>
+      <p class="muted">
+        Öffnet dein fertig gesetztes Buch mit exakter Trim-Größe ({{ trimLabel()
+        }}), gespiegelten KDP-Rändern, Bundsteg, deutscher Silbentrennung und
+        komplettem Buchgerüst. Im neuen Fenster auf „Als PDF speichern" klicken
+        – dieses PDF lädst du bei KDP als Manuskript hoch.
+      </p>
+      <div class="row">
+        <button
+          class="btn primary"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="openPrint()"
+        >
+          <lucide-icon [img]="printerIcon" [size]="15" /> Print-Version öffnen
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="downloadPrint()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> Als Datei speichern
+        </button>
+      </div>
+      <p class="muted small-t">
+        Falls sich kein Fenster öffnet: „Als Datei speichern" nutzen, die Datei
+        per Doppelklick im Browser öffnen und dort mit Strg/Cmd+P als PDF
+        speichern. Wichtig im Druckdialog: „Hintergrundgrafiken" AN und unter
+        „Weitere Einstellungen" den Haken bei „Kopf- und Fußzeilen" ENTFERNEN –
+        sonst druckt der Browser den Dateipfad auf jede Seite.
+      </p>
+    </div>
+  </div>
+
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="fileIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">E-Book (Kindle)</div>
+      <p class="muted">
+        Erzeugt eine <b>EPUB-3-Datei</b> (mimetype, container.xml, content.opf,
+        nav, ncx, XHTML) – direkt bei KDP als E-Book-Manuskript hochladbar, ganz
+        ohne Umwandlungs-Tools. HTML und Word gibt es weiterhin als Alternativen
+        für eigene Workflows.
+      </p>
+      <div class="row">
+        <button
+          class="btn primary"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="downloadEpub()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> EPUB herunterladen
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="downloadHtml()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> HTML
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="downloadWord()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> Word (.doc)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card exp">
+    <div class="exp-ico">
+      <lucide-icon [img]="smartphoneIcon" [size]="20" />
+    </div>
+    <div class="grow">
+      <div class="card-h">Digital-Produkt (PDF für deine eigene Website)</div>
+      <p class="muted">
+        Erstellt eine <b>fürs Smartphone optimierte PDF</b>: schmales
+        Hochformat, große Schrift, farbige Überschriften und Übungsboxen in
+        deiner Markenfarbe – ohne Zoomen lesbar. Perfekt als Freebie/Lead-Magnet
+        oder kaufbarer Download. Über die Kapitel-Auswahl kannst du auch nur
+        einzelne Kapitel auskoppeln (z. B. Kapitel 1 als Gratis-Leseprobe).
+      </p>
+      @if (digital(); as d) {
+      <div class="row">
+        <div class="grow">
+          <label class="lbl" for="dig-format">Format</label>
+          <select
+            id="dig-format"
+            class="inp"
+            (change)="saveDigital({ format: $any($event.target).value })"
+          >
+            @for (opt of digitalFormats; track opt.key) {
+            <option [value]="opt.key" [selected]="opt.key === d.format">
+              {{ opt.label }}
+            </option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="lbl" for="dig-accent">Markenfarbe</label>
+          <input
+            id="dig-accent"
+            class="colorinp"
+            type="color"
+            [value]="d.accent"
+            (input)="saveDigital({ accent: $any($event.target).value })"
+          />
+        </div>
+        <div>
+          <label class="lbl" for="dig-size">Schrift: {{ d.fontSize }} pt</label>
+          <input
+            id="dig-size"
+            class="range"
+            type="range"
+            min="12"
+            max="18"
+            step="0.5"
+            style="width: 110px"
+            [value]="d.fontSize"
+            (input)="saveDigital({ fontSize: $any($event.target).valueAsNumber })"
+          />
+        </div>
+      </div>
+      @if (hasOutline()) {
+      <span class="lbl">Enthaltene Kapitel (antippen zum Ab-/Anwählen)</span>
+      <div class="chtabs" style="margin-bottom: 6px">
+        @for (ch of project()?.outline ?? []; track ch.id; let i = $index) {
+        <button
+          type="button"
+          class="chtab"
+          [class.on]="isDigitalOn(ch.id)"
+          [title]="ch.title"
+          (click)="toggleDigitalCh(ch.id)"
+        >
+          {{ i + 1 }}
+        </button>
+        }
+      </div>
+      <label class="chk-line">
+        <input
+          type="checkbox"
+          [checked]="d.withExtras"
+          (change)="saveDigital({ withExtras: $any($event.target).checked })"
+        />
+        Buchgerüst einbeziehen (Einleitung, Schlusswort, Bonus-Seite)
+      </label>
+      } }
+      <div class="row" style="margin-top: 10px">
+        <button
+          class="btn primary"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="openDigital()"
+        >
+          <lucide-icon [img]="smartphoneIcon" [size]="15" /> Digital-PDF öffnen
+        </button>
+        <button
+          class="btn"
+          type="button"
+          [disabled]="!hasOutline()"
+          (click)="downloadDigital()"
+        >
+          <lucide-icon [img]="downloadIcon" [size]="15" /> Als Datei speichern
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="micIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Hörbuch-Skript</div>
+      <p class="muted">
+        Wandelt dein Buch in ein sprechfertiges Skript um: Kapitel-Ansagen,
+        Sprechhinweise, [PAUSE]-Marker statt Schreiblinien, Übungen als
+        gesprochene Anleitungen. Für KDPs Virtual Voice, eine eigene Aufnahme
+        oder ein:e Sprecher:in.
+      </p>
+      <button
+        class="btn"
+        type="button"
+        [disabled]="!hasOutline()"
+        (click)="downloadAudio()"
+      >
+        <lucide-icon [img]="downloadIcon" [size]="15" /> Skript herunterladen
+        (.txt)
+      </button>
+    </div>
+  </div>
+
+  @if (showPrintable()) {
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="fileIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Printable-Generator (Einzel-Übungen)</div>
+      <p class="muted">
+        Macht aus jeder Übung deines Workbooks ein schön gestaltetes
+        A4-Arbeitsblatt in deiner Markenfarbe – das klassische
+        Etsy-/Freebie-Produkt. {{ exercises().length }} Übungen gefunden:
+      </p>
+      @for (ex of exercises(); track trackRow($index); let i = $index) {
+      <div class="gap-row">
+        <div class="grow">
+          <b>{{ ex.title }}</b><br /><span class="muted"
+            >aus: {{ ex.chapter }}</span
+          >
+        </div>
+        <button class="btn tiny" type="button" (click)="openPrintable(ex, i)">
+          <lucide-icon [img]="printerIcon" [size]="12" /> Öffnen
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  <div class="card exp">
+    <div class="exp-ico"><lucide-icon [img]="saveIcon" [size]="20" /></div>
+    <div class="grow">
+      <div class="card-h">Projekt-Sicherung</div>
+      <p class="muted">
+        Lade dein komplettes Projekt als Datei herunter (empfohlen nach jeder
+        größeren Sitzung) – und spiele es bei Bedarf wieder ein, auch auf einem
+        anderen Gerät.
+      </p>
+      <div class="row">
+        <button class="btn" type="button" (click)="exportBackup()">
+          <lucide-icon [img]="downloadIcon" [size]="15" /> Backup herunterladen
+        </button>
+        <label class="btn" style="cursor: pointer">
+          <lucide-icon [img]="uploadIcon" [size]="15" /> Backup einspielen
+          <input
+            type="file"
+            accept="application/json,.json"
+            style="display: none"
+            (change)="onBackupFile($event)"
+          />
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Deine KDP-Checkliste</div>
+    <div class="cl">
+      ☐ Interior-PDF hochladen (Taschenbuch) – Trim-Größe bei KDP identisch
+      wählen: {{ trimLabel() }}
+    </div>
+    <div class="cl">
+      ☐ „Kein Beschnitt (No Bleed)" auswählen – das Interior ist ohne Bleed
+      gesetzt
+    </div>
+    <div class="cl">
+      ☐ Finale Seitenzahl aus dem PDF in Schritt 5 (Cover) eintragen – Cover-PDF
+      erzeugen und hochladen
+    </div>
+    <div class="cl">
+      ☐ Seitenzahlen: KDP verlangt keine – falls gewünscht, füge sie
+      nachträglich mit einem kostenlosen PDF-Tool hinzu
+    </div>
+    <div class="cl">
+      ☐ Vorschau im KDP „Print Previewer" prüfen, bevor du veröffentlichst
+    </div>
+  </div>
+
+  <div class="next">
+    <button class="btn primary" type="button" (click)="next()">
+      Weiter zum KDP-Paket <lucide-icon [img]="chevronIcon" [size]="15" />
+    </button>
+  </div>
+</div>

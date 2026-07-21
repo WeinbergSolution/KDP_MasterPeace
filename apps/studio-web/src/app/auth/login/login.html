@@ -1,0 +1,51 @@
+<div class="auth">
+  <a class="auth__brand" routerLink="/">KDP MasterPeace</a>
+  <div class="auth__card">
+    <h1 class="auth__title">Anmelden</h1>
+    <p class="auth__lead">Melde dich an und arbeite direkt im Studio weiter.</p>
+
+    @if (!configured) {
+    <p class="auth__error" role="alert">
+      Integration nicht konfiguriert: Die Firebase-Umgebungsvariablen fehlen.
+      Anmeldung ist derzeit nicht möglich.
+    </p>
+    } @if (error()) {
+    <p class="auth__error" role="alert">{{ error() }}</p>
+    }
+
+    <form (ngSubmit)="submit()">
+      <div class="auth__field">
+        <label class="auth__label" for="login-email">E-Mail</label>
+        <input
+          id="login-email"
+          class="auth__input"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          [(ngModel)]="email"
+        />
+      </div>
+      <div class="auth__field">
+        <label class="auth__label" for="login-password">Passwort</label>
+        <input
+          id="login-password"
+          class="auth__input"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          [(ngModel)]="password"
+        />
+      </div>
+      <button class="auth__submit" type="submit" [disabled]="busy()">
+        {{ busy() ? 'Wird angemeldet …' : 'Anmelden' }}
+      </button>
+    </form>
+
+    <nav class="auth__alt" aria-label="Weitere Optionen">
+      <a routerLink="/register">Konto erstellen</a>
+      <a routerLink="/forgot-password">Passwort vergessen?</a>
+    </nav>
+  </div>
+</div>

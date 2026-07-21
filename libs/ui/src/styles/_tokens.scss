@@ -1,0 +1,51 @@
+// Design tokens (WP-B3). Colour and typography start values are migrated from
+// the legacy CSS constant (kdp-workbook-studio.legacy.jsx L1452 ff.). Exposed
+// as CSS custom properties so themes and runtime locale switches stay simple.
+
+:root {
+  // Brand palette
+  --color-bg: #f1eff6;
+  --color-surface: #ffffff;
+  --color-rail-bg: #241e31;
+  --color-rail-surface: #2f2841;
+  --color-rail-border: #4a4162;
+  --color-text: #26212f;
+  --color-text-muted: #6b6480;
+  --color-on-rail: #cfc8e2;
+  --color-on-rail-muted: #9a8fc0;
+  --color-primary: #6c57b8;
+  --color-primary-contrast: #ffffff;
+  --color-success: #7fbfa5;
+  --color-danger: #b04444;
+  --color-danger-contrast: #e58989;
+  --color-border: #e0dcec;
+
+  // Typography (self-hosted fonts land with WP-E; fallbacks avoid third-party
+  // requests, fixing the legacy Google-Fonts privacy issue N09).
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-size-base: 1rem;
+  --line-height-base: 1.55;
+  --line-height-tight: 1.2;
+
+  // Spacing scale (4px base)
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  // Radii
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+
+  // Layout
+  --content-max-width: 1440px;
+  --rail-width: 236px;
+
+  // Focus
+  --focus-ring: 2px solid var(--color-primary);
+}

@@ -1,0 +1,18 @@
+# Normalize all text files to LF in the repository.
+* text=auto eol=lf
+
+# Byte-exact Latin-1 reference archive — never normalize (must keep SHA-256
+# f8bc9fe43427a95c957522710cdaa4d7ddb664fcc4ac7f5c5f1c6bc5b5a72324, 239911 bytes).
+docs/reference/legacy-v3/kdp-workbook-studio_aktuell.jsx binary
+
+# Binary assets: never normalize.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.pdf binary
+*.zip binary
+*.bundle binary

@@ -1,0 +1,207 @@
+<div class="panel">
+  <h1 class="pt">Gliederung</h1>
+  <p class="ps">
+    Der rote Faden deines Workbooks: vom Verstehen über das Fühlen zum Handeln.
+    Du kannst jedes Kapitel bearbeiten, verschieben oder ergänzen.
+  </p>
+
+  @if (!hasConcept()) {
+  <div class="card hint">
+    <lucide-icon [img]="bulb" [size]="15" />
+    <div>
+      Trage zuerst in <b>Schritt 1 (Idee)</b> mindestens einen <b>Titel</b>
+      ein — dann kannst du hier die Gliederung generieren lassen. Kapitel
+      manuell anlegen geht jederzeit über den Button unten.
+    </div>
+  </div>
+  }
+
+  <div class="card import">
+    <div class="card-h">
+      <lucide-icon [img]="fileIcon" [size]="15" /> Vorhandenes Manuskript
+      importieren
+    </div>
+    <p class="muted" style="margin-bottom: 10px">
+      Hast du dein Buch schon fertig geschrieben (z. B. als E-Book-PDF)? Lies es
+      hier ein — der Text läuft danach durch dieselbe Formatierungs- und
+      Export-Pipeline wie ein im Tool geschriebenes Buch. Hinweis: Nur der reine
+      Text wird übernommen, Layout-Elemente wie Bilder oder Boxen aus dem
+      Original nicht.
+    </p>
+    <div class="row">
+      <button class="btn primary" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="uploadIcon" [size]="15" /> PDF automatisch auslesen
+      </button>
+      @if (!providerReady) {
+      <span class="muted small-t"
+        >PDF-Import nicht konfiguriert — Text unten einfügen.</span
+      >
+      }
+    </div>
+    <label class="lbl" for="import-text">
+      Text zur Kontrolle (automatisch befüllt oder selbst eingefügt)
+    </label>
+    <textarea
+      id="import-text"
+      class="ta"
+      style="min-height: 180px"
+      [(ngModel)]="importText"
+      placeholder="Text hier einfügen, z. B. aus deinem PDF-Betrachter kopiert (Strg/Cmd+A, dann Strg/Cmd+C).&#10;Trenne Kapitel mit einer eigenen Zeile: ==="
+    ></textarea>
+    <p class="muted small-t">
+      Erkennbare Kapitelüberschriften wurden automatisch mit <code>===</code>
+      markiert — bitte kurz prüfen und bei Bedarf verschieben oder ergänzen.
+    </p>
+    <div class="row" style="margin-top: 10px">
+      <button
+        class="btn"
+        [class.warn]="confirmReplace()"
+        [class.primary]="!confirmReplace()"
+        type="button"
+        [disabled]="!importText.trim()"
+        (click)="applyImport('replace')"
+      >
+        {{ confirmReplace() ? 'Bestehende Kapitel werden ersetzt — zum
+        Bestätigen erneut tippen' : 'In Kapitel aufteilen & übernehmen' }}
+      </button>
+      @if (outline().length) {
+      <button
+        class="btn"
+        type="button"
+        [disabled]="!importText.trim()"
+        (click)="applyImport('append')"
+      >
+        An bestehende Kapitel anhängen
+      </button>
+      }
+    </div>
+  </div>
+
+  <div class="divider"><span>oder KI-Gliederung generieren</span></div>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label class="lbl" for="chapter-count">Anzahl Kapitel</label>
+        <input
+          id="chapter-count"
+          class="inp num"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="15"
+          [(ngModel)]="chapterCount"
+          (ngModelChange)="saveCount()"
+        />
+      </div>
+      <div class="grow" style="align-self: flex-end">
+        <button class="btn primary" type="button" [disabled]="!providerReady">
+          @if (outline().length) {
+          <lucide-icon [img]="refresh" [size]="15" /> Neu generieren } @else {
+          <lucide-icon [img]="sparkles" [size]="15" /> Gliederung generieren }
+        </button>
+      </div>
+    </div>
+    @if (outline().length) {
+    <p class="warn-inline">
+      Achtung: „Neu generieren" ersetzt die Kapitelliste. Bereits geschriebene
+      Texte gehen dabei verloren.
+    </p>
+    } @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    }
+  </div>
+
+  @if (outline().length > 1) {
+  <div class="card">
+    <div class="card-h row-sb">
+      Struktur prüfen ({{ outline().length }} Kapitel)
+      <button class="btn tiny" type="button" [disabled]="!providerReady">
+        <lucide-icon [img]="sparkles" [size]="13" /> Kapitelstruktur mit KI
+        bereinigen
+      </button>
+    </div>
+    <p class="muted">
+      Zu viele Kapitel nach dem Import? Die KI erkennt die echten Kapitelanfänge
+      und verschmilzt fälschlich abgetrennte Zwischenüberschriften zurück in
+      ihre Kapitel (sie bleiben dort als Überschriften erhalten). Einzelne
+      Abschnitte kannst du auch manuell per
+      <lucide-icon [img]="merge" [size]="12" />-Knopf ans vorherige Kapitel
+      anhängen.
+    </p>
+    @if (!providerReady) {
+    <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    }
+  </div>
+  } @for (ch of outline(); track trackChapter($index, ch); let i = $index) {
+  <div class="chrow">
+    <div class="chrow-idx">{{ i + 1 }}</div>
+    <div class="grow">
+      <input
+        class="inp"
+        type="text"
+        [value]="ch.title"
+        (change)="updateChapter(i, { title: $any($event.target).value })"
+      />
+      <input
+        class="inp small"
+        type="text"
+        placeholder="Ziel des Kapitels"
+        [value]="ch.goal"
+        (change)="updateChapter(i, { goal: $any($event.target).value })"
+      />
+    </div>
+    <div class="chrow-actions">
+      <button
+        class="ico"
+        type="button"
+        title="Nach oben"
+        (click)="moveChapter(i, -1)"
+      >
+        <lucide-icon [img]="up" [size]="14" />
+      </button>
+      <button
+        class="ico"
+        type="button"
+        title="Nach unten"
+        (click)="moveChapter(i, 1)"
+      >
+        <lucide-icon [img]="down" [size]="14" />
+      </button>
+      @if (i > 0) {
+      <button
+        class="ico"
+        type="button"
+        title="Mit vorherigem Kapitel zusammenführen"
+        (click)="mergeChapterUp(i)"
+      >
+        <lucide-icon [img]="merge" [size]="14" />
+      </button>
+      }
+      <button
+        class="ico danger"
+        type="button"
+        title="Löschen"
+        (click)="removeChapter(i)"
+      >
+        <lucide-icon [img]="trash" [size]="14" />
+      </button>
+    </div>
+  </div>
+  }
+
+  <button class="btn ghost" type="button" (click)="addChapter()">
+    <lucide-icon [img]="plus" [size]="15" /> Kapitel manuell hinzufügen
+  </button>
+
+  <div class="next">
+    <button
+      class="btn primary"
+      type="button"
+      [disabled]="!outline().length"
+      (click)="next()"
+    >
+      Weiter zum Schreiben <lucide-icon [img]="chevron" [size]="15" />
+    </button>
+  </div>
+</div>

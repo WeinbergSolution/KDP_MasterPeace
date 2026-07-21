@@ -1,0 +1,103 @@
+// Legacy V3 Gliederung/outline styles (ported). Part 3 of the studio stylesheet
+// (@used by studio-shell.scss): import + hint cards, chapter rows, row actions.
+
+.card.hint {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #f5f1e6;
+  border-color: #e5dcc2;
+  font-size: 13px;
+  color: #5c5334;
+}
+.card.import {
+  border-color: #cfe0da;
+  background: #f6faf8;
+}
+
+.inp.small {
+  font-size: 12.5px;
+  margin-top: 5px;
+  color: #6b6480;
+}
+.inp.num {
+  width: 110px;
+}
+.warn-inline {
+  font-size: 12px;
+  color: #a2652c;
+  margin-top: 10px;
+}
+
+.btn.ghost {
+  background: transparent;
+  border-style: dashed;
+  width: 100%;
+  justify-content: center;
+}
+.btn.warn {
+  background: #b4762a;
+  border-color: #b4762a;
+  color: #fff;
+}
+.btn.warn:hover:not(:disabled) {
+  background: #9a6120;
+  color: #fff;
+}
+
+.chrow {
+  display: flex;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e3dfee;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+.chrow-idx {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 8px;
+  background: #ede8f8;
+  color: #6c57b8;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+.chrow-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ico {
+  border: 0;
+  background: #f1eff6;
+  border-radius: 6px;
+  width: 26px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5a5370;
+}
+.ico:hover {
+  background: #e3dfee;
+}
+.ico.danger:hover {
+  background: #fbeaea;
+  color: #b04444;
+}
+.code,
+code {
+  background: #ede8f8;
+  color: #4e3d8f;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.92em;
+}

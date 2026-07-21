@@ -1,0 +1,29 @@
+<div class="legal">
+  <a class="legal__brand" routerLink="/">KDP MasterPeace</a>
+  <h1 class="legal__title">{{ title }}</h1>
+
+  <p class="legal__notice" role="note">
+    Platzhalter — dieser Text ist noch nicht anwaltlich geprüft und wird vor dem
+    öffentlichen Launch durch rechtssichere Inhalte ersetzt.
+  </p>
+
+  @switch (docKey) { @case ('impressum') {
+  <p class="legal__text">
+    Angaben gemäß § 5 TMG folgen hier (Betreiber, Anschrift, Kontakt,
+    Verantwortliche:r). Diese Angaben werden vor Veröffentlichung ergänzt.
+  </p>
+  } @case ('datenschutz') {
+  <p class="legal__text">
+    Hier folgt die Datenschutzerklärung: Verantwortliche Stelle,
+    Authentifizierung über Firebase Authentication, Speicherung von Projektdaten
+    in Cloud Firestore, Rechte der betroffenen Personen.
+  </p>
+  } @default {
+  <p class="legal__text">
+    Hier folgen die Nutzungsbedingungen: Leistungsbeschreibung, Konten,
+    zulässige Nutzung, Haftung und Kündigung.
+  </p>
+  } }
+
+  <p class="legal__back"><a routerLink="/">Zurück zur Startseite</a></p>
+</div>

@@ -1,0 +1,11 @@
+// Legacy V3 studio stylesheet (ported 1:1 from kdp-workbook-studio_aktuell.jsx).
+// ViewEncapsulation.None applies it across /studio while mounted. Split into two
+// partials to respect the 400-LOC file limit (AGENTS §5.3).
+@use 'studio-rail' as *;
+@use 'studio-content' as *;
+@use 'studio-outline' as *;
+@use 'studio-writing' as *;
+@use 'studio-cover' as *;
+@use 'studio-export' as *;
+@use 'studio-kdp' as *;
+@use 'studio-publish' as *;

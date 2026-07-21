@@ -1,0 +1,138 @@
+// Component-local styles for AST nodes. Colours/spacing come from the global
+// design tokens (libs/ui) provided by the host app; no magic numbers.
+:host {
+  display: block;
+}
+
+.ast-heading {
+  font-family: var(--font-display, serif);
+  line-height: var(--line-height-tight, 1.2);
+  margin: var(--space-5, 1.5rem) 0 var(--space-2, 0.5rem);
+}
+
+.ast-chapter__title {
+  font-family: var(--font-display, serif);
+  margin-bottom: var(--space-1, 0.25rem);
+}
+
+.ast-chapter__goal {
+  color: var(--color-text-muted, #6b6480);
+  font-style: italic;
+  margin-bottom: var(--space-4, 1rem);
+}
+
+.ast-paragraph {
+  margin: 0 0 var(--space-3, 0.75rem);
+  max-width: 62ch;
+}
+
+.ast-quote {
+  font-family: var(--font-display, serif);
+  font-style: italic;
+  border-left: 3px solid var(--color-primary, #6c57b8);
+  padding-left: var(--space-3, 0.75rem);
+  margin: var(--space-4, 1rem) 0;
+  color: var(--color-text-muted, #6b6480);
+}
+
+.ast-ul,
+.ast-ol {
+  margin: 0 0 var(--space-3, 0.75rem) var(--space-5, 1.5rem);
+}
+
+.ast-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-3, 0.75rem);
+}
+
+.ast-checkitem {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2, 0.5rem);
+}
+
+.ast-writinglines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+  margin: var(--space-3, 0.75rem) 0;
+}
+
+.ast-writingline {
+  display: block;
+  border-bottom: 1px solid var(--color-border, #e0dcec);
+  height: var(--space-4, 1rem);
+}
+
+.ast-scale {
+  border: 1px solid var(--color-border, #e0dcec);
+  border-radius: var(--radius-md, 9px);
+  padding: var(--space-3, 0.75rem);
+  margin: var(--space-3, 0.75rem) 0;
+}
+
+.ast-scale__points {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 0.5rem);
+  padding: 0;
+  margin: var(--space-2, 0.5rem) 0 0;
+}
+
+.ast-scale__point {
+  min-width: 2rem;
+  text-align: center;
+  border: 1px solid var(--color-border, #e0dcec);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-1, 0.25rem) 0;
+}
+
+.ast-box {
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-4, 1rem);
+  margin: var(--space-4, 1rem) 0;
+  border: 1px solid var(--color-border, #e0dcec);
+  background: var(--color-surface, #fff);
+}
+
+.ast-box__kind {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary, #6c57b8);
+}
+
+.ast-box--tip {
+  border-left: 4px solid var(--color-success, #7fbfa5);
+}
+
+.ast-box--exercise {
+  border-left: 4px solid var(--color-primary, #6c57b8);
+}
+
+.ast-box--example {
+  border-left: 4px solid var(--color-text-muted, #6b6480);
+}
+
+.ast-pagebreak {
+  border: 0;
+  border-top: 2px dashed var(--color-border, #e0dcec);
+  margin: var(--space-6, 2rem) 0;
+}
+
+.ast-fallback {
+  border: 1px dashed var(--color-danger, #b04444);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-2, 0.5rem);
+  margin: var(--space-2, 0.5rem) 0;
+}
+
+.ast-fallback__type {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-danger, #b04444);
+}

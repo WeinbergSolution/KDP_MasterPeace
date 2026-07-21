@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "declaration": true,
+    "declarationMap": true,
+    "disableReferencedProjectLoad": true,
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    {
+      "path": "../contracts/tsconfig.lib.json"
+    },
+    {
+      "path": "../testing/tsconfig.lib.json"
+    },
+    {
+      "path": "../document-model/tsconfig.lib.json"
+    }
+  ]
+}

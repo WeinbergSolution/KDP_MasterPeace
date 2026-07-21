@@ -1,0 +1,35 @@
+// Legacy V3 KDP-Paket styles (ported). Part 7 of the studio stylesheet (@used by
+// studio-shell.scss): keyword tags, the scrollable content-plan list and the
+// filled "Als Projekt anlegen" button variant.
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.tag {
+  background: #ede8f8;
+  color: #4e3d8f;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+}
+
+.postlist {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid #eeebf5;
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+
+.btn.primary-t {
+  background: #6c57b8;
+  border-color: #6c57b8;
+  color: #fff;
+  justify-content: center;
+}
+.btn.primary-t:hover:not(:disabled) {
+  background: #5b47a3;
+  color: #fff;
+}
