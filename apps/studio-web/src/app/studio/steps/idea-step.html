@@ -63,6 +63,12 @@
     </div>
     @if (!providerReady) {
     <p class="notconf">Integration nicht konfiguriert (KI-Provider fehlt).</p>
+    } @if (otherLangLabel) {
+    <p class="muted small-t">
+      {{ otherLangLabel }} gewählt: Titel, Kapitel, Klappentext und Keywords
+      werden auf {{ otherLangLabel }} generiert – die Bedienoberfläche bleibt
+      Deutsch.
+    </p>
     }
   </div>
 
@@ -241,7 +247,7 @@
       [disabled]="!title"
       (click)="save({ currentStep: 1 })"
     >
-      Weiter zur Gliederung <lucide-icon [img]="check" [size]="15" />
+      Weiter zur Gliederung <lucide-icon [img]="chevron" [size]="15" />
     </button>
   </div>
 </div>

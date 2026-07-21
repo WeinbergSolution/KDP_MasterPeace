@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  Check,
+  ChevronRight,
   Feather,
   LucideAngularModule,
   ShieldCheck,
@@ -16,6 +16,7 @@ import {
 } from 'lucide-angular';
 import {
   BOOK_TYPE_LABELS,
+  type BookLanguage,
   type BookProject,
   LANG_LABELS,
   NICHES,
@@ -62,7 +63,14 @@ export class IdeaStepComponent {
   protected readonly smartphone = Smartphone;
   protected readonly shield = ShieldCheck;
   protected readonly feather = Feather;
-  protected readonly check = Check;
+  protected readonly chevron = ChevronRight;
+
+  /** The chosen non-German language label, or empty for German (parity hint). */
+  protected get otherLangLabel(): string {
+    return this.language !== 'de'
+      ? (LANG_LABELS[this.language as BookLanguage] ?? '')
+      : '';
+  }
 
   constructor() {
     effect(() => this.syncFromProject());
