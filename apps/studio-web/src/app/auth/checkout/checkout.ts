@@ -7,6 +7,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ActivationService } from '../../core/firebase/activation.service';
+import { EntitlementService } from '../../core/firebase/entitlement.service';
 import { allowedPlan } from '../plan';
 import {
   PLANS,
@@ -35,6 +36,7 @@ export class CheckoutComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly activation = inject(ActivationService);
+  private readonly entitlement = inject(EntitlementService);
 
   protected readonly plan = this.resolvePlan();
   protected readonly cycle = this.resolveCycle();
@@ -93,11 +95,28 @@ export class CheckoutComponent {
         this.plan.id,
         billingFor(this.plan, this.cycle),
       );
-      await this.router.navigateByUrl('/studio');
+      await this.openStudio();
     } catch (error) {
       this.error.set((error as Error).message);
     } finally {
       this.busy.set(false);
     }
+  }
+
+  /**
+   * Navigates to the studio only after the entitlement is confirmed readable and
+   * active; otherwise surfaces the read problem instead of a silent redirect.
+   * ActivationService.activateTestPlan already refreshed the entitlement.
+   */
+  private async openStudio(): Promise<void> {
+    if (this.entitlement.isActive()) {
+      await this.router.navigateByUrl('/studio');
+      return;
+    }
+    this.error.set(
+      this.entitlement.readError()
+        ? 'Dein Testtarif wurde gespeichert, konnte aber noch nicht gelesen werden. Bitte lade die Seite neu — bleibt der Fehler, muss der Firestore-Leserechte-Regel für dein Entitlement veröffentlicht werden.'
+        : 'Dein Testtarif wurde gespeichert. Öffne „Mein Konto“ oder lade die Seite neu, um fortzufahren.',
+    );
   }
 }

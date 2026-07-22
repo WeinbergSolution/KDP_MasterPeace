@@ -8,6 +8,17 @@ describe('isActiveEntitlement', () => {
     expect(isActiveEntitlement('trialing')).toBe(true);
   });
 
+  it('grants an active test_phase entitlement (source/testMode do not block)', () => {
+    const entitlement = {
+      status: 'active',
+      source: 'test_phase',
+      testMode: true,
+      planId: 'tester',
+      billingCycle: 'one_time',
+    };
+    expect(isActiveEntitlement(entitlement.status)).toBe(true);
+  });
+
   it('denies every other or missing status', () => {
     for (const status of [
       'none',
