@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import {
   authGuard,
+  loggedInGuard,
   publicOnlyGuard,
   verifiedGuard,
 } from './core/firebase/auth.guard';
@@ -64,6 +65,12 @@ export const appRoutes: Route[] = [
     canActivate: [verifiedGuard],
     loadComponent: () =>
       import('./auth/checkout/checkout').then((m) => m.CheckoutComponent),
+  },
+  {
+    path: 'konto',
+    canActivate: [loggedInGuard],
+    loadComponent: () =>
+      import('./auth/konto/konto').then((m) => m.KontoComponent),
   },
   { path: 'impressum', data: { doc: 'impressum' }, loadComponent: legal },
   { path: 'datenschutz', data: { doc: 'datenschutz' }, loadComponent: legal },

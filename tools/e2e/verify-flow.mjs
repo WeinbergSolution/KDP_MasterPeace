@@ -145,11 +145,12 @@ async function mainFlow(browser) {
   await page.fill('input[name="password"]', PW);
   await page.click('button[type="submit"]');
   await page
-    .waitForURL(/\/tarif-waehlen/, { timeout: 15000 })
+    .waitForURL(/\/(checkout|tarif-waehlen)/, { timeout: 15000 })
     .catch(() => null);
   check(
-    'verified login without entitlement → /tarif-waehlen (not studio)',
-    /\/tarif-waehlen/.test(page.url()) && !/\/studio/.test(page.url()),
+    'verified login without entitlement → plan gate (checkout/tarif), not studio',
+    /\/(checkout|tarif-waehlen)/.test(page.url()) &&
+      !/\/studio/.test(page.url()),
   );
   if (errs.length)
     process.stdout.write(`  console: ${errs.slice(0, 6).join(' || ')}\n`);

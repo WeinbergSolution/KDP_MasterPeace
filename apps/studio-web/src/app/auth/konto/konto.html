@@ -1,0 +1,92 @@
+<div class="kt">
+  <a class="kt__brand" routerLink="/">
+    <span class="kt__mark" aria-hidden="true">K</span>
+    <span>KDP MasterPeace</span>
+  </a>
+  <h1 class="kt__title">Mein Konto</h1>
+
+  <section class="kt__card" aria-labelledby="kt-profil">
+    <h2 id="kt-profil" class="kt__h2">Profil</h2>
+    <dl class="kt__rows">
+      <div class="kt__row">
+        <dt>Anzeigename</dt>
+        <dd>{{ name() || '—' }}</dd>
+      </div>
+      <div class="kt__row">
+        <dt>E-Mail-Adresse</dt>
+        <dd>{{ email() }}</dd>
+      </div>
+      <div class="kt__row">
+        <dt>Status</dt>
+        <dd>
+          @if (verified()) {
+          <span class="kt__ok">E-Mail bestätigt</span>
+          } @else {
+          <span class="kt__warn">E-Mail nicht bestätigt</span>
+          }
+        </dd>
+      </div>
+    </dl>
+    @if (!verified()) {
+    <a class="kt__btn kt__btn--ghost" routerLink="/verify-email">
+      Bestätigungs-E-Mail anfordern
+    </a>
+    }
+  </section>
+
+  <section class="kt__card" aria-labelledby="kt-tarif">
+    <h2 id="kt-tarif" class="kt__h2">Tarif</h2>
+    @if (active()) {
+    <dl class="kt__rows">
+      <div class="kt__row">
+        <dt>Aktiver Tarif</dt>
+        <dd>{{ planLabel() }}</dd>
+      </div>
+      <div class="kt__row">
+        <dt>Abrechnung</dt>
+        <dd>{{ billingText() }}</dd>
+      </div>
+      <div class="kt__row">
+        <dt>Preis</dt>
+        <dd>{{ priceLine() }}</dd>
+      </div>
+      <div class="kt__row">
+        <dt>Buchkontingent</dt>
+        <dd>{{ quotaLine() }}</dd>
+      </div>
+      <div class="kt__row">
+        <dt>Status</dt>
+        <dd><span class="kt__ok">Testtarif aktiv</span></dd>
+      </div>
+    </dl>
+    <p class="kt__note">Testphase – es wurde keine Zahlung ausgelöst.</p>
+    <div class="kt__actions">
+      <a class="kt__btn kt__btn--gold" routerLink="/studio">Studio öffnen</a>
+      <a
+        class="kt__btn kt__btn--ghost"
+        routerLink="/tarif-waehlen"
+        [queryParams]="{ change: 1 }"
+      >
+        Tarif wechseln
+      </a>
+    </div>
+    } @else {
+    <p class="kt__lead">Für dein Konto ist noch kein Tarif aktiv.</p>
+    <div class="kt__actions">
+      <a class="kt__btn kt__btn--gold" routerLink="/tarif-waehlen"
+        >Tarif wählen</a
+      >
+    </div>
+    }
+  </section>
+
+  <section class="kt__card" aria-labelledby="kt-konto">
+    <h2 id="kt-konto" class="kt__h2">Konto</h2>
+    <div class="kt__actions">
+      <button class="kt__btn kt__btn--ghost" type="button" (click)="logout()">
+        Abmelden
+      </button>
+      <a class="kt__btn kt__btn--ghost" routerLink="/">Zur Landingpage</a>
+    </div>
+  </section>
+</div>

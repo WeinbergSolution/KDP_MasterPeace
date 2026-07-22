@@ -1,8 +1,8 @@
 <div class="auth">
   <a class="auth__brand" routerLink="/">KDP MasterPeace</a>
   <div class="auth__card">
-    <h1 class="auth__title">Anmelden</h1>
-    <p class="auth__lead">Melde dich an und arbeite direkt im Studio weiter.</p>
+    <h1 class="auth__title">Willkommen zurück</h1>
+    <p class="auth__lead">Melde dich an, um mit deinem Konto weiterzumachen.</p>
 
     @if (verifiedHint) {
     <p class="auth__ok" role="status">
@@ -48,8 +48,13 @@
     </form>
 
     <nav class="auth__alt" aria-label="Weitere Optionen">
-      <a routerLink="/register">Konto erstellen</a>
       <a routerLink="/forgot-password">Passwort vergessen?</a>
+      <span
+        >Noch kein Konto?
+        <a routerLink="/register" [queryParams]="forwardParams"
+          >Konto erstellen</a
+        ></span
+      >
     </nav>
   </div>
 </div>

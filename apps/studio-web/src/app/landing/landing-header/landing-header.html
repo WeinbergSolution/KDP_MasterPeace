@@ -1,0 +1,100 @@
+<header class="lh">
+  <a class="lh__brand" routerLink="/">
+    <span class="lh__mark" aria-hidden="true">K</span>
+    <span>KDP MasterPeace</span>
+  </a>
+
+  @if (!ready()) {
+  <span class="lh__skel" aria-hidden="true"></span>
+  } @else if (!authed()) {
+  <nav class="lh__nav" aria-label="Navigation und Anmeldung">
+    <a class="lh__link" href="#tarife">Tarife</a>
+    <a class="lh__link" routerLink="/login">Anmelden</a>
+    <a class="lh__btn lh__btn--gold" routerLink="/register">Jetzt starten</a>
+  </nav>
+  } @else {
+  <div class="lh__account">
+    @if (active()) {
+    <a class="lh__btn lh__btn--gold" routerLink="/studio">
+      Weiter zum {{ planLabel() }}-Bereich
+    </a>
+    } @else if (verified()) {
+    <a class="lh__btn lh__btn--ghost" routerLink="/tarif-waehlen">
+      Tarif wählen
+    </a>
+    } @else {
+    <a class="lh__btn lh__btn--ghost" routerLink="/verify-email">
+      E-Mail bestätigen
+    </a>
+    }
+    <button
+      class="lh__avatar"
+      type="button"
+      [attr.aria-expanded]="menuOpen()"
+      aria-haspopup="menu"
+      aria-label="Kontomenü"
+      (click)="toggle()"
+    >
+      <span class="lh__initial">{{ initial() }}</span>
+      <lucide-icon [img]="chevron" [size]="14" />
+    </button>
+
+    @if (menuOpen()) {
+    <button
+      class="lh__backdrop"
+      type="button"
+      aria-label="Menü schließen"
+      (click)="close()"
+    ></button>
+    <div class="lh__menu" role="menu">
+      <div class="lh__me">
+        <span class="lh__name">{{ name() }}</span>
+        @if (active()) {
+        <span class="lh__plan">Testtarif: {{ planLabel() }}</span>
+        }
+      </div>
+      <a class="lh__item" role="menuitem" routerLink="/konto" (click)="close()">
+        Mein Konto
+      </a>
+      @if (active()) {
+      <a
+        class="lh__item"
+        role="menuitem"
+        routerLink="/tarif-waehlen"
+        [queryParams]="{ change: 1 }"
+        (click)="close()"
+      >
+        Tarif wechseln
+      </a>
+      } @else if (verified()) {
+      <a
+        class="lh__item"
+        role="menuitem"
+        routerLink="/tarif-waehlen"
+        (click)="close()"
+      >
+        Tarif wählen
+      </a>
+      } @else {
+      <a
+        class="lh__item"
+        role="menuitem"
+        routerLink="/verify-email"
+        (click)="close()"
+      >
+        E-Mail bestätigen
+      </a>
+      }
+      <button
+        class="lh__item lh__item--btn"
+        role="menuitem"
+        type="button"
+        (click)="logout()"
+      >
+        Abmelden
+      </button>
+    </div>
+    }
+  </div>
+  }
+</header>

@@ -4,7 +4,7 @@
   "buildCommand": "NX_IGNORE_UNSUPPORTED_TS_SETUP=true npx nx build studio-web --configuration=production && node tools/build/generate-env-js.mjs",
   "outputDirectory": "dist/apps/studio-web/browser",
   "framework": null,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/(.*)",

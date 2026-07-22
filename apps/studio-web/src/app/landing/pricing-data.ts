@@ -1,10 +1,17 @@
 // Central, type-safe pricing configuration for the landing page. Prices are
-// preliminary launch prices, split into value / currency / period so the amount
-// can read large with a smaller currency and billing note. Only real, currently
-// shipping product features are listed (no invented discounts, annual prices,
-// strike-throughs, VAT statements or free trials). Swap the values here.
+// preliminary test-phase prices split into billing cycles (Tester is one-time;
+// the paid plans are monthly or annual, where annual equals ten monthly
+// instalments). Display-only: the server catalog (api/_lib/plan-catalog.mjs) is
+// the authority for the actual priceCents / bookLimit written to an entitlement.
 
 export type BillingType = 'oneTime' | 'subscription';
+export type BillingCycle = 'one_time' | 'monthly' | 'annual';
+
+/** A display price (value + period label); the currency is shared. */
+export interface PriceDisplay {
+  readonly value: string;
+  readonly period: string;
+}
 
 /** A single pricing plan (quota-based, real features only). */
 export interface Plan {
@@ -15,9 +22,8 @@ export interface Plan {
   readonly booksLabel: string;
   readonly booksNote: string;
   readonly billingType: BillingType;
-  readonly priceValue: string;
-  readonly priceCurrency: string;
-  readonly pricePeriod: string;
+  readonly currency: string;
+  readonly prices: Partial<Record<BillingCycle, PriceDisplay>>;
   readonly highlighted: boolean;
   readonly highlightLabel?: string;
   readonly features: readonly string[];
@@ -33,9 +39,8 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktion',
     booksNote: 'einmalig',
     billingType: 'oneTime',
-    priceValue: '9,90',
-    priceCurrency: '€',
-    pricePeriod: 'einmalig',
+    currency: '€',
+    prices: { one_time: { value: '9,90', period: 'einmalig' } },
     highlighted: false,
     features: [
       'Geführter 8-Schritte-Workflow',
@@ -55,9 +60,11 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktionen',
     booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
-    priceValue: '29',
-    priceCurrency: '€',
-    pricePeriod: '/ Monat',
+    currency: '€',
+    prices: {
+      monthly: { value: '29', period: '/ Monat' },
+      annual: { value: '290', period: '/ Jahr' },
+    },
     highlighted: false,
     features: [
       'Alles aus Tester',
@@ -75,9 +82,11 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktionen',
     booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
-    priceValue: '59',
-    priceCurrency: '€',
-    pricePeriod: '/ Monat',
+    currency: '€',
+    prices: {
+      monthly: { value: '59', period: '/ Monat' },
+      annual: { value: '590', period: '/ Jahr' },
+    },
     highlighted: true,
     highlightLabel: 'Beliebteste Wahl',
     features: [
@@ -96,9 +105,11 @@ export const PLANS: readonly Plan[] = [
     booksLabel: 'Buchproduktionen',
     booksNote: 'pro Abrechnungszeitraum',
     billingType: 'subscription',
-    priceValue: '99',
-    priceCurrency: '€',
-    pricePeriod: '/ Monat',
+    currency: '€',
+    prices: {
+      monthly: { value: '99', period: '/ Monat' },
+      annual: { value: '990', period: '/ Jahr' },
+    },
     highlighted: false,
     features: [
       'Alles aus Creator',
@@ -109,3 +120,33 @@ export const PLANS: readonly Plan[] = [
     ctaLabel: 'Pro wählen',
   },
 ];
+
+/** Note shown on the annual option / when annual is selected. */
+export const ANNUAL_SAVING_NOTE = 'Jährlich zahlen · 2 Monatsbeiträge sparen';
+
+/**
+ * Returns the display price for a plan at a billing cycle, falling back to the
+ * plan's available price (Tester is always one-time).
+ *
+ * @param plan The plan.
+ * @param cycle The selected billing cycle.
+ * @returns The display price.
+ */
+export function priceFor(plan: Plan, cycle: BillingCycle): PriceDisplay {
+  return (
+    plan.prices[cycle] ??
+    plan.prices.one_time ??
+    plan.prices.monthly ?? { value: '', period: '' }
+  );
+}
+
+/**
+ * Returns the effective billing cycle for a plan (Tester is always one-time).
+ *
+ * @param plan The plan.
+ * @param cycle The selected billing cycle.
+ * @returns The effective billing cycle id.
+ */
+export function billingFor(plan: Plan, cycle: BillingCycle): BillingCycle {
+  return plan.billingType === 'oneTime' ? 'one_time' : cycle;
+}

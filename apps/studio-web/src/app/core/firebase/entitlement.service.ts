@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE } from './firebase-app';
 import { AuthService } from './auth.service';
@@ -6,31 +6,59 @@ import { isActiveEntitlement } from './entitlement';
 
 // Reads the current user's server-controlled entitlement (entitlements/{uid}).
 // The client may only READ this document — security rules forbid client writes.
-// A missing document or any non-active status means no studio access. This
-// package sets nothing: a later Stripe work package writes the entitlement
-// server-side.
+// A missing document or any non-active status means no studio access. The status
+// is exposed as a signal so the landing header/account can react without flicker;
+// call refresh() after login / activation, and clear() on logout.
 
-/** Reactive read access to the current user's entitlement status. */
+/** A read-only view of the current entitlement. */
+export interface Entitlement {
+  readonly status: string;
+  readonly planId?: string;
+  readonly billingCycle?: string;
+  readonly bookLimit?: number;
+  readonly source?: string;
+}
+
+/** Reactive read access to the current user's entitlement. */
 @Injectable({ providedIn: 'root' })
 export class EntitlementService {
   private readonly db = inject(FIRESTORE);
   private readonly auth = inject(AuthService);
+  private readonly stateSignal = signal<Entitlement | null>(null);
 
-  /**
-   * Reads the current user's entitlement status from Firestore.
-   *
-   * @returns The status string, or 'none' when signed out / missing / on error.
-   */
-  async currentStatus(): Promise<string> {
+  readonly entitlement = this.stateSignal.asReadonly();
+  readonly isActive = computed(() =>
+    isActiveEntitlement(this.stateSignal()?.status),
+  );
+
+  /** Refreshes the entitlement signal from Firestore for the current user. */
+  async refresh(): Promise<void> {
     const uid = this.auth.currentUser()?.uid;
-    if (!uid) return 'none';
+    if (!uid) {
+      this.stateSignal.set(null);
+      return;
+    }
     try {
       const snap = await getDoc(doc(this.db, 'entitlements', uid));
-      const status = snap.exists() ? snap.data()?.['status'] : null;
-      return typeof status === 'string' ? status : 'none';
+      this.stateSignal.set(snap.exists() ? (snap.data() as Entitlement) : null);
     } catch {
-      return 'none';
+      this.stateSignal.set(null);
     }
+  }
+
+  /** Clears the cached entitlement (on sign-out). */
+  clear(): void {
+    this.stateSignal.set(null);
+  }
+
+  /**
+   * Reads (refreshing) the current entitlement status.
+   *
+   * @returns The status, or 'none'.
+   */
+  async currentStatus(): Promise<string> {
+    await this.refresh();
+    return this.stateSignal()?.status ?? 'none';
   }
 
   /**

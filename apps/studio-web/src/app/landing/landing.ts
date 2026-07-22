@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   ArrowRight,
@@ -25,8 +30,11 @@ import { AuthService } from '../core/firebase/auth.service';
 import { EntitlementService } from '../core/firebase/entitlement.service';
 import { allowedPlan, type PlanId } from '../auth/plan';
 import { savePlanIntent } from '../auth/plan-intent';
+import type { BillingCycle } from './pricing-data';
 import { FAQS } from './faq-data';
-import { PlanTiersComponent } from './plan-tiers/plan-tiers';
+import { PlanTiersComponent, type PlanChoice } from './plan-tiers/plan-tiers';
+import { BillingToggleComponent } from './billing-toggle/billing-toggle';
+import { LandingHeaderComponent } from './landing-header/landing-header';
 
 // Public marketing landing page at `/`. Premium publishing-SaaS composition for
 // KDP MasterPeace: warm ivory base, deep-ink contrast sections, gold + cover
@@ -61,7 +69,13 @@ interface Step {
 @Component({
   selector: 'app-landing',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LucideAngularModule, PlanTiersComponent],
+  imports: [
+    RouterLink,
+    LucideAngularModule,
+    PlanTiersComponent,
+    BillingToggleComponent,
+    LandingHeaderComponent,
+  ],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })
@@ -73,6 +87,7 @@ export class LandingComponent {
   protected readonly year = new Date().getFullYear();
   protected readonly arrow = ArrowRight;
   protected readonly faqs = FAQS;
+  protected readonly cycle = signal<BillingCycle>('monthly');
 
   protected readonly covers: Cover[] = [
     {
@@ -240,30 +255,37 @@ export class LandingComponent {
 
   /**
    * Routes a plan CTA by auth state (the selection is only an intent): guest →
-   * register, unverified → verify-email, verified without entitlement → checkout,
+   * login, unverified → verify-email, verified without entitlement → checkout,
    * verified with entitlement → studio. Never grants access itself.
    *
-   * @param raw The chosen plan id (re-validated against the allowlist).
+   * @param choice The chosen plan + billing (re-validated).
    */
-  protected async onPlanChoose(raw: string): Promise<void> {
-    const plan = allowedPlan(raw);
+  protected async onPlanChoose(choice: PlanChoice): Promise<void> {
+    const plan = allowedPlan(choice.planId);
     if (!plan) return;
     savePlanIntent(plan);
-    await this.router.navigateByUrl(await this.planTarget(plan));
+    await this.router.navigateByUrl(
+      await this.planTarget(plan, choice.billing),
+    );
   }
 
   /**
-   * Computes the destination for a chosen plan from the current auth/entitlement
-   * state.
+   * Computes the destination for a chosen plan + billing from the current
+   * auth/entitlement state.
    *
    * @param plan The allowlisted plan id.
+   * @param billing The chosen billing cycle.
    * @returns The route to navigate to.
    */
-  private async planTarget(plan: PlanId): Promise<string> {
+  private async planTarget(
+    plan: PlanId,
+    billing: BillingCycle,
+  ): Promise<string> {
     await this.auth.reload();
-    if (!this.auth.isAuthenticated()) return `/register?plan=${plan}`;
-    if (!this.auth.isEmailVerified()) return `/verify-email?plan=${plan}`;
+    const query = `plan=${plan}&billing=${billing}`;
+    if (!this.auth.isAuthenticated()) return `/login?${query}`;
+    if (!this.auth.isEmailVerified()) return `/verify-email?${query}`;
     const active = await this.entitlement.hasActiveAccess();
-    return active ? '/studio' : `/checkout?plan=${plan}`;
+    return active ? '/studio' : `/checkout?${query}`;
   }
 }

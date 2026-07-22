@@ -1,15 +1,5 @@
 <div class="lp">
-  <header class="lp-head">
-    <a class="lp-head__brand" routerLink="/">
-      <span class="lp-mark" aria-hidden="true">K</span>
-      <span>KDP MasterPeace</span>
-    </a>
-    <nav class="lp-head__nav" aria-label="Navigation und Anmeldung">
-      <a class="lp-link" href="#tarife">Tarife</a>
-      <a class="lp-link" routerLink="/login">Anmelden</a>
-      <a class="lp-btn lp-btn--gold" routerLink="/register">Jetzt starten</a>
-    </nav>
-  </header>
+  <app-landing-header />
 
   <main>
     <!-- ============ HERO ============ -->
@@ -222,7 +212,8 @@
           einem Kontingent, das zu deinem Vorhaben passt.
         </p>
       </div>
-      <app-plan-tiers (choose)="onPlanChoose($event)" />
+      <app-billing-toggle [cycle]="cycle()" (cycleChange)="cycle.set($event)" />
+      <app-plan-tiers [cycle]="cycle()" (choose)="onPlanChoose($event)" />
     </section>
 
     <!-- ============ FAQ ============ -->
@@ -256,13 +247,13 @@
         geführten Workflow.
       </p>
       <div class="lp-final__cta">
-        <a
+        <button
           class="lp-btn lp-btn--gold lp-btn--lg"
-          routerLink="/register"
-          [queryParams]="{ plan: 'tester' }"
+          type="button"
+          (click)="onPlanChoose({ planId: 'tester', billing: 'one_time' })"
         >
           Buchprojekt starten <lucide-icon [img]="arrow" [size]="18" />
-        </a>
+        </button>
       </div>
       <p class="lp-final__trust">
         Einmaliger Tester-Tarif für 9,90 € · kein Tester-Abonnement

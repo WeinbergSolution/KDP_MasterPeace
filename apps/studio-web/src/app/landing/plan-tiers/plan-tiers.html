@@ -21,9 +21,9 @@
       </span>
     </div>
     <p class="lp-tier__price">
-      <span class="lp-tier__amount">{{ p.priceValue }}</span>
-      <span class="lp-tier__cur">{{ p.priceCurrency }}</span>
-      <span class="lp-tier__period">{{ p.pricePeriod }}</span>
+      <span class="lp-tier__amount">{{ price(p).value }}</span>
+      <span class="lp-tier__cur">{{ p.currency }}</span>
+      <span class="lp-tier__period">{{ price(p).period }}</span>
     </p>
     <ul class="lp-tier__features">
       @for (f of p.features; track f) {
@@ -35,7 +35,7 @@
       class="lp-btn lp-tier__cta"
       [class.lp-btn--gold]="p.highlighted"
       [class.lp-btn--ghost]="!p.highlighted"
-      (click)="choose.emit(p.id)"
+      (click)="select(p)"
     >
       {{ p.ctaLabel }}
     </button>

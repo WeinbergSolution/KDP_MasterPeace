@@ -1,0 +1,25 @@
+<div class="bt">
+  <div class="bt__switch" role="group" aria-label="Abrechnung">
+    <button
+      type="button"
+      class="bt__opt"
+      [class.bt__opt--on]="cycle() === 'monthly'"
+      [attr.aria-pressed]="cycle() === 'monthly'"
+      (click)="set('monthly')"
+    >
+      Monatlich
+    </button>
+    <button
+      type="button"
+      class="bt__opt"
+      [class.bt__opt--on]="cycle() === 'annual'"
+      [attr.aria-pressed]="cycle() === 'annual'"
+      (click)="set('annual')"
+    >
+      Jährlich
+    </button>
+  </div>
+  @if (cycle() === 'annual') {
+  <p class="bt__note">{{ note }}</p>
+  }
+</div>

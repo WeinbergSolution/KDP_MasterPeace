@@ -1,0 +1,53 @@
+// Monthly/annual toggle. Self-contained tokens so it renders on the landing and
+// the plan-selection page alike.
+:host {
+  --bt-ink: #191320;
+  --bt-gold-2: #a87f28;
+  --bt-line: #ece3d2;
+  --bt-muted: #6a6076;
+  display: block;
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+
+.bt__switch {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--bt-line);
+  border-radius: 999px;
+  background: #fff;
+}
+.bt__opt {
+  border: 0;
+  background: transparent;
+  color: var(--bt-muted);
+  font: inherit;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+.bt__opt--on {
+  background: linear-gradient(150deg, var(--bt-ink), #3a2f47);
+  color: #fff;
+}
+.bt__opt:focus-visible {
+  outline: 2px solid var(--bt-gold-2);
+  outline-offset: 2px;
+}
+.bt__note {
+  margin-top: 0.7rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--bt-gold-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt__opt {
+    transition: none;
+  }
+}

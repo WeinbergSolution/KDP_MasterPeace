@@ -1,9 +1,10 @@
 import { readFileSync } from 'node:fs';
 
-// KDP MasterPeace is not offered for free. This guard keeps misleading
-// "free"/"kostenlos" CTA and offer phrases out of the public UI. The FAQ may
-// ASK whether the product is free (answered "Nein"), so the word "kostenlos"
-// itself is allowed — only the misleading claim phrases are forbidden.
+// KDP MasterPeace is not offered for free, and the test-phase activation must
+// never claim a real payment. This guard keeps misleading free/kostenlos CTA
+// phrases and fake-payment wording out of the public UI. The FAQ may ASK whether
+// the product is free (answered "Nein"), so the word "kostenlos" itself is
+// allowed — only the misleading claim phrases are forbidden.
 
 const BASE = 'apps/studio-web/src/app';
 const PUBLIC_TEMPLATES = [
@@ -12,6 +13,9 @@ const PUBLIC_TEMPLATES = [
   `${BASE}/auth/register/register.html`,
   `${BASE}/auth/verify-email/verify-email.html`,
   `${BASE}/auth/action/auth-action.html`,
+  `${BASE}/auth/plan-select/plan-select.html`,
+  `${BASE}/auth/checkout/checkout.html`,
+  `${BASE}/auth/konto/konto.html`,
 ];
 
 const FORBIDDEN = [
@@ -19,6 +23,11 @@ const FORBIDDEN = [
   /kostenlose[rs]?\s+(Demo|Zugang|Nutzung|Testphase)/i,
   /\bGratis\b/i,
   /\bFree\b/i,
+  /zahlungspflichtig\s+bestellen/i,
+  /Jetzt\s+bezahlen/i,
+  /Zahlung\s+erfolgreich/i,
+  /Kauf\s+abgeschlossen/i,
+  /Abo\s+abgeschlossen/i,
 ];
 
 /**

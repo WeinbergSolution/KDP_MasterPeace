@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/firebase/auth.service';
 import { toAuthMessage } from '../auth-error';
-import { allowedPlan } from '../plan';
+import { allowedBilling, allowedPlan } from '../plan';
 import { verificationContinueUrl } from '../verification';
 
 const COOLDOWN_S = 60;
@@ -49,17 +49,26 @@ export class VerifyEmailComponent implements OnDestroy {
     this.busy.set(true);
     this.notice.set('');
     try {
-      const plan = allowedPlan(this.route.snapshot.queryParamMap.get('plan'));
-      const url = verificationContinueUrl(window.location.origin, plan);
-      this.showResult(
-        await this.auth.resendVerification(this.email, this.password, url),
-      );
+      this.showResult(await this.sendResend());
     } catch (error) {
       this.noticeOk.set(false);
       this.notice.set(toAuthMessage(error));
     } finally {
       this.busy.set(false);
     }
+  }
+
+  /**
+   * Re-sends the verification e-mail with the carried plan/billing.
+   *
+   * @returns 'already' when already verified, else 'sent'.
+   */
+  private async sendResend(): Promise<'already' | 'sent'> {
+    const query = this.route.snapshot.queryParamMap;
+    const plan = allowedPlan(query.get('plan'));
+    const billing = allowedBilling(query.get('billing'));
+    const url = verificationContinueUrl(window.location.origin, plan, billing);
+    return this.auth.resendVerification(this.email, this.password, url);
   }
 
   /** Reflects a resend result and starts the cooldown. */

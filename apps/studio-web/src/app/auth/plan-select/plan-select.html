@@ -10,5 +10,6 @@
       passende Buchkontingent.
     </p>
   </header>
-  <app-plan-tiers (choose)="onChoose($event)" />
+  <app-billing-toggle [cycle]="cycle()" (cycleChange)="cycle.set($event)" />
+  <app-plan-tiers [cycle]="cycle()" (choose)="onChoose($event)" />
 </div>

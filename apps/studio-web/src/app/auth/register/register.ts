@@ -9,13 +9,14 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/firebase/auth.service';
 import { isFirebaseConfigured } from '../../core/firebase/firebase-app';
 import { toAuthMessage } from '../auth-error';
-import { allowedPlan } from '../plan';
+import { allowedBilling, allowedPlan } from '../plan';
 import { verificationContinueUrl } from '../verification';
 
 /**
- * Email/password registration. On success the account is created, a verification
- * e-mail is sent and the user is taken to /verify-email — never to the studio.
- * The chosen plan is preserved only as an allowlisted selection intent.
+ * Email/password registration (secondary entry — login is the default). On
+ * success the account is created, a verification e-mail is sent and the user is
+ * taken to /verify-email — never the studio. The chosen plan + billing are
+ * preserved only as an allowlisted selection intent.
  */
 @Component({
   selector: 'app-register',
@@ -34,6 +35,21 @@ export class RegisterComponent {
   protected readonly configured = isFirebaseConfigured();
   protected readonly error = signal('');
   protected readonly busy = signal(false);
+  private readonly plan = allowedPlan(
+    this.route.snapshot.queryParamMap.get('plan'),
+  );
+  private readonly billing = allowedBilling(
+    this.route.snapshot.queryParamMap.get('billing'),
+  );
+  protected readonly forwardParams = this.buildParams();
+
+  /** Builds the allowlisted plan/billing query params to forward. */
+  private buildParams(): Record<string, string> {
+    const params: Record<string, string> = {};
+    if (this.plan) params['plan'] = this.plan;
+    if (this.billing) params['billing'] = this.billing;
+    return params;
+  }
 
   /** Creates the account, sends verification and routes to /verify-email. */
   protected async submit(): Promise<void> {
@@ -41,7 +57,9 @@ export class RegisterComponent {
     this.error.set('');
     try {
       await this.createAccount();
-      await this.router.navigateByUrl('/verify-email');
+      await this.router.navigate(['/verify-email'], {
+        queryParams: this.forwardParams,
+      });
     } catch (error) {
       this.error.set(toAuthMessage(error));
     } finally {
@@ -49,10 +67,13 @@ export class RegisterComponent {
     }
   }
 
-  /** Reads the allowlisted plan and creates the account with verification. */
+  /** Creates the account with a plan/billing-carrying verification e-mail. */
   private async createAccount(): Promise<void> {
-    const plan = allowedPlan(this.route.snapshot.queryParamMap.get('plan'));
-    const url = verificationContinueUrl(window.location.origin, plan);
+    const url = verificationContinueUrl(
+      window.location.origin,
+      this.plan,
+      this.billing,
+    );
     await this.auth.register(this.email, this.password, this.displayName, url);
   }
 }

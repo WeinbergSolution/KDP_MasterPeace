@@ -5,11 +5,12 @@
   </a>
   <div class="co__card">
     @if (plan) {
-    <h1 class="co__title">Dein Tarif ist ausgewählt</h1>
+    <h1 class="co__title">Prüfe deine Tarifauswahl</h1>
     <p class="co__lead">
-      Die sichere Zahlungsabwicklung wird derzeit vorbereitet. Dein Studio wird
-      erst nach einer erfolgreich bestätigten Zahlung freigeschaltet.
+      Kontrolliere Tarif, Abrechnung und Kontingent, bevor du deinen Testzugang
+      aktivierst.
     </p>
+
     <dl class="co__summary">
       <div class="co__row">
         <dt>Tarif</dt>
@@ -17,9 +18,7 @@
       </div>
       <div class="co__row">
         <dt>Preis</dt>
-        <dd>
-          {{ plan.priceValue }} {{ plan.priceCurrency }} {{ plan.pricePeriod }}
-        </dd>
+        <dd>{{ price?.value }} {{ plan.currency }} {{ price?.period }}</dd>
       </div>
       <div class="co__row">
         <dt>Abrechnung</dt>
@@ -30,16 +29,64 @@
         <dd>{{ plan.books }} {{ plan.booksLabel }} · {{ plan.booksNote }}</dd>
       </div>
     </dl>
-    <div class="co__actions">
+
+    @if (isAnnual) {
+    <p class="co__save">Du sparst 2 Monatsbeiträge.</p>
+    }
+
+    <ul class="co__features">
+      @for (f of plan.features; track f) {
+      <li>{{ f }}</li>
+      }
+    </ul>
+
+    <div class="co__change">
       <a class="co__btn co__btn--ghost" routerLink="/tarif-waehlen">
         Anderen Tarif wählen
       </a>
-      <a class="co__btn co__btn--ghost" routerLink="/">Zur Startseite</a>
+      @if (plan.billingType !== 'oneTime') {
+      <button
+        class="co__btn co__btn--ghost"
+        type="button"
+        (click)="changeBilling()"
+      >
+        Abrechnung ändern
+      </button>
+      }
+      <a class="co__btn co__btn--ghost" routerLink="/">Zurück</a>
     </div>
+
+    <p class="co__notice">Testphase – es wird kein Geld abgebucht.</p>
+
+    <label class="co__check">
+      <input type="checkbox" [(ngModel)]="confirmed" />
+      <span>
+        Ich habe Tarif, Abrechnung und Preis geprüft und möchte diesen Tarif für
+        mein Testkonto aktivieren.
+      </span>
+    </label>
+
+    @if (error()) {
+    <p class="co__error" role="alert">{{ error() }}</p>
+    }
+
+    <button
+      class="co__btn co__btn--gold co__btn--full"
+      type="button"
+      [disabled]="!confirmed || busy()"
+      (click)="activate()"
+    >
+      {{ busy() ? 'Wird aktiviert …' : 'Testtarif verbindlich aktivieren' }}
+    </button>
+    <p class="co__fine">
+      Mit der Aktivierung hinterlegst du den ausgewählten Tarif für dein
+      Testkonto. Es entsteht kein kostenpflichtiger Vertrag und keine
+      automatische Verlängerung.
+    </p>
     } @else {
     <h1 class="co__title">Kein Tarif ausgewählt</h1>
     <p class="co__lead">Bitte wähle zunächst einen Tarif aus.</p>
-    <div class="co__actions">
+    <div class="co__change">
       <a class="co__btn co__btn--gold" routerLink="/tarif-waehlen">
         Tarif wählen
       </a>

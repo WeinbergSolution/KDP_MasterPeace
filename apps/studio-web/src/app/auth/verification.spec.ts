@@ -20,6 +20,12 @@ describe('verificationContinueUrl', () => {
       `${ORIGIN}/login?verified=1&plan=creator`,
     );
   });
+
+  it('appends an allowlisted plan and billing cycle', () => {
+    expect(verificationContinueUrl(ORIGIN, 'creator', 'annual')).toBe(
+      `${ORIGIN}/login?verified=1&plan=creator&billing=annual`,
+    );
+  });
 });
 
 describe('parseVerifyAction', () => {
@@ -59,6 +65,18 @@ describe('parseVerifyAction', () => {
     );
     expect(r.plan).toBe('pro');
     expect(r.loginTarget).toBe('/login?verified=1&plan=pro');
+  });
+
+  it('carries plan + billing from a same-origin continueUrl', () => {
+    const r = parseVerifyAction(
+      getter({
+        mode: 'verifyEmail',
+        oobCode: 'x',
+        continueUrl: `${ORIGIN}/login?verified=1&plan=creator&billing=annual`,
+      }),
+      ORIGIN,
+    );
+    expect(r.loginTarget).toBe('/login?verified=1&plan=creator&billing=annual');
   });
 
   it('ignores a foreign-origin continueUrl (no open redirect, no plan)', () => {

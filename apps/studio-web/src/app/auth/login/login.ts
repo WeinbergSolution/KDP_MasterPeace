@@ -10,10 +10,13 @@ import { AuthService } from '../../core/firebase/auth.service';
 import { EntitlementService } from '../../core/firebase/entitlement.service';
 import { isFirebaseConfigured } from '../../core/firebase/firebase-app';
 import { toAuthMessage } from '../auth-error';
+import { allowedBilling, allowedPlan } from '../plan';
 
 /**
- * Email/password sign-in. Routes by gate: unverified → /verify-email; verified
- * without an active entitlement → /tarif-waehlen; verified + entitled → /studio.
+ * Email/password sign-in — the default entry point for existing users. Routes by
+ * gate after login: unverified → /verify-email; verified without entitlement →
+ * /checkout (when a plan was chosen) or /tarif-waehlen; verified + entitled →
+ * /studio. The chosen plan + billing are preserved as an allowlisted intent.
  */
 @Component({
   selector: 'app-login',
@@ -34,8 +37,23 @@ export class LoginComponent {
   protected readonly busy = signal(false);
   protected readonly verifiedHint =
     this.route.snapshot.queryParamMap.get('verified') === '1';
+  private readonly plan = allowedPlan(
+    this.route.snapshot.queryParamMap.get('plan'),
+  );
+  private readonly billing = allowedBilling(
+    this.route.snapshot.queryParamMap.get('billing'),
+  );
+  protected readonly forwardParams = this.buildParams();
 
-  /** Signs in, then routes by the current gate (verify / plan / studio). */
+  /** Builds the allowlisted plan/billing query params to forward. */
+  private buildParams(): Record<string, string> {
+    const params: Record<string, string> = {};
+    if (this.plan) params['plan'] = this.plan;
+    if (this.billing) params['billing'] = this.billing;
+    return params;
+  }
+
+  /** Signs in, then routes by the current gate (verify / plan / checkout / studio). */
   protected async submit(): Promise<void> {
     this.busy.set(true);
     this.error.set('');
@@ -51,13 +69,16 @@ export class LoginComponent {
   }
 
   /**
-   * Computes the post-login destination from the verification + entitlement gate.
+   * Computes the post-login destination from the verification + entitlement gate
+   * (and any chosen plan/billing).
    *
-   * @returns /verify-email, /tarif-waehlen or /studio.
+   * @returns The route to navigate to.
    */
   private async destination(): Promise<string> {
     if (!this.auth.isEmailVerified()) return '/verify-email';
-    const active = await this.entitlement.hasActiveAccess();
-    return active ? '/studio' : '/tarif-waehlen';
+    if (await this.entitlement.hasActiveAccess()) return '/studio';
+    return this.plan
+      ? `/checkout?plan=${this.plan}&billing=${this.billing ?? 'monthly'}`
+      : '/tarif-waehlen';
   }
 }

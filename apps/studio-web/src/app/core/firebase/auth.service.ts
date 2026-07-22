@@ -37,6 +37,20 @@ export class AuthService {
   readonly isEmailVerified = computed(
     () => this.userSignal()?.emailVerified ?? false,
   );
+  readonly displayName = computed(() => {
+    const user = this.userSignal();
+    return user?.displayName || user?.email || '';
+  });
+
+  /**
+   * Returns a fresh Firebase ID token for the signed-in user (for the API).
+   *
+   * @returns The ID token, or null when signed out.
+   */
+  async idToken(): Promise<string | null> {
+    const user = this.auth.currentUser;
+    return user ? user.getIdToken() : null;
+  }
 
   constructor() {
     setTimeout(() => this.markReady(), READY_TIMEOUT_MS);

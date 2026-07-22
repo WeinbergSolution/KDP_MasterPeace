@@ -60,7 +60,10 @@
     </form>
 
     <nav class="auth__alt" aria-label="Weitere Optionen">
-      <a routerLink="/login">Ich habe bereits ein Konto</a>
+      <span
+        >Du hast bereits ein Konto?
+        <a routerLink="/login" [queryParams]="forwardParams">Anmelden</a></span
+      >
     </nav>
   </div>
 </div>

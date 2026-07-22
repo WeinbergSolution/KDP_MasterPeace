@@ -93,6 +93,19 @@ async function requireGuest(): Promise<boolean | UrlTree> {
   return decision === 'studio' ? router.parseUrl('/studio') : true;
 }
 
+/**
+ * Resolves access to a signed-in-only route (the account area).
+ *
+ * @returns True when signed in, or a redirect to /login.
+ */
+async function requireLoggedIn(): Promise<boolean | UrlTree> {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  const gate = await readAuthGate(auth);
+  return gate.authenticated ? true : router.parseUrl('/login');
+}
+
 export const authGuard: CanActivateFn = () => requireStudio();
 export const verifiedGuard: CanActivateFn = () => requireVerified();
+export const loggedInGuard: CanActivateFn = () => requireLoggedIn();
 export const publicOnlyGuard: CanActivateFn = () => requireGuest();

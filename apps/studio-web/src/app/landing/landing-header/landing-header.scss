@@ -1,0 +1,182 @@
+// Landing header (sticky, self-contained). Reflects auth/entitlement state with
+// an account menu. Warm translucent bar matching the landing language.
+:host {
+  --lh-ink: #191320;
+  --lh-gold: #c39a3e;
+  --lh-gold-2: #a87f28;
+  --lh-cream: #fbf7ef;
+  --lh-line: #ece3d2;
+  --lh-text: #221c2b;
+  --lh-muted: #6a6076;
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: block;
+}
+
+.lh {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 4vw, 2.5rem);
+  background: rgba(251, 247, 239, 0.82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--lh-line);
+  font-family: var(--font-sans);
+}
+.lh__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: var(--lh-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.lh__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: linear-gradient(150deg, var(--lh-ink), #3a2f47);
+  color: var(--lh-gold);
+  font-weight: 800;
+}
+.lh__skel {
+  width: 7rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #efe7d6, #f6f0e4, #efe7d6);
+  opacity: 0.7;
+}
+
+.lh__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.lh__link {
+  color: var(--lh-text);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 0.4rem;
+}
+.lh__link:hover {
+  color: var(--lh-gold-2);
+}
+.lh__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.05rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.lh__btn--gold {
+  background: linear-gradient(180deg, #d0a748, var(--lh-gold-2));
+  color: #fff;
+}
+.lh__btn--ghost {
+  border-color: rgba(34, 28, 43, 0.22);
+  color: var(--lh-text);
+}
+
+.lh__account {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.lh__avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.35rem;
+  border: 1px solid var(--lh-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--lh-text);
+  cursor: pointer;
+}
+.lh__initial {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--lh-ink), #3a2f47);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.lh__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+.lh__menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 40;
+  min-width: 13rem;
+  background: #fff;
+  border: 1px solid var(--lh-line);
+  border-radius: 14px;
+  box-shadow: 0 22px 44px -22px rgba(25, 19, 32, 0.5);
+  padding: 0.5rem;
+}
+.lh__me {
+  padding: 0.5rem 0.65rem 0.6rem;
+  border-bottom: 1px solid var(--lh-line);
+  margin-bottom: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.lh__name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+.lh__plan {
+  font-size: 0.82rem;
+  color: var(--lh-gold-2);
+  font-weight: 600;
+}
+.lh__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.65rem;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--lh-text);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.lh__item:hover {
+  background: var(--lh-cream);
+}
+.lh__item--btn {
+  color: #8c3535;
+}
+
+@media (max-width: 560px) {
+  .lh__nav .lh__link {
+    display: none;
+  }
+}

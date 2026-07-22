@@ -6,6 +6,9 @@
 export const ALLOWED_PLANS = ['tester', 'starter', 'creator', 'pro'] as const;
 export type PlanId = (typeof ALLOWED_PLANS)[number];
 
+export const ALLOWED_BILLING = ['one_time', 'monthly', 'annual'] as const;
+export type BillingId = (typeof ALLOWED_BILLING)[number];
+
 /**
  * Returns the value when it is an allowed plan id, otherwise null.
  *
@@ -16,5 +19,20 @@ export function allowedPlan(value: string | null | undefined): PlanId | null {
   return typeof value === 'string' &&
     (ALLOWED_PLANS as readonly string[]).includes(value)
     ? (value as PlanId)
+    : null;
+}
+
+/**
+ * Returns the value when it is an allowed billing cycle, otherwise null.
+ *
+ * @param value The raw, untrusted query-parameter value.
+ * @returns The allowlisted billing cycle, or null.
+ */
+export function allowedBilling(
+  value: string | null | undefined,
+): BillingId | null {
+  return typeof value === 'string' &&
+    (ALLOWED_BILLING as readonly string[]).includes(value)
+    ? (value as BillingId)
     : null;
 }

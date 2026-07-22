@@ -1,0 +1,147 @@
+// Account area. Warm ivory base + branded cards matching the auth pages.
+:host {
+  --k-cream: #fbf7ef;
+  --k-ink: #191320;
+  --k-gold: #c39a3e;
+  --k-gold-2: #a87f28;
+  --k-text: #221c2b;
+  --k-muted: #6a6076;
+  --k-line: #ece3d2;
+
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      60% 40% at 50% 0%,
+      rgba(195, 154, 62, 0.12),
+      transparent 60%
+    ),
+    var(--k-cream);
+  font-family: var(--font-sans);
+  color: var(--k-text);
+}
+
+.kt {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1.1rem, 4vw, 1.6rem) 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.kt__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--k-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.kt__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: linear-gradient(150deg, var(--k-ink), #3a2f47);
+  color: var(--k-gold);
+  font-weight: 800;
+}
+.kt__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  margin: 0.3rem 0 0.2rem;
+}
+
+.kt__card {
+  background: #fff;
+  border: 1px solid var(--k-line);
+  border-top: 3px solid var(--k-gold);
+  border-radius: 16px;
+  padding: clamp(1.3rem, 3vw, 1.8rem);
+  box-shadow: 0 24px 46px -32px rgba(25, 19, 32, 0.4);
+}
+.kt__h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.kt__lead {
+  color: var(--k-muted);
+  margin-bottom: 1.1rem;
+}
+.kt__rows {
+  margin: 0 0 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.kt__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--k-line);
+}
+.kt__row:last-child {
+  border-bottom: 0;
+}
+.kt__row dt {
+  color: var(--k-muted);
+  font-size: 0.92rem;
+}
+.kt__row dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+.kt__ok {
+  color: #23694c;
+  font-weight: 700;
+}
+.kt__warn {
+  color: #8a5a1b;
+  font-weight: 700;
+}
+.kt__note {
+  background: #fbf3e4;
+  border: 1px solid #ecd9b0;
+  color: #8a5a1b;
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  margin-bottom: 1.1rem;
+}
+.kt__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.kt__btn {
+  flex: 1 1 10rem;
+  text-align: center;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.kt__btn--gold {
+  background: linear-gradient(180deg, #d0a748, var(--k-gold-2));
+  color: #fff;
+}
+.kt__btn--ghost {
+  border-color: var(--k-line);
+  color: var(--k-text);
+  background: #fff;
+}
+.kt__btn--ghost:hover {
+  background: var(--k-cream);
+}
