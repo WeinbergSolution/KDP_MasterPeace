@@ -1,0 +1,100 @@
+<div class="stopbar">
+  <div class="stopbar__left">
+    <span class="stopbar__brand">
+      <span class="stopbar__mark" aria-hidden="true">
+        <lucide-icon [img]="brandIcon" [size]="16" />
+      </span>
+      <span class="stopbar__title">
+        <span class="stopbar__title-full">KDP MasterPeace Studio</span>
+        <span class="stopbar__title-short" aria-hidden="true">Studio</span>
+      </span>
+    </span>
+    <a class="stopbar__home" routerLink="/">
+      <lucide-icon [img]="backIcon" [size]="15" aria-hidden="true" />
+      <span class="stopbar__home-label">Zur Landingpage</span>
+    </a>
+  </div>
+
+  <div class="stopbar__right">
+    @if (!ready()) {
+    <span class="stopbar__skel" aria-hidden="true"></span>
+    } @else { @if (active() && planLine()) {
+    <span class="stopbar__plan">
+      <span class="stopbar__plan-name">{{ planLine() }}</span>
+      @if (testAccess()) {
+      <span class="stopbar__badge">Testzugang</span>
+      }
+    </span>
+    }
+
+    <div class="stopbar__account">
+      <button
+        class="stopbar__avatar"
+        type="button"
+        [attr.aria-expanded]="menuOpen()"
+        aria-haspopup="menu"
+        aria-controls="studio-account-menu"
+        aria-label="Kontomenü"
+        (click)="toggle()"
+      >
+        <span class="stopbar__initial">{{ initials() }}</span>
+        <span class="stopbar__avatar-name">{{ name() }}</span>
+        <lucide-icon [img]="chevron" [size]="14" aria-hidden="true" />
+      </button>
+
+      @if (menuOpen()) {
+      <button
+        class="stopbar__backdrop"
+        type="button"
+        tabindex="-1"
+        aria-label="Menü schließen"
+        (click)="close()"
+      ></button>
+      <div class="stopbar__menu" id="studio-account-menu" role="menu">
+        <div class="stopbar__me">
+          <span class="stopbar__me-name">{{ name() }}</span>
+          @if (email()) {
+          <span class="stopbar__me-mail">{{ email() }}</span>
+          } @if (active() && planLine()) {
+          <span class="stopbar__me-plan">{{ planLine() }}</span>
+          }
+        </div>
+        <a
+          class="stopbar__item"
+          role="menuitem"
+          routerLink="/konto"
+          (click)="close()"
+        >
+          Mein Konto
+        </a>
+        <a
+          class="stopbar__item"
+          role="menuitem"
+          routerLink="/tarif-waehlen"
+          [queryParams]="{ change: 1 }"
+          (click)="close()"
+        >
+          Tarif wechseln
+        </a>
+        <a
+          class="stopbar__item"
+          role="menuitem"
+          routerLink="/"
+          (click)="close()"
+        >
+          Zur Landingpage
+        </a>
+        <button
+          class="stopbar__item stopbar__item--btn"
+          role="menuitem"
+          type="button"
+          (click)="logout()"
+        >
+          Abmelden
+        </button>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

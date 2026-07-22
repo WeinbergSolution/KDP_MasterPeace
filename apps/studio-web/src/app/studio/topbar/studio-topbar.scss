@@ -1,0 +1,270 @@
+// Studio topbar: a slim, sticky account/navigation bar in the warm landing
+// palette. Self-contained (emulated encapsulation) so it never leaks into or
+// inherits from the studio's global stylesheet below it.
+:host {
+  --st-ink: #191320;
+  --st-gold: #c39a3e;
+  --st-gold-2: #a87f28;
+  --st-cream: #fbf7ef;
+  --st-line: #ece3d2;
+  --st-text: #221c2b;
+  --st-muted: #6a6076;
+
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: block;
+}
+
+.stopbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 60px;
+  padding: 0 clamp(0.75rem, 3vw, 1.5rem);
+  background: rgba(251, 247, 239, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--st-line);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.stopbar__left,
+.stopbar__right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.stopbar__left {
+  gap: 1rem;
+}
+.stopbar__right {
+  gap: 0.7rem;
+}
+
+.stopbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--st-text);
+}
+.stopbar__mark {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: none;
+  border-radius: 9px;
+  background: linear-gradient(150deg, var(--st-ink), #3a2f47);
+  color: var(--st-gold);
+}
+.stopbar__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stopbar__title-short {
+  display: none;
+}
+
+.stopbar__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 999px;
+  color: var(--st-muted);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.stopbar__home:hover {
+  color: var(--st-gold-2);
+  background: rgba(163, 127, 40, 0.08);
+}
+
+.stopbar__skel {
+  width: 8.5rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #efe7d6, #f6f0e4, #efe7d6);
+  opacity: 0.7;
+}
+
+.stopbar__plan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--st-line);
+  border-radius: 999px;
+  background: #fff;
+}
+.stopbar__plan-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--st-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stopbar__badge {
+  flex: none;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--st-gold-2);
+  background: rgba(195, 154, 62, 0.14);
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+}
+
+.stopbar__account {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.stopbar__avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 12rem;
+  padding: 0.3rem 0.55rem 0.3rem 0.35rem;
+  border: 1px solid var(--st-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--st-text);
+  cursor: pointer;
+}
+.stopbar__avatar:hover {
+  border-color: rgba(163, 127, 40, 0.5);
+}
+.stopbar__initial {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  flex: none;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--st-ink), #3a2f47);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+.stopbar__avatar-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stopbar__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+.stopbar__menu {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  z-index: 2;
+  min-width: 14rem;
+  max-width: calc(100vw - 1rem);
+  background: #fff;
+  border: 1px solid var(--st-line);
+  border-radius: 14px;
+  box-shadow: 0 22px 44px -22px rgba(25, 19, 32, 0.5);
+  padding: 0.5rem;
+  animation: stopbar-pop 0.14s ease-out;
+}
+.stopbar__me {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  padding: 0.5rem 0.65rem 0.6rem;
+  border-bottom: 1px solid var(--st-line);
+  margin-bottom: 0.4rem;
+}
+.stopbar__me-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+.stopbar__me-mail {
+  font-size: 0.8rem;
+  color: var(--st-muted);
+  word-break: break-word;
+}
+.stopbar__me-plan {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--st-gold-2);
+}
+.stopbar__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.65rem;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--st-text);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.stopbar__item:hover {
+  background: var(--st-cream);
+}
+.stopbar__item--btn {
+  color: #8c3535;
+}
+
+:focus-visible {
+  outline: 2px solid var(--st-gold-2);
+  outline-offset: 2px;
+}
+
+@keyframes stopbar-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 900px) {
+  .stopbar__avatar-name {
+    display: none;
+  }
+  .stopbar__home-label {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .stopbar__title-full {
+    display: none;
+  }
+  .stopbar__title-short {
+    display: inline;
+  }
+  .stopbar__plan {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stopbar__menu {
+    animation: none;
+  }
+}

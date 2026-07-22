@@ -9,3 +9,13 @@
 @use 'studio-export' as *;
 @use 'studio-kdp' as *;
 @use 'studio-publish' as *;
+
+// Additive integration for the sticky studio topbar (56–64px). The rail keeps
+// its own design, order and buttons unchanged; only its sticky offset and height
+// account for the header so the two never overlap.
+$topbar-h: 60px;
+
+.app .rail {
+  top: $topbar-h;
+  height: calc(100vh - #{$topbar-h});
+}

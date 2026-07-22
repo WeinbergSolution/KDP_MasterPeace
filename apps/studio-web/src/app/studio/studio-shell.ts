@@ -43,6 +43,7 @@ import { ExportStepComponent } from './steps/export-step';
 import { KdpStepComponent } from './steps/kdp-step';
 import { PublishStepComponent } from './steps/publish-step';
 import { PlaceholderStepComponent } from './steps/placeholder-step';
+import { StudioTopbarComponent } from './topbar/studio-topbar';
 import { KDP_GUIDE } from './steps/publish/kdp-guide';
 
 // The tool shell in Legacy V3 optics: dark rail (brand, project box, 8 steps,
@@ -87,6 +88,7 @@ const STEP_ICONS: LucideIconData[] = [
     KdpStepComponent,
     PublishStepComponent,
     PlaceholderStepComponent,
+    StudioTopbarComponent,
   ],
   templateUrl: './studio-shell.html',
   styleUrl: './studio-shell.scss',
