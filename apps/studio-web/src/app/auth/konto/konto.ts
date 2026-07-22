@@ -8,7 +8,13 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/firebase/auth.service';
 import { EntitlementService } from '../../core/firebase/entitlement.service';
-import { PLANS, type BillingCycle, priceFor } from '../../landing/pricing-data';
+import {
+  PLANS,
+  type BillingCycle,
+  annualSavings,
+  monthlyEquivalent,
+  priceFor,
+} from '../../landing/pricing-data';
 
 const PLAN_LABELS: Record<string, string> = {
   tester: 'Tester',
@@ -77,6 +83,17 @@ export class KontoComponent {
     const cycle = this.ent()?.billingCycle;
     if (cycle === 'one_time') return 'Einmaliger Kauf';
     return cycle === 'annual' ? 'Jährliche Zahlung' : 'Monatliche Zahlung';
+  }
+
+  /** Annual discount + monthly equivalent + saving, or '' for other cycles. */
+  protected annualDetail(): string {
+    const entitlement = this.ent();
+    if (entitlement?.billingCycle !== 'annual') return '';
+    const plan = PLANS.find((p) => p.id === entitlement?.planId);
+    if (!plan) return '';
+    const perMonth = `${monthlyEquivalent(plan)} ${plan.currency} / Monat`;
+    const saved = `${annualSavings(plan)} ${plan.currency} pro Jahr`;
+    return `${plan.annualDiscountPercent} % Rabatt · entspricht ${perMonth} · Ersparnis ${saved}`;
   }
 
   /** Signs out, clears the entitlement and returns to the landing page. */

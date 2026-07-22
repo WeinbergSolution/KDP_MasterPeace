@@ -11,6 +11,7 @@ import {
   type Plan,
   type PriceDisplay,
   billingFor,
+  monthlyEquivalent,
   priceFor,
 } from '../pricing-data';
 
@@ -47,6 +48,26 @@ export class PlanTiersComponent {
    */
   protected price(plan: Plan): PriceDisplay {
     return priceFor(plan, this.cycle());
+  }
+
+  /**
+   * Whether the annual discount badge + monthly equivalent apply to a plan.
+   *
+   * @param plan The plan.
+   * @returns True for a subscription plan while the annual cycle is selected.
+   */
+  protected showAnnualExtras(plan: Plan): boolean {
+    return this.cycle() === 'annual' && plan.billingType === 'subscription';
+  }
+
+  /**
+   * The computed monthly equivalent of a plan's annual price.
+   *
+   * @param plan The plan.
+   * @returns The German euro value (e.g. "50,15").
+   */
+  protected monthlyEquiv(plan: Plan): string {
+    return monthlyEquivalent(plan);
   }
 
   /**

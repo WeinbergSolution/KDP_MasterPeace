@@ -13,7 +13,9 @@ import {
   PLANS,
   type BillingCycle,
   type Plan,
+  annualSavings,
   billingFor,
+  monthlyEquivalent,
   priceFor,
 } from '../../landing/pricing-data';
 
@@ -74,6 +76,25 @@ export class CheckoutComponent {
   /** Whether the annual cycle is selected. */
   protected get isAnnual(): boolean {
     return this.cycle === 'annual';
+  }
+
+  /** The annual discount percentage for the selected plan. */
+  protected get discountPercent(): number {
+    return this.plan?.annualDiscountPercent ?? 0;
+  }
+
+  /** The annual saving line for the selected plan (e.g. "106,20 € pro Jahr"). */
+  protected get savingsLine(): string {
+    return this.plan
+      ? `${annualSavings(this.plan)} ${this.plan.currency} pro Jahr`
+      : '';
+  }
+
+  /** The monthly-equivalent line (e.g. "50,15 € pro Monat"). */
+  protected get monthlyEquivLine(): string {
+    return this.plan
+      ? `${monthlyEquivalent(this.plan)} ${this.plan.currency} pro Monat`
+      : '';
   }
 
   /** Switches a subscription plan between monthly and annual billing. */

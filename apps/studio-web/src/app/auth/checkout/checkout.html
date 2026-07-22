@@ -24,15 +24,25 @@
         <dt>Abrechnung</dt>
         <dd>{{ billingText }}</dd>
       </div>
+      @if (isAnnual) {
+      <div class="co__row">
+        <dt>Rabatt</dt>
+        <dd>{{ discountPercent }} %</dd>
+      </div>
+      <div class="co__row">
+        <dt>Ersparnis</dt>
+        <dd>{{ savingsLine }}</dd>
+      </div>
+      <div class="co__row">
+        <dt>Entspricht</dt>
+        <dd>{{ monthlyEquivLine }}</dd>
+      </div>
+      }
       <div class="co__row">
         <dt>Buchkontingent</dt>
         <dd>{{ plan.books }} {{ plan.booksLabel }} · {{ plan.booksNote }}</dd>
       </div>
     </dl>
-
-    @if (isAnnual) {
-    <p class="co__save">Du sparst 2 Monatsbeiträge.</p>
-    }
 
     <ul class="co__features">
       @for (f of plan.features; track f) {

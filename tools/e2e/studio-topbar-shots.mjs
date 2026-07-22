@@ -37,7 +37,7 @@ await db.doc(`entitlements/${user.uid}`).set({
   planId: 'creator',
   billingCycle: 'annual',
   bookLimit: 12,
-  priceCents: 59000,
+  priceCents: 60180,
   source: 'test_phase',
   testMode: true,
   activatedAt: now,

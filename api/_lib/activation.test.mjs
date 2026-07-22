@@ -19,16 +19,50 @@ test('resolveActivation derives server prices and limits', () => {
     priceCents: 990,
     bookLimit: 1,
   });
-  assert.equal(resolveActivation('creator', 'annual').priceCents, 59000);
   assert.equal(resolveActivation('starter', 'monthly').priceCents, 2900);
+  assert.equal(resolveActivation('starter', 'annual').priceCents, 30624);
+  assert.equal(resolveActivation('creator', 'monthly').priceCents, 5900);
+  assert.equal(resolveActivation('creator', 'annual').priceCents, 60180);
+  assert.equal(resolveActivation('pro', 'monthly').priceCents, 9900);
+  assert.equal(resolveActivation('pro', 'annual').priceCents, 95040);
   assert.equal(resolveActivation('pro', 'annual').bookLimit, 25);
 });
 
-test('annual equals ten monthly instalments for paid plans', () => {
+test('annual price is twelve monthly instalments minus the tiered discount', () => {
+  const expected = { starter: 12, creator: 15, pro: 20 };
   for (const id of ['starter', 'creator', 'pro']) {
     const { monthly, annual } = PLAN_CATALOG[id].cycles;
-    assert.equal(annual, monthly * 10, id);
+    const pct = PLAN_CATALOG[id].annualDiscountPercent;
+    assert.equal(pct, expected[id], `${id} discount`);
+    assert.equal(annual, Math.round(monthly * 12 * (1 - pct / 100)), id);
   }
+});
+
+test('annual savings versus twelve monthly instalments are exact', () => {
+  assert.equal(2900 * 12 - PLAN_CATALOG.starter.cycles.annual, 4176);
+  assert.equal(5900 * 12 - PLAN_CATALOG.creator.cycles.annual, 10620);
+  assert.equal(9900 * 12 - PLAN_CATALOG.pro.cycles.annual, 23760);
+});
+
+test('the old flat annual prices are gone from the catalog', () => {
+  const annuals = ['starter', 'creator', 'pro'].map(
+    (id) => PLAN_CATALOG[id].cycles.annual,
+  );
+  for (const stale of [29000, 59000, 99000])
+    assert.ok(!annuals.includes(stale), `stale ${stale}`);
+});
+
+test('prices come from the catalog, never from the request body', () => {
+  const forged = {
+    ...OK,
+    planId: 'creator',
+    billingCycle: 'annual',
+    priceCents: 1,
+    bookLimit: 9999,
+  };
+  const r = evaluateActivation(forged);
+  assert.equal(r.activation.priceCents, 60180);
+  assert.equal(r.activation.bookLimit, 12);
 });
 
 test('resolveActivation rejects invalid plans and combinations', () => {

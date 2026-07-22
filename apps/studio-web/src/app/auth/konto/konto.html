@@ -50,6 +50,12 @@
         <dt>Preis</dt>
         <dd>{{ priceLine() }}</dd>
       </div>
+      @if (annualDetail()) {
+      <div class="kt__row">
+        <dt>Jahresvorteil</dt>
+        <dd>{{ annualDetail() }}</dd>
+      </div>
+      }
       <div class="kt__row">
         <dt>Buchkontingent</dt>
         <dd>{{ quotaLine() }}</dd>

@@ -139,7 +139,7 @@ check(
   'plan change updates same doc; body cannot inject uid/price; activatedAt kept',
   res.statusCode === 200 &&
     e.billingCycle === 'annual' &&
-    e.priceCents === 59000 &&
+    e.priceCents === 60180 &&
     JSON.stringify(e.activatedAt) === firstActivatedAt,
 );
 

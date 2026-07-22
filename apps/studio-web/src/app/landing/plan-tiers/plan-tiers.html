@@ -25,6 +25,14 @@
       <span class="lp-tier__cur">{{ p.currency }}</span>
       <span class="lp-tier__period">{{ price(p).period }}</span>
     </p>
+    @if (showAnnualExtras(p)) {
+    <p class="lp-tier__annual">
+      <span class="lp-tier__save">{{ p.annualDiscountPercent }} % sparen</span>
+      <span class="lp-tier__equiv">
+        entspricht {{ monthlyEquiv(p) }} {{ p.currency }} / Monat
+      </span>
+    </p>
+    }
     <ul class="lp-tier__features">
       @for (f of p.features; track f) {
       <li><lucide-icon [img]="checkIcon" [size]="15" /><span>{{ f }}</span></li>
