@@ -1,0 +1,14 @@
+<div class="ps">
+  <a class="ps__brand" routerLink="/">
+    <span class="ps__mark" aria-hidden="true">K</span>
+    <span>KDP MasterPeace</span>
+  </a>
+  <header class="ps__head">
+    <h1 class="ps__title">Wähle deinen Tarif</h1>
+    <p class="ps__sub">
+      Bevor du dein erstes Buchprojekt startest, entscheidest du dich für das
+      passende Buchkontingent.
+    </p>
+  </header>
+  <app-plan-tiers (choose)="onChoose($event)" />
+</div>

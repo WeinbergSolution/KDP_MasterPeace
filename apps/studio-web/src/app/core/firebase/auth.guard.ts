@@ -1,21 +1,36 @@
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn, type UrlTree } from '@angular/router';
 import { AuthService } from './auth.service';
-import { type AuthGate, guestDecision, protectedDecision } from './access';
+import { EntitlementService } from './entitlement.service';
+import {
+  type AuthGate,
+  guestDecision,
+  protectedDecision,
+  studioDecision,
+} from './access';
 
-// Functional route guards. Both wait for the first Firebase auth state so a
-// refresh on a protected URL never flashes the wrong screen, and both reload the
-// user so a just-completed e-mail verification is recognised. Protected routes
-// require emailVerified === true; unverified accounts go to /verify-email. Deep
-// links are blocked here, not only in the UI.
+// Functional route guards. All wait for the first Firebase auth state and reload
+// the user so a just-completed verification is recognised. The studio guard adds
+// the server-controlled entitlement check — a plan-selection intent never grants
+// access. Deep links are blocked here, not only in the UI; the studio never
+// flashes while the gate is still resolving (the guard resolves before render).
+
+const STUDIO_REDIRECT: Record<
+  'login' | 'verify-email' | 'choose-plan',
+  string
+> = {
+  login: '/login',
+  'verify-email': '/verify-email',
+  'choose-plan': '/tarif-waehlen',
+};
 
 /**
- * Reads the current auth gate, refreshing the user when signed in.
+ * Reads the auth-only gate, refreshing the user when signed in.
  *
  * @param auth The auth service.
  * @returns The authenticated + emailVerified gate state.
  */
-async function readGate(auth: AuthService): Promise<AuthGate> {
+async function readAuthGate(auth: AuthService): Promise<AuthGate> {
   await auth.whenReady();
   if (auth.isAuthenticated()) {
     try {
@@ -31,15 +46,35 @@ async function readGate(auth: AuthService): Promise<AuthGate> {
 }
 
 /**
- * Resolves access to a protected route once auth state is known.
+ * Resolves access to the studio: signed in, verified AND active entitlement.
  *
- * @returns True for verified users, or a UrlTree redirect to /login or
- *   /verify-email.
+ * @returns True with an active entitlement; else a redirect (login /
+ *   verify-email / tarif-waehlen).
  */
-async function requireAuthenticated(): Promise<boolean | UrlTree> {
+async function requireStudio(): Promise<boolean | UrlTree> {
   const auth = inject(AuthService);
   const router = inject(Router);
-  const decision = protectedDecision(await readGate(auth));
+  const ent = inject(EntitlementService);
+  const base = await readAuthGate(auth);
+  const active =
+    base.authenticated && base.emailVerified
+      ? await ent.hasActiveAccess()
+      : false;
+  const decision = studioDecision({ ...base, entitlementActive: active });
+  return decision === 'allow'
+    ? true
+    : router.parseUrl(STUDIO_REDIRECT[decision]);
+}
+
+/**
+ * Resolves access to a verified-only route (plan selection, checkout).
+ *
+ * @returns True for verified users, or a redirect to /login or /verify-email.
+ */
+async function requireVerified(): Promise<boolean | UrlTree> {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  const decision = protectedDecision(await readAuthGate(auth));
   if (decision === 'allow') return true;
   return router.parseUrl(
     decision === 'verify-email' ? '/verify-email' : '/login',
@@ -54,9 +89,10 @@ async function requireAuthenticated(): Promise<boolean | UrlTree> {
 async function requireGuest(): Promise<boolean | UrlTree> {
   const auth = inject(AuthService);
   const router = inject(Router);
-  const decision = guestDecision(await readGate(auth));
+  const decision = guestDecision(await readAuthGate(auth));
   return decision === 'studio' ? router.parseUrl('/studio') : true;
 }
 
-export const authGuard: CanActivateFn = () => requireAuthenticated();
+export const authGuard: CanActivateFn = () => requireStudio();
+export const verifiedGuard: CanActivateFn = () => requireVerified();
 export const publicOnlyGuard: CanActivateFn = () => requireGuest();

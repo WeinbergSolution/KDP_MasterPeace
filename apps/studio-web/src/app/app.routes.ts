@@ -1,5 +1,9 @@
 import { Route } from '@angular/router';
-import { authGuard, publicOnlyGuard } from './core/firebase/auth.guard';
+import {
+  authGuard,
+  publicOnlyGuard,
+  verifiedGuard,
+} from './core/firebase/auth.guard';
 
 /** Lazy-loads the shared legal page component. */
 const legal = () =>
@@ -46,6 +50,20 @@ export const appRoutes: Route[] = [
     path: 'auth/action',
     loadComponent: () =>
       import('./auth/action/auth-action').then((m) => m.AuthActionComponent),
+  },
+  {
+    path: 'tarif-waehlen',
+    canActivate: [verifiedGuard],
+    loadComponent: () =>
+      import('./auth/plan-select/plan-select').then(
+        (m) => m.PlanSelectComponent,
+      ),
+  },
+  {
+    path: 'checkout',
+    canActivate: [verifiedGuard],
+    loadComponent: () =>
+      import('./auth/checkout/checkout').then((m) => m.CheckoutComponent),
   },
   { path: 'impressum', data: { doc: 'impressum' }, loadComponent: legal },
   { path: 'datenschutz', data: { doc: 'datenschutz' }, loadComponent: legal },

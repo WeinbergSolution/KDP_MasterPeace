@@ -1,20 +1,30 @@
 // Pure access decisions for the route guards (unit-testable; no Angular/Firebase
-// imports). A protected route requires a signed-in user whose e-mail is
-// verified; a public-only route sends verified users to the studio. This package
-// does NOT implement a paid-subscription check — a verified account still gains
-// access via the existing flow. No fake subscription check is added.
+// imports). Access to the studio is gated in three stages: signed in →
+// e-mail verified → an active server-controlled entitlement. A plan-selection
+// intent from a query parameter or the browser is NEVER an entitlement and never
+// grants access. Verified users without an active entitlement are sent to the
+// plan-selection page (they cannot enter the studio yet).
 
-/** The current authentication gate state. */
+/** The auth-only gate (used by verified-only routes and public-only routes). */
 export interface AuthGate {
   readonly authenticated: boolean;
   readonly emailVerified: boolean;
 }
 
-/** Where a guard should send the user. */
+/** The full studio gate: auth + verification + an active entitlement. */
+export interface StudioGate extends AuthGate {
+  readonly entitlementActive: boolean;
+}
+
+/** Where a verified-only / public-only guard should send the user. */
 export type GuardDecision = 'allow' | 'login' | 'verify-email' | 'studio';
 
+/** Where the studio guard should send the user. */
+export type StudioDecision = 'allow' | 'login' | 'verify-email' | 'choose-plan';
+
 /**
- * Decides access to a protected (studio) route.
+ * Decides access to a route that only requires a verified account (e.g. the
+ * plan-selection and checkout pages) — entitlement is deliberately not required.
  *
  * @param gate The current auth gate state.
  * @returns 'allow' for a verified signed-in user; otherwise the redirect target.
@@ -22,6 +32,20 @@ export type GuardDecision = 'allow' | 'login' | 'verify-email' | 'studio';
 export function protectedDecision(gate: AuthGate): GuardDecision {
   if (!gate.authenticated) return 'login';
   if (!gate.emailVerified) return 'verify-email';
+  return 'allow';
+}
+
+/**
+ * Decides access to the studio: signed in, verified AND an active entitlement.
+ *
+ * @param gate The current studio gate state.
+ * @returns 'allow' only with an active entitlement; otherwise the redirect
+ *   target (login / verify-email / choose-plan).
+ */
+export function studioDecision(gate: StudioGate): StudioDecision {
+  if (!gate.authenticated) return 'login';
+  if (!gate.emailVerified) return 'verify-email';
+  if (!gate.entitlementActive) return 'choose-plan';
   return 'allow';
 }
 

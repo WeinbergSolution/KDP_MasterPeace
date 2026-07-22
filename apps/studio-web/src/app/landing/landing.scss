@@ -2,7 +2,6 @@
 // warm ivory base, deep-ink contrast, gold + cover accents. Component-scoped;
 // sections live in the sibling partial. No third-party assets or fonts.
 @use 'landing-sections' as *;
-@use 'landing-pricing' as *;
 @use 'landing-faq' as *;
 
 :host {

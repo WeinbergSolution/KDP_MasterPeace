@@ -109,7 +109,3 @@ export const PLANS: readonly Plan[] = [
     ctaLabel: 'Pro wählen',
   },
 ];
-
-/** Honest interstitial shown to signed-in users (no payment integration yet). */
-export const BOOKING_PENDING_NOTICE =
-  'Die Tarifbuchung wird derzeit vorbereitet.';

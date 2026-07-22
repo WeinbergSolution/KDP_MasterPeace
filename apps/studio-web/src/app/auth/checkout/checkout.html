@@ -1,0 +1,49 @@
+<div class="co">
+  <a class="co__brand" routerLink="/">
+    <span class="co__mark" aria-hidden="true">K</span>
+    <span>KDP MasterPeace</span>
+  </a>
+  <div class="co__card">
+    @if (plan) {
+    <h1 class="co__title">Dein Tarif ist ausgewählt</h1>
+    <p class="co__lead">
+      Die sichere Zahlungsabwicklung wird derzeit vorbereitet. Dein Studio wird
+      erst nach einer erfolgreich bestätigten Zahlung freigeschaltet.
+    </p>
+    <dl class="co__summary">
+      <div class="co__row">
+        <dt>Tarif</dt>
+        <dd>{{ plan.name }}</dd>
+      </div>
+      <div class="co__row">
+        <dt>Preis</dt>
+        <dd>
+          {{ plan.priceValue }} {{ plan.priceCurrency }} {{ plan.pricePeriod }}
+        </dd>
+      </div>
+      <div class="co__row">
+        <dt>Abrechnung</dt>
+        <dd>{{ billingText }}</dd>
+      </div>
+      <div class="co__row">
+        <dt>Buchkontingent</dt>
+        <dd>{{ plan.books }} {{ plan.booksLabel }} · {{ plan.booksNote }}</dd>
+      </div>
+    </dl>
+    <div class="co__actions">
+      <a class="co__btn co__btn--ghost" routerLink="/tarif-waehlen">
+        Anderen Tarif wählen
+      </a>
+      <a class="co__btn co__btn--ghost" routerLink="/">Zur Startseite</a>
+    </div>
+    } @else {
+    <h1 class="co__title">Kein Tarif ausgewählt</h1>
+    <p class="co__lead">Bitte wähle zunächst einen Tarif aus.</p>
+    <div class="co__actions">
+      <a class="co__btn co__btn--gold" routerLink="/tarif-waehlen">
+        Tarif wählen
+      </a>
+    </div>
+    }
+  </div>
+</div>

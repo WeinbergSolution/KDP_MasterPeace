@@ -1,0 +1,44 @@
+<div class="lp-tiers">
+  @for (p of plans; track p.id) {
+  <article
+    class="lp-tier"
+    [class.lp-tier--hl]="p.highlighted"
+    [class.lp-tier--lite]="p.billingType === 'oneTime'"
+    [class.lp-tier--pro]="p.id === 'pro'"
+  >
+    @if (p.highlighted) {
+    <span class="lp-tier__badge">{{ p.highlightLabel }}</span>
+    }
+    <div class="lp-tier__top">
+      <h3 class="lp-tier__name">{{ p.name }}</h3>
+      <p class="lp-tier__aud">{{ p.audience }}</p>
+    </div>
+    <div class="lp-tier__books">
+      <span class="lp-tier__num">{{ p.books }}</span>
+      <span class="lp-tier__unit">
+        <span class="lp-tier__unit-label">{{ p.booksLabel }}</span>
+        <span class="lp-tier__unit-note">{{ p.booksNote }}</span>
+      </span>
+    </div>
+    <p class="lp-tier__price">
+      <span class="lp-tier__amount">{{ p.priceValue }}</span>
+      <span class="lp-tier__cur">{{ p.priceCurrency }}</span>
+      <span class="lp-tier__period">{{ p.pricePeriod }}</span>
+    </p>
+    <ul class="lp-tier__features">
+      @for (f of p.features; track f) {
+      <li><lucide-icon [img]="checkIcon" [size]="15" /><span>{{ f }}</span></li>
+      }
+    </ul>
+    <button
+      type="button"
+      class="lp-btn lp-tier__cta"
+      [class.lp-btn--gold]="p.highlighted"
+      [class.lp-btn--ghost]="!p.highlighted"
+      (click)="choose.emit(p.id)"
+    >
+      {{ p.ctaLabel }}
+    </button>
+  </article>
+  }
+</div>

@@ -1,0 +1,61 @@
+// Plan-selection page. Warm ivory base matching the landing/auth language; the
+// tiers themselves are rendered by the shared, self-styled plan-tiers component.
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      60% 40% at 50% 0%,
+      rgba(195, 154, 62, 0.12),
+      transparent 60%
+    ),
+    #fbf7ef;
+  font-family: var(--font-sans);
+  color: #221c2b;
+}
+
+.ps {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.1rem, 4vw, 2.5rem) 4rem;
+}
+
+.ps__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #221c2b;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ps__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: linear-gradient(150deg, #191320, #3a2f47);
+  color: #c39a3e;
+  font-weight: 800;
+}
+
+.ps__head {
+  max-width: 720px;
+  margin: clamp(1.6rem, 4vw, 2.6rem) auto clamp(2rem, 4vw, 3rem);
+  text-align: center;
+}
+.ps__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+}
+.ps__sub {
+  margin-top: 0.7rem;
+  color: #6a6076;
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+}

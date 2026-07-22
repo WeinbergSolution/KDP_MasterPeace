@@ -1,0 +1,131 @@
+// Honest checkout interstitial. Warm ivory base + branded card matching the auth
+// pages. No payment UI, no studio path.
+
+:host {
+  --c-cream: #fbf7ef;
+  --c-ink: #191320;
+  --c-gold: #c39a3e;
+  --c-gold-2: #a87f28;
+  --c-text: #221c2b;
+  --c-muted: #6a6076;
+  --c-line: #ece3d2;
+
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      62% 48% at 50% 0%,
+      rgba(195, 154, 62, 0.16),
+      transparent 62%
+    ),
+    var(--c-cream);
+  font-family: var(--font-sans);
+  color: var(--c-text);
+}
+
+.co {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.3rem 3rem;
+}
+.co__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--c-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.co__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: linear-gradient(150deg, var(--c-ink), #3a2f47);
+  color: var(--c-gold);
+  font-weight: 800;
+}
+
+.co__card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-top: 3px solid var(--c-gold);
+  border-radius: 18px;
+  padding: clamp(1.6rem, 4vw, 2.3rem);
+  box-shadow: 0 30px 60px -34px rgba(25, 19, 32, 0.5);
+}
+.co__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+.co__lead {
+  color: var(--c-muted);
+  margin-bottom: 1.5rem;
+}
+
+.co__summary {
+  margin: 0 0 1.6rem;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.co__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--c-line);
+}
+.co__row:last-child {
+  border-bottom: 0;
+}
+.co__row dt {
+  color: var(--c-muted);
+  font-size: 0.92rem;
+}
+.co__row dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.co__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.co__btn {
+  flex: 1 1 12rem;
+  text-align: center;
+  border-radius: 999px;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.co__btn--gold {
+  background: linear-gradient(180deg, #d0a748, var(--c-gold-2));
+  color: #fff;
+}
+.co__btn--ghost {
+  border-color: var(--c-line);
+  color: var(--c-text);
+  background: #fff;
+}
+.co__btn--ghost:hover {
+  background: var(--c-cream);
+}

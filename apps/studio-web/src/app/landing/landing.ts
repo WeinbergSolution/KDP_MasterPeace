@@ -1,14 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import {
   ArrowRight,
   BookOpen,
-  Check,
   Download,
   Feather,
   FileText,
@@ -28,8 +22,11 @@ import {
   Store,
 } from 'lucide-angular';
 import { AuthService } from '../core/firebase/auth.service';
-import { BOOKING_PENDING_NOTICE, PLANS } from './pricing-data';
+import { EntitlementService } from '../core/firebase/entitlement.service';
+import { allowedPlan, type PlanId } from '../auth/plan';
+import { savePlanIntent } from '../auth/plan-intent';
 import { FAQS } from './faq-data';
+import { PlanTiersComponent } from './plan-tiers/plan-tiers';
 
 // Public marketing landing page at `/`. Premium publishing-SaaS composition for
 // KDP MasterPeace: warm ivory base, deep-ink contrast sections, gold + cover
@@ -64,21 +61,17 @@ interface Step {
 @Component({
   selector: 'app-landing',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LucideAngularModule],
+  imports: [RouterLink, LucideAngularModule, PlanTiersComponent],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })
 export class LandingComponent {
   private readonly auth = inject(AuthService);
+  private readonly entitlement = inject(EntitlementService);
+  private readonly router = inject(Router);
 
   protected readonly year = new Date().getFullYear();
   protected readonly arrow = ArrowRight;
-  protected readonly checkIcon = Check;
-
-  protected readonly isAuthed = this.auth.isAuthenticated;
-  protected readonly bookingNotice = signal('');
-
-  protected readonly plans = PLANS;
   protected readonly faqs = FAQS;
 
   protected readonly covers: Cover[] = [
@@ -246,10 +239,31 @@ export class LandingComponent {
   ];
 
   /**
-   * Handles a plan CTA for a signed-in user: shows an honest "booking is being
-   * prepared" notice (no payment integration and no studio access is granted).
+   * Routes a plan CTA by auth state (the selection is only an intent): guest →
+   * register, unverified → verify-email, verified without entitlement → checkout,
+   * verified with entitlement → studio. Never grants access itself.
+   *
+   * @param raw The chosen plan id (re-validated against the allowlist).
    */
-  protected selectPlan(): void {
-    this.bookingNotice.set(BOOKING_PENDING_NOTICE);
+  protected async onPlanChoose(raw: string): Promise<void> {
+    const plan = allowedPlan(raw);
+    if (!plan) return;
+    savePlanIntent(plan);
+    await this.router.navigateByUrl(await this.planTarget(plan));
+  }
+
+  /**
+   * Computes the destination for a chosen plan from the current auth/entitlement
+   * state.
+   *
+   * @param plan The allowlisted plan id.
+   * @returns The route to navigate to.
+   */
+  private async planTarget(plan: PlanId): Promise<string> {
+    await this.auth.reload();
+    if (!this.auth.isAuthenticated()) return `/register?plan=${plan}`;
+    if (!this.auth.isEmailVerified()) return `/verify-email?plan=${plan}`;
+    const active = await this.entitlement.hasActiveAccess();
+    return active ? '/studio' : `/checkout?plan=${plan}`;
   }
 }
